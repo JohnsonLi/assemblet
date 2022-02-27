@@ -1,0 +1,1 @@
+const INSTRUCTIONS = ['mov', 'add'];

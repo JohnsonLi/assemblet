@@ -1,0 +1,49 @@
+#assembly-builder {
+    width: 300px;
+    height: 750px;
+    border: solid 1px black;
+    float: left;
+}
+
+.instruction-entry {
+    width: 300px;
+    height: 75px;
+    border: solid 1px black;
+    box-sizing: border-box;
+    pointer-events: auto;
+    text-align: center;
+    line-height: 60px;
+}
+
+.instruction-entry span {
+    display: inline-block;
+    vertical-align: middle;
+    line-height: normal;
+}
+
+#instruction-list {
+    width: 300px;
+    float: left;
+    padding: 50px;
+}
+.instruction {
+    width: 300px;
+    height: 75px;
+    margin-top: 10px;
+    background-color: bisque;
+    border: solid 1px black;
+    box-sizing: border-box;
+    text-align: center;
+    line-height: 60px;
+
+}
+.instruction span {
+    display: inline-block;
+    vertical-align: middle;
+    line-height: normal;
+}
+
+.instruction-moving {
+    position: relative;
+    pointer-events: none;
+}
