@@ -1,6 +1,7 @@
 SETUP:
     MOVE 0 A
     MOVE 1 B
+    MOVE 0 X
     OUT A
     OUT B
 MAIN:
@@ -8,5 +9,6 @@ MAIN:
     ADD A C
     MOVE B A
     MOVE C B
+    ADD 1 X
     OUT B
-    JUMP 8
+    JNE 8 10 X

@@ -1,3 +1,4 @@
+from ast import arg
 from operator import le
 import ply.lex as lex
 
@@ -5,8 +6,8 @@ tokens = ("LABEL", "INSTRUCTION", "NUMBER", "REGISTER")
 
 # Tokens
 t_LABEL = r"\w+:"
-t_INSTRUCTION = r"\s*(IN|OUT|MOVE|ADD|SUB|MULT|DIV|MOD|JUMP|JE|JNE)"
-t_REGISTER = r"\s*(A|B|C|D|E|F|G|H|X|Y|Z)"
+t_INSTRUCTION = r"\s*(IN|OUT|MOVE|ADD|SUB|MULT|DIV|MOD|JUMP|JE|JNE|GT|GTE|LT|LTE)"
+t_REGISTER = r"\s*(A|B|C|D|E|F|G|X|Y|Z)"
 t_ignore = " \t"
 
 def t_NUMBER(t):
@@ -51,10 +52,9 @@ class Register(Enum):
     E = 4
     F = 5
     G = 6
-    H = 7
-    X = 8
-    Y = 9
-    Z = 10
+    X = 7
+    Y = 8
+    Z = 9
 
 class Interpreter:
 
@@ -77,6 +77,12 @@ class Interpreter:
 
         if line[0] == "JUMP":
             self._handle_jump(line[1:])
+        
+        if line[0] == "JE":
+            self._handle_je(line[1:])
+        
+        if line[0] == "JNE":
+            self._handle_jne(line[1:])
 
         if line[0] == "ADD":
             self._handle_add(line[1:])
@@ -169,6 +175,8 @@ class Interpreter:
         # compare register to register
         elif self.registers[Register[args[1]].value] == self.registers[Register[args[2]].value]:
             self._handle_jump([args[0]])
+        
+        self.pc += 1
     
     def _handle_jne(self, args):
         # syntax is : JNE linenum reg|num reg
@@ -179,9 +187,11 @@ class Interpreter:
         # compare register to register
         elif self.registers[Register[args[1]].value] != self.registers[Register[args[2]].value]:
             self._handle_jump([args[0]])
+        
+        self.pc += 1
 
     def execute(self):
-        while self.pc < len(program):
+        while self.pc < len(self.program):
             self.step()
 
     def step(self):
