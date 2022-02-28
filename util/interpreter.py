@@ -75,7 +75,7 @@ class Interpreter:
             self._handle_out(line[1:])
 
         if line[0] == "JUMP":
-            self._handle_JUMP(line[1:])
+            self._handle_jump(line[1:])
 
 
         
@@ -98,7 +98,7 @@ class Interpreter:
 
         print(self.registers[Register[args[0]].value])
 
-    def _handle_JUMP(self, args):
+    def _handle_jump(self, args):
         # syntax is : JUMP linenum
 
         self.pc = args[0] - 1 # -1 because index starts at 0
