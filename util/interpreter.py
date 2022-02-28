@@ -105,6 +105,10 @@ class Interpreter:
 
     def execute(self):
         while self.pc < len(program):
+            self.step()
+
+    def step(self):
+        if self.pc < len(program):
             line = program[self.pc]
 
             if line[0] == "LABEL":
