@@ -1,3 +1,4 @@
+from cgi import print_form
 import ply.lex as lex
 from prettytable import PrettyTable
 
@@ -26,19 +27,6 @@ def t_error(t):
     print("Illegal character '%s'" % t.value[0])
     t.lexer.skip(1)
 
-lexer = lex.lex()
-with open("fib.mrtl") as f:
-    data = f.read()
-
-program = []
-
-lexer.input(data)
-for token in lexer:
-    if token.lineno <= len(program):
-        program[token.lineno - 1].append(token.value)
-    else:
-        program.append([token.type, token.value])
-
 # ============================================================================= #
 
 from enum import Enum
@@ -57,10 +45,22 @@ class Register(Enum):
 
 class Interpreter:
 
-    def __init__(self, program):
-        self.program = program
+    def __init__(self, filename):
+        self.program = []
         self.registers = [0] * len(Register)
         self.pc = 0
+
+        lexer = lex.lex()
+        with open(filename) as f:
+            data = f.read()
+
+        lexer.input(data)
+        for token in lexer:
+            if token.lineno <= len(self.program):
+                self.program[token.lineno - 1].append(token.value)
+            else:
+                self.program.append([token.type, token.value])
+
 
     def handle_label(self):
         self.pc += 1
@@ -270,8 +270,8 @@ class Interpreter:
             self.step()
 
     def step(self):
-        if self.pc < len(program):
-            line = program[self.pc]
+        if self.pc < len(self.program):
+            line = self.program[self.pc]
 
             if line[0] == "LABEL":
                 self.handle_label()
@@ -279,11 +279,15 @@ class Interpreter:
             elif line[0] == "INSTRUCTION":
                 self.handle_instruction(line[1:])
 
+            return True
+        else:
+            return False
+
     def __repr__(self):
         string = "PC: " + str(self.pc) + "\n"
         
         try:
-            string += "Current instruction: " + " ".join(self.program[self.pc]) + "\n"
+            string += "Instrution to execute: " + " ".join([str(i) for i in self.program[self.pc][1:]]) + "\n"
         except:
             string += "Current instruction: None\n"
 
@@ -297,7 +301,20 @@ class Interpreter:
 
 # ============================================================================= #
 
-a = Interpreter(program)
-print(a)
-a.execute()
-print(a)
+if __name__ == "__main__":
+    print("File: ", end="")
+    file = input()
+
+    a = Interpreter(file)
+    print("Press ENTER to step, enter 'e' to execute")
+    while True:
+        x = input()
+        if(x ==  ""):
+            print(a)
+            if not a.step():
+                break
+            
+        
+        elif x == "e":
+            a.execute()
+            break
