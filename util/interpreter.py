@@ -1,5 +1,3 @@
-from ast import arg
-from operator import le
 import ply.lex as lex
 
 tokens = ("LABEL", "INSTRUCTION", "NUMBER", "REGISTER")
