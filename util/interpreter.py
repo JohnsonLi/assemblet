@@ -283,7 +283,7 @@ class Interpreter:
         string = "PC: " + str(self.pc) + "\n"
         
         try:
-            string += "Current instruction: " + str(self.program[self.pc]) + "\n"
+            string += "Current instruction: " + " ".join(self.program[self.pc]) + "\n"
         except:
             string += "Current instruction: None\n"
 
