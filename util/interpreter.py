@@ -1,4 +1,5 @@
 import ply.lex as lex
+from prettytable import PrettyTable
 
 tokens = ("LABEL", "INSTRUCTION", "NUMBER", "REGISTER")
 
@@ -279,10 +280,24 @@ class Interpreter:
                 self.handle_instruction(line[1:])
 
     def __repr__(self):
-        return f"{self.program}\n registers={self.registers}\n pc={self.pc}"
+        string = "PC: " + str(self.pc) + "\n"
+        
+        try:
+            string += "Current instruction: " + str(self.program[self.pc]) + "\n"
+        except:
+            string += "Current instruction: None\n"
+
+        table = PrettyTable()
+        table.field_names = [i for i in Register.__members__.keys()]
+        table.add_row(self.registers)
+
+        string += table.get_string()
+
+        return string
 
 # ============================================================================= #
 
 a = Interpreter(program)
-print(program)
+print(a)
 a.execute()
+print(a)
