@@ -5,7 +5,7 @@ tokens = ("LABEL", "INSTRUCTION", "NUMBER", "REGISTER")
 
 # Tokens
 t_LABEL = r"\w+:"
-t_INSTRUCTION = r"\s*(IN|OUT|MOVE|ADD|SUB|MULT|DIV|MOD|JUMP|JNE)"
+t_INSTRUCTION = r"\s*(IN|OUT|MOVE|ADD|SUB|MULT|DIV|MOD|JUMP|JE|JNE)"
 t_REGISTER = r"\s*(A|B|C|D|E|F|G|H|X|Y|Z)"
 t_ignore = " \t"
 
@@ -94,7 +94,7 @@ class Interpreter:
             self._handle_mod(line[1:])
         
         # Increment PC unless jump
-        if line[0] != "JUMP":
+        if line[0] != "JUMP" and line[0] != "JE" and line[0] != "JNE":
             self.pc += 1
 
     def _handle_move(self, args):
@@ -159,6 +159,26 @@ class Interpreter:
         else:
             # mod register from register
             self.registers[Register[args[1]].value] %= self.registers[Register[args[0]].value]
+
+    def _handle_je(self, args):
+        # syntax is : JE linenum reg|num reg
+        if isinstance(args[1], int):
+            # compare immediate to register
+            if args[1] == self.registers[Register[args[2]].value]:
+                self._handle_jump([args[0]])
+        # compare register to register
+        elif self.registers[Register[args[1]].value] == self.registers[Register[args[2]].value]:
+            self._handle_jump([args[0]])
+    
+    def _handle_jne(self, args):
+        # syntax is : JNE linenum reg|num reg
+        if isinstance(args[1], int):
+            # compare immediate to register
+            if args[1] != self.registers[Register[args[2]].value]:
+                self._handle_jump([args[0]])
+        # compare register to register
+        elif self.registers[Register[args[1]].value] != self.registers[Register[args[2]].value]:
+            self._handle_jump([args[0]])
 
     def execute(self):
         while self.pc < len(program):
