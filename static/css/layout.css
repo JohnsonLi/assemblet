@@ -1,7 +1,6 @@
 #assembly-builder {
-    width: 300px;
-    height: 750px;
     border: solid 1px black;
+    box-sizing: border-box;
     float: left;
 }
 
@@ -9,16 +8,7 @@
     width: 300px;
     height: 75px;
     border: solid 1px black;
-    box-sizing: border-box;
     pointer-events: auto;
-    text-align: center;
-    line-height: 60px;
-}
-
-.instruction-entry span {
-    display: inline-block;
-    vertical-align: middle;
-    line-height: normal;
 }
 
 #instruction-list {
@@ -29,7 +19,6 @@
 .instruction {
     width: 300px;
     height: 75px;
-    margin-top: 10px;
     background-color: bisque;
     border: solid 1px black;
     box-sizing: border-box;
@@ -41,6 +30,11 @@
     display: inline-block;
     vertical-align: middle;
     line-height: normal;
+    margin: 5px;
+}
+
+.instruction input {
+    margin: 5px;
 }
 
 .instruction-moving {

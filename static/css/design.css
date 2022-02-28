@@ -10,3 +10,9 @@
 .instruction {
     cursor: pointer;
 }
+
+.instruction-parameter {
+    width: 30px;
+    height: 30px;
+    padding: 5px;
+}
