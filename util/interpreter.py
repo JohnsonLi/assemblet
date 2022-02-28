@@ -5,7 +5,7 @@ tokens = ("LABEL", "INSTRUCTION", "NUMBER", "REGISTER")
 
 # Tokens
 t_LABEL = r"\w+:"
-t_INSTRUCTION = r"\s*(IN|OUT|MOVE|ADD|SUB|MULT|DIV|JUMP|JNE)"
+t_INSTRUCTION = r"\s*(IN|OUT|MOVE|ADD|SUB|MULT|DIV|MOD|JUMP|JNE)"
 t_REGISTER = r"\s*(A|B|C|D|E|F|G|H|X|Y|Z)"
 t_ignore = " \t"
 
@@ -84,6 +84,15 @@ class Interpreter:
         if line[0] == "SUB":
             self._handle_sub(line[1:])
 
+        if line[0] == "MULT":
+            self._handle_mult(line[1:])
+        
+        if line[0] == "DIV":
+            self._handle_div(line[1:])
+        
+        if line[0] == "MOD":
+            self._handle_mod(line[1:])
+        
         # Increment PC unless jump
         if line[0] != "JUMP":
             self.pc += 1
@@ -122,6 +131,34 @@ class Interpreter:
         else:
             # sub register from register
             self.registers[Register[args[1]].value] -= self.registers[Register[args[0]].value]
+
+    def _handle_mult(self, args):
+        # syntax is : MULT reg|num reg
+
+        if isinstance(args[0], int):
+            # mult immediate to register
+            self.registers[Register[args[1]].value] *= args[0]
+        else:
+            # mult register to register
+            self.registers[Register[args[1]].value] *= self.registers[Register[args[0]].value]
+    
+    def _handle_div(self, args):
+        # syntax is : DIV reg|num reg
+        if isinstance(args[0], int):
+            # div immediate from register
+            self.registers[Register[args[1]].value] /= args[0]
+        else:
+            # div register from register
+            self.registers[Register[args[1]].value] /= self.registers[Register[args[0]].value]
+
+    def _handle_mod(self, args):
+        # syntax is : MOD reg|num reg
+        if isinstance(args[0], int):
+            # mod immediate from register
+            self.registers[Register[args[1]].value] %= args[0]
+        else:
+            # mod register from register
+            self.registers[Register[args[1]].value] %= self.registers[Register[args[0]].value]
 
     def execute(self):
         while self.pc < len(program):
