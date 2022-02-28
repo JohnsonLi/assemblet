@@ -96,6 +96,18 @@ class Interpreter:
         
         if line[0] == "MOD":
             self._handle_mod(line[1:])
+
+        if line[0] == "GT":
+            self._handle_gt(line[1:])
+        
+        if line[0] == "GTE":
+            self._handle_gte(line[1:])
+        
+        if line[0] == "LT":
+            self._handle_lt(line[1:])
+        
+        if line[0] == "LTE":
+            self._handle_lte(line[1:])
         
         # Increment PC unless jump
         if line[0] != "JUMP" and line[0] != "JE" and line[0] != "JNE":
@@ -187,6 +199,70 @@ class Interpreter:
             self._handle_jump([args[0]])
         
         self.pc += 1
+
+    def _handle_gt(self, args):
+        # syntax is : GT linenum reg|num reg
+        # If reg|num > reg, set register Z to 1 else 0
+        if isinstance(args[0], int):
+            # compare immediate to register
+            if args[0] > self.registers[Register[args[1]].value]:
+                self.registers[Register.Z.value] = 1
+            else:
+                self.registers[Register.Z.value] = 0
+        else:
+            # compare register to register
+            if self.registers[Register[args[0]].value] > self.registers[Register[args[1]].value]:
+                self.registers[Register.Z.value] = 1
+            else:
+                self.registers[Register.Z.value] = 0
+    
+    def _handle_gte(self, args):
+        # syntax is : GTE linenum reg|num reg
+        # If reg|num >= reg, set register Z to 1 else 0
+        if isinstance(args[0], int):
+            # compare immediate to register
+            if args[0] >= self.registers[Register[args[1]].value]:
+                self.registers[Register.Z.value] = 1
+            else:
+                self.registers[Register.Z.value] = 0
+        else:
+            # compare register to register
+            if self.registers[Register[args[0]].value] >= self.registers[Register[args[1]].value]:
+                self.registers[Register.Z.value] = 1
+            else:
+                self.registers[Register.Z.value] = 0
+    
+    def _handle_lt(self, args):
+        # syntax is : LT linenum reg|num reg
+        # If reg|num < reg, set register Z to 1 else 0
+        if isinstance(args[0], int):
+            # compare immediate to register
+            if args[0] < self.registers[Register[args[1]].value]:
+                self.registers[Register.Z.value] = 1
+            else:
+                self.registers[Register.Z.value] = 0
+        else:
+            # compare register to register
+            if self.registers[Register[args[0]].value] < self.registers[Register[args[1]].value]:
+                self.registers[Register.Z.value] = 1
+            else:
+                self.registers[Register.Z.value] = 0
+    
+    def _handle_lte(self, args):
+        # syntax is : LTE linenum reg|num reg
+        # If reg|num <= reg, set register Z to 1 else 0
+        if isinstance(args[0], int):
+            # compare immediate to register
+            if args[0] <= self.registers[Register[args[1]].value]:
+                self.registers[Register.Z.value] = 1
+            else:
+                self.registers[Register.Z.value] = 0
+        else:
+            # compare register to register
+            if self.registers[Register[args[0]].value] <= self.registers[Register[args[1]].value]:
+                self.registers[Register.Z.value] = 1
+            else:
+                self.registers[Register.Z.value] = 0
 
     def execute(self):
         while self.pc < len(self.program):
