@@ -1,0 +1,12 @@
+SETUP:
+    MOVE 0 A
+    MOVE 1 B
+    OUT A
+    OUT B
+MAIN:
+    MOVE B C
+    ADD A C
+    MOVE B A
+    MOVE C B
+    OUT B
+    JUMP 8
