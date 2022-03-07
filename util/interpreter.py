@@ -1,6 +1,6 @@
-from ast import arg
-from operator import le
+from cgi import print_form
 import ply.lex as lex
+from prettytable import PrettyTable
 
 tokens = ("LABEL", "INSTRUCTION", "NUMBER", "REGISTER")
 
@@ -27,19 +27,6 @@ def t_error(t):
     print("Illegal character '%s'" % t.value[0])
     t.lexer.skip(1)
 
-lexer = lex.lex()
-with open("fib.mrtl") as f:
-    data = f.read()
-
-program = []
-
-lexer.input(data)
-for token in lexer:
-    if token.lineno <= len(program):
-        program[token.lineno - 1].append(token.value)
-    else:
-        program.append([token.type, token.value])
-
 # ============================================================================= #
 
 from enum import Enum
@@ -58,10 +45,22 @@ class Register(Enum):
 
 class Interpreter:
 
-    def __init__(self, program):
-        self.program = program
+    def __init__(self, filename):
+        self.program = []
         self.registers = [0] * len(Register)
         self.pc = 0
+
+        lexer = lex.lex()
+        with open(filename) as f:
+            data = f.read()
+
+        lexer.input(data)
+        for token in lexer:
+            if token.lineno <= len(self.program):
+                self.program[token.lineno - 1].append(token.value)
+            else:
+                self.program.append([token.type, token.value])
+
 
     def handle_label(self):
         self.pc += 1
@@ -98,6 +97,18 @@ class Interpreter:
         
         if line[0] == "MOD":
             self._handle_mod(line[1:])
+
+        if line[0] == "GT":
+            self._handle_gt(line[1:])
+        
+        if line[0] == "GTE":
+            self._handle_gte(line[1:])
+        
+        if line[0] == "LT":
+            self._handle_lt(line[1:])
+        
+        if line[0] == "LTE":
+            self._handle_lte(line[1:])
         
         # Increment PC unless jump
         if line[0] != "JUMP" and line[0] != "JE" and line[0] != "JNE":
@@ -190,13 +201,77 @@ class Interpreter:
         
         self.pc += 1
 
+    def _handle_gt(self, args):
+        # syntax is : GT linenum reg|num reg
+        # If reg|num > reg, set register Z to 1 else 0
+        if isinstance(args[0], int):
+            # compare immediate to register
+            if args[0] > self.registers[Register[args[1]].value]:
+                self.registers[Register.Z.value] = 1
+            else:
+                self.registers[Register.Z.value] = 0
+        else:
+            # compare register to register
+            if self.registers[Register[args[0]].value] > self.registers[Register[args[1]].value]:
+                self.registers[Register.Z.value] = 1
+            else:
+                self.registers[Register.Z.value] = 0
+    
+    def _handle_gte(self, args):
+        # syntax is : GTE linenum reg|num reg
+        # If reg|num >= reg, set register Z to 1 else 0
+        if isinstance(args[0], int):
+            # compare immediate to register
+            if args[0] >= self.registers[Register[args[1]].value]:
+                self.registers[Register.Z.value] = 1
+            else:
+                self.registers[Register.Z.value] = 0
+        else:
+            # compare register to register
+            if self.registers[Register[args[0]].value] >= self.registers[Register[args[1]].value]:
+                self.registers[Register.Z.value] = 1
+            else:
+                self.registers[Register.Z.value] = 0
+    
+    def _handle_lt(self, args):
+        # syntax is : LT linenum reg|num reg
+        # If reg|num < reg, set register Z to 1 else 0
+        if isinstance(args[0], int):
+            # compare immediate to register
+            if args[0] < self.registers[Register[args[1]].value]:
+                self.registers[Register.Z.value] = 1
+            else:
+                self.registers[Register.Z.value] = 0
+        else:
+            # compare register to register
+            if self.registers[Register[args[0]].value] < self.registers[Register[args[1]].value]:
+                self.registers[Register.Z.value] = 1
+            else:
+                self.registers[Register.Z.value] = 0
+    
+    def _handle_lte(self, args):
+        # syntax is : LTE linenum reg|num reg
+        # If reg|num <= reg, set register Z to 1 else 0
+        if isinstance(args[0], int):
+            # compare immediate to register
+            if args[0] <= self.registers[Register[args[1]].value]:
+                self.registers[Register.Z.value] = 1
+            else:
+                self.registers[Register.Z.value] = 0
+        else:
+            # compare register to register
+            if self.registers[Register[args[0]].value] <= self.registers[Register[args[1]].value]:
+                self.registers[Register.Z.value] = 1
+            else:
+                self.registers[Register.Z.value] = 0
+
     def execute(self):
         while self.pc < len(self.program):
             self.step()
 
     def step(self):
-        if self.pc < len(program):
-            line = program[self.pc]
+        if self.pc < len(self.program):
+            line = self.program[self.pc]
 
             if line[0] == "LABEL":
                 self.handle_label()
@@ -204,11 +279,42 @@ class Interpreter:
             elif line[0] == "INSTRUCTION":
                 self.handle_instruction(line[1:])
 
+            return True
+        else:
+            return False
+
     def __repr__(self):
-        return f"{self.program}\n registers={self.registers}\n pc={self.pc}"
+        string = "PC: " + str(self.pc) + "\n"
+        
+        try:
+            string += "Instrution to execute: " + " ".join([str(i) for i in self.program[self.pc][1:]]) + "\n"
+        except:
+            string += "Current instruction: None\n"
+
+        table = PrettyTable()
+        table.field_names = [i for i in Register.__members__.keys()]
+        table.add_row(self.registers)
+
+        string += table.get_string()
+
+        return string
 
 # ============================================================================= #
 
-a = Interpreter(program)
-print(program)
-a.execute()
+if __name__ == "__main__":
+    print("File: ", end="")
+    file = input()
+
+    a = Interpreter(file)
+    print("Press ENTER to step, enter 'e' to execute")
+    while True:
+        x = input()
+        if(x ==  ""):
+            print(a)
+            if not a.step():
+                break
+            
+        
+        elif x == "e":
+            a.execute()
+            break
