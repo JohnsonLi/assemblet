@@ -14,7 +14,9 @@
 #instruction-list {
     width: 300px;
     float: left;
-    padding: 50px;
+    margin: 50px;
+    border: 1px solid black;
+    min-height: 75px;
 }
 .instruction {
     width: 300px;
@@ -40,4 +42,37 @@
 .instruction-moving {
     position: relative;
     pointer-events: none;
+}
+
+.instruction-parameter {
+    width: 30px;
+    height: 30px;
+    padding: 5px;
+    background-color: white;
+    display: inline-block;
+    margin: 5px;
+}
+
+.game-value {
+    width: 30px;
+    height: 30px;
+    border: 1px solid black;
+}
+
+#game-values {
+    float: left;
+    width: 50px;
+    border: 1px solid black;
+    min-height: 50px;
+}
+
+#question {
+    float: left;
+    width: 200px;
+}
+
+#game {
+    width: 300px;
+    height: 300px;
+    border: 1px solid black;
 }
