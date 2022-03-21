@@ -1,4 +1,3 @@
-from cgi import print_form
 import ply.lex as lex
 from prettytable import PrettyTable
 
