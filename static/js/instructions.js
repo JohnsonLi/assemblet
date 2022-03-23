@@ -19,7 +19,7 @@ window.addEventListener("mousemove", function(event) {
 
 window.addEventListener("mouseup", function(event) {
     if (window.moving) {
-     window.movingDiv.moving = false;
+        window.movingDiv.moving = false;
         window.moving = false;
         move(window.movingDiv, 0, 0);
         window.movingDiv.classList.remove("instruction-moving");

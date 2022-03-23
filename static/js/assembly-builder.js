@@ -3,6 +3,7 @@ const ASSEMBLY_BUILDER = document.getElementById("assembly-builder");
 const INSTRUCTION_LIST = document.getElementById("instruction-list");
 const GAME_VALUES = document.getElementById("game-values");
 const GAME_REGISTERS = document.getElementById("game-registers");
+const TRASH = document.getElementById("trash");
 
 var init = function() {
     ASSEMBLY_BUILDER.instructions = [];
@@ -15,37 +16,47 @@ var init = function() {
         ASSEMBLY_BUILDER.instructions.push(instructionEntry);
         instructionEntry.addEventListener("mouseup", function(event) {
             if (window.moving && event.currentTarget.children.length == 0 && window.movingDiv.isInstruction) {
-                window.movingDiv.parentElement.removeChild(window.movingDiv);
-                event.currentTarget.appendChild(window.movingDiv);
+                let newInstruction = setupInstruction(window.movingDiv.name);
+                newInstruction.canDelete = true;
+                event.currentTarget.appendChild(newInstruction);
             }
         });
-
+ 
         
     }
 
     // Setup the instruction list where the user will take instructions to put in their script
     instructions_allowed.forEach((instructionName) => {
-        INSTRUCTION_LIST.appendChild(setupInstruction(instructionName));
+        let instruction = setupInstruction(instructionName);
+        instruction.canDelete = false;
+        INSTRUCTION_LIST.appendChild(instruction);
     });
-    INSTRUCTION_LIST.addEventListener("mouseup", function(event) {
-        if (window.moving && window.movingDiv.isInstruction) {
-            window.movingDiv.parentElement.removeChild(window.movingDiv);
-            event.currentTarget.appendChild(window.movingDiv);
-        }
-    });
+
 
 
     values_allowed.forEach((value) => {
         GAME_VALUES.appendChild(setupValue(value));
     });
-    GAME_VALUES.addEventListener("mouseup", function(event) {
-        if (window.moving && window.movingDiv.isValue) {
-            window.movingDiv.parentElement.removeChild(window.movingDiv);
-            event.currentTarget.appendChild(window.movingDiv);
+
+    //Setup trashcan
+    let trashImg = document.createElement("img");
+    trashImg.base = "/static/assets/trash-light.png";
+    trashImg.alt = "/static/assets/trash-dark.png";
+    trashImg.src = trashImg.base;
+    trashImg.addEventListener("mouseover", function(event) {
+        event.currentTarget.src = event.currentTarget.alt;
+    });
+    trashImg.addEventListener("mouseout", function(event) {
+        event.currentTarget.src = event.currentTarget.base;
+    });
+    TRASH.addEventListener("mouseup", function(event) {
+        if (window.moving && window.movingDiv.isInstruction && window.movingDiv.canDelete) {
+            window.movingDiv.remove();
         }
     });
+    TRASH.appendChild(trashImg);
 
-    
+
 }
 
 var compile = function() {
