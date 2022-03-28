@@ -25,6 +25,7 @@ def interpret():
 
     inter = interpreter.Interpreter("code.mrtl")
     inter.execute()
+    print(inter.output)
     return inter.output
 
 app.debug = 1
