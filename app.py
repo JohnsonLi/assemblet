@@ -17,16 +17,17 @@ def puzzle(id):
 
 @app.route('/interpret', methods=["POST"])
 def interpret():
-    # JOHNSONNNN this is where you put ur call u can do this :D
-    #im gonna call this w ajax so the page doesnt need to reload
     code = open("code.mrtl", "w")
     code.write(request.form["code"])
     code.close()
 
     inter = interpreter.Interpreter("code.mrtl")
     inter.execute()
-    print(inter.output)
-    return inter.output
+
+    def format_result(s):
+        res = [str(a[0]) + "," + ",".join([str(b) for b in a[1]]) + "," + ",".join([str(c) for c in a[2]]) for a in s]
+        return "\n".join(res)
+    return format_result(inter.output)
 
 app.debug = 1
 app.run()

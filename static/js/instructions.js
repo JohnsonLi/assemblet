@@ -33,6 +33,8 @@ var setupInstruction = function(instructionName) {
     instruction.name = instructionName;
     instruction.isInstruction = true;
     instruction.baseInstruction = true;
+    instruction.canDelete = false;
+    instruction.home = INSTRUCTION_LIST;
 
     let name = document.createElement("span");
     name.classList.add("unselectable");
@@ -52,11 +54,24 @@ var setupInstruction = function(instructionName) {
         window.movingDiv = event.currentTarget;
     });
 
-    
-
-
-
     return instruction;
+}
+
+var deleteDiv = function(div) {
+    if (div.canDelete) {
+        if (div.isInstruction) {
+            div.parameters.forEach((input) => {
+                if (input.children.length == 1) {
+                    deleteDiv(input.childNodes[0]);
+                }
+            });
+        }
+        div.remove();
+    } else {
+        if (div.home != div.parentNode) {
+            div.home.appendChild(div);
+        }
+    }
 }
 
 var makeParameters = function(div, name) {
@@ -66,22 +81,30 @@ var makeParameters = function(div, name) {
         input.classList.add("instruction-parameter");
         div.appendChild(input);
         div.parameters.push(input);
+        input.registerOnly = INSTRUCTIONS[name][i] == 1 ? true : false;
+        input.addEventListener("mouseup", function(event) {
+            if (window.moving && (window.movingDiv.isRegister)) {
+                let newRegister = window.movingDiv;
+                if (event.currentTarget.children.length != 0) {
+                    let old = event.currentTarget.childNodes[0];
+                    deleteDiv(old);
+                }
+                if (window.movingDiv.baseRegister) {
+                    newRegister = setupRegister(window.movingDiv.value);
+                    newRegister.baseRegister = false;
+                    newRegister.canDelete = true;
+                }
+                event.currentTarget.appendChild(newRegister);
 
-        if (INSTRUCTIONS[name][i] == 1) {
-            input.addEventListener("mouseup", function(event) {
-                if (window.moving && event.currentTarget.children.length == 0 && (window.movingDiv.isRegister)) {
-                    window.movingDiv.parentElement.removeChild(window.movingDiv);
-                    event.currentTarget.appendChild(window.movingDiv);
+            } else if (window.moving && (window.movingDiv.isValue && !event.currentTarget.registerOnly)) {
+                if (event.currentTarget.children.length != 0) {
+                    let old = event.currentTarget.childNodes[0];
+                    deleteDiv(old);
                 }
-            });
-        } else {
-            input.addEventListener("mouseup", function(event) {
-                if (window.moving && event.currentTarget.children.length == 0 && (window.movingDiv.isRegister || window.movingDiv.isValue)) {
-                    window.movingDiv.parentElement.removeChild(window.movingDiv);
-                    event.currentTarget.appendChild(window.movingDiv);
-                }
-            });
-        }
+                event.currentTarget.appendChild(window.movingDiv);
+            }
+        });
+        
     }
 }
 
@@ -91,6 +114,8 @@ var setupValue = function(value) {
     valueDiv.innerHTML = value;
     valueDiv.value = value;
     valueDiv.isValue = true;
+    valueDiv.home = GAME_VALUES;
+    valueDiv.canDelete = false;
 
     valueDiv.addEventListener("mousedown", function(event) {
         event.currentTarget.moving = true;
@@ -110,8 +135,11 @@ var setupRegister = function(register) {
     let registerDiv = document.createElement("div");
     registerDiv.classList.add("game-register", "unselectable");
     registerDiv.innerHTML = register;
+    registerDiv.baseRegister = true;
+    registerDiv.canDelete = false;
     registerDiv.isRegister = true;
     registerDiv.value = register;
+    registerDiv.home = GAME_REGISTERS;
 
     registerDiv.addEventListener("mousedown", function(event) {
         event.currentTarget.moving = true;

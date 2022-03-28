@@ -272,6 +272,7 @@ class Interpreter:
                 self.registers[Register.Z.value] = 0
 
     def execute(self):
+        self.output.append([self.pc, copy.deepcopy(self.registers), self.stdout])
         while self.pc < len(self.program):
             self.step()
 

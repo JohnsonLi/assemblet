@@ -1,9 +1,5 @@
 // build the assembly for the interpreter
-const ASSEMBLY_BUILDER = document.getElementById("assembly-builder");
-const INSTRUCTION_LIST = document.getElementById("instruction-list");
-const GAME_VALUES = document.getElementById("game-values");
-const GAME_REGISTERS = document.getElementById("game-registers");
-const TRASH = document.getElementById("trash");
+
 
 var init = function() {
     ASSEMBLY_BUILDER.instructions = [];
@@ -23,7 +19,7 @@ var init = function() {
                     newInstruction.baseInstruction = false;
                 }
                 event.currentTarget.appendChild(newInstruction);
-            }  else if (window.moving && event.currentTarget.children.length == 1 && window.movingDiv.isInstruction && window.movingDiv.canDelete) {
+            }  else if (window.moving && event.currentTarget.children.length == 1 && window.movingDiv.isInstruction && !window.movingDiv.baseInstruction) {
                 let old = event.currentTarget.childNodes[0];
                 let movingDivParent = window.movingDiv.parentNode;
                 event.currentTarget.appendChild(window.movingDiv);
@@ -40,17 +36,9 @@ var init = function() {
         }
     });
 
-    GAME_REGISTERS.addEventListener("mouseup", function(event) {
-        if (window.moving && window.movingDiv.isRegister) {
-            GAME_REGISTERS.appendChild(window.movingDiv);
-        }
-    });
-
     // Setup the instruction list where the user will take instructions to put in their script
     instructions_allowed.forEach((instructionName) => {
-        let instruction = setupInstruction(instructionName);
-        instruction.canDelete = false;
-        INSTRUCTION_LIST.appendChild(instruction);
+        INSTRUCTION_LIST.appendChild(setupInstruction(instructionName));
     });
 
 
@@ -76,9 +64,7 @@ var init = function() {
         event.currentTarget.src = event.currentTarget.base;
     });
     TRASH.addEventListener("mouseup", function(event) {
-        if (window.moving && window.movingDiv.isInstruction && window.movingDiv.canDelete) {
-            window.movingDiv.remove();
-        }
+        deleteDiv(window.movingDiv);
     });
     TRASH.appendChild(trashImg);
 

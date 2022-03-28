@@ -1,1 +1,3 @@
 MOVE 3 A
+MOVE 4 B
+ADD B A
