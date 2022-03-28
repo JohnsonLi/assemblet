@@ -1,4 +1,6 @@
-from flask import Flask,render_template
+from util import interpreter
+
+from flask import Flask,render_template, request
 app = Flask(__name__)
 
 @app.route('/')
@@ -17,8 +19,13 @@ def puzzle(id):
 def interpret():
     # JOHNSONNNN this is where you put ur call u can do this :D
     #im gonna call this w ajax so the page doesnt need to reload
-    response = "0,0,0,0,0,0,0,0\n0,23,0,0,0,0,0,0\n67,23,0,0,0,0,0,0\n"
-    return response
+    code = open("code.mrtl", "w")
+    code.write(request.form["code"])
+    code.close()
+
+    inter = interpreter.Interpreter("code.mrtl")
+    inter.execute()
+    return inter.output
 
 app.debug = 1
 app.run()

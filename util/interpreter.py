@@ -1,3 +1,4 @@
+import copy
 import ply.lex as lex
 from prettytable import PrettyTable
 
@@ -48,6 +49,9 @@ class Interpreter:
         self.program = []
         self.registers = [0] * len(Register)
         self.pc = 0
+        self.stdout = []
+        self.output = []
+
 
         lexer = lex.lex()
         with open(filename) as f:
@@ -124,7 +128,7 @@ class Interpreter:
          
     def _handle_out(self, args):
         # syntax is : OUT reg
-        print(self.registers[Register[args[0]].value])
+        self.stdout.append(self.registers[Register[args[0]].value])
 
     def _handle_jump(self, args):
         # syntax is : JUMP linenum
@@ -268,19 +272,18 @@ class Interpreter:
         while self.pc < len(self.program):
             self.step()
 
+        return self.output
+
     def step(self):
         if self.pc < len(self.program):
             line = self.program[self.pc]
 
             if line[0] == "LABEL":
                 self.handle_label()
-            
             elif line[0] == "INSTRUCTION":
                 self.handle_instruction(line[1:])
 
-            return True
-        else:
-            return False
+            self.output.append([self.pc, copy.deepcopy(self.registers)])
 
     def __repr__(self):
         string = "PC: " + str(self.pc) + "\n"
@@ -298,22 +301,26 @@ class Interpreter:
 
         return string
 
+    
+
 # ============================================================================= #
 
-if __name__ == "__main__":
-    print("File: ", end="")
-    file = input()
+# if __name__ == "__main__":
+#     print("File: ", end="")
+#     file = input()
 
-    a = Interpreter(file)
-    print("Press ENTER to step, enter 'e' to execute")
-    while True:
-        x = input()
-        if(x ==  ""):
-            print(a)
-            if not a.step():
-                break
+#     a = Interpreter(file)
+#     print("Press ENTER to step, enter 'e' to execute")
+#     while True:
+#         x = input()
+#         if(x ==  ""):
+#             print(a)
+#             if not a.step():
+#                 break
             
         
-        elif x == "e":
-            a.execute()
-            break
+#         elif x == "e":
+#             a.execute()
+#             break
+
+# ============================================================================= #
