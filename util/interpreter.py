@@ -52,6 +52,9 @@ class Interpreter:
         self.stdout = []
         self.output = []
 
+        if filename[-5:] != ".mrtl":
+            print("Invalid file, must end in .mrtl")
+            return
 
         lexer = lex.lex()
         with open(filename) as f:
@@ -283,7 +286,7 @@ class Interpreter:
             elif line[0] == "INSTRUCTION":
                 self.handle_instruction(line[1:])
 
-            self.output.append([self.pc, copy.deepcopy(self.registers)])
+            self.output.append([self.pc, copy.deepcopy(self.registers), self.stdout])
 
     def __repr__(self):
         string = "PC: " + str(self.pc) + "\n"
