@@ -1,0 +1,2 @@
+MOVE 3 A
+ADD 5 A

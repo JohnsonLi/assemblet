@@ -1,7 +1,6 @@
 #assembly-builder {
-    width: 300px;
-    height: 750px;
     border: solid 1px black;
+    box-sizing: border-box;
     float: left;
 }
 
@@ -9,27 +8,19 @@
     width: 300px;
     height: 75px;
     border: solid 1px black;
-    box-sizing: border-box;
     pointer-events: auto;
-    text-align: center;
-    line-height: 60px;
-}
-
-.instruction-entry span {
-    display: inline-block;
-    vertical-align: middle;
-    line-height: normal;
 }
 
 #instruction-list {
     width: 300px;
     float: left;
-    padding: 50px;
+    margin: 50px;
+    border: 1px solid black;
+    min-height: 75px;
 }
 .instruction {
     width: 300px;
     height: 75px;
-    margin-top: 10px;
     background-color: bisque;
     border: solid 1px black;
     box-sizing: border-box;
@@ -41,9 +32,56 @@
     display: inline-block;
     vertical-align: middle;
     line-height: normal;
+    margin: 5px;
+}
+
+.instruction input {
+    margin: 5px;
 }
 
 .instruction-moving {
     position: relative;
     pointer-events: none;
+}
+
+.instruction-parameter {
+    width: 30px;
+    height: 30px;
+    padding: 5px;
+    background-color: white;
+    display: inline-block;
+    margin: 5px;
+}
+
+.game-value {
+    width: 30px;
+    height: 30px;
+    border: 1px solid black;
+}
+
+#game-values {
+    float: left;
+    width: 50px;
+    border: 1px solid black;
+    min-height: 50px;
+}
+
+#question {
+    float: left;
+    width: 200px;
+}
+
+#game {
+    width: 300px;
+    height: 300px;
+    border: 1px solid black;
+}
+
+#trash img {
+    width: 50px;
+    height: 50px;
+}
+
+.hidden {
+    display: none;
 }

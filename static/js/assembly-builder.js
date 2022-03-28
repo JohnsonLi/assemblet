@@ -1,85 +1,91 @@
 // build the assembly for the interpreter
-
+const ASSEMBLY_BUILDER = document.getElementById("assembly-builder");
+const INSTRUCTION_LIST = document.getElementById("instruction-list");
+const GAME_VALUES = document.getElementById("game-values");
+const GAME_REGISTERS = document.getElementById("game-registers");
+const TRASH = document.getElementById("trash");
 
 var init = function() {
-    const NUM_INSTRUCTIONS = 10;
-
+    ASSEMBLY_BUILDER.instructions = [];
     // Setup the assembly builder where the user will create their script
-    const ASSEMBLY_BUILDER = document.getElementById("assembly-builder");
+    
     for (let i = 0; i < NUM_INSTRUCTIONS; i++) {
         let instructionEntry = document.createElement("div");
         instructionEntry.classList.add("instruction-entry");
         ASSEMBLY_BUILDER.appendChild(instructionEntry);
-
-        let name = document.createElement("span");
-        name.classList.add("unselectable");
-        instructionEntry.appendChild(name);
-        instructionEntry.nameSpan = name;
-
-        instructionEntry.onmouseup = function(event) {
-            if (window.moving) {
-                instructionEntry.nameSpan.innerHTML = window.movingInstruction.name;
+        ASSEMBLY_BUILDER.instructions.push(instructionEntry);
+        instructionEntry.addEventListener("mouseup", function(event) {
+            if (window.moving && event.currentTarget.children.length == 0 && window.movingDiv.isInstruction) {
+                let newInstruction = setupInstruction(window.movingDiv.name);
+                newInstruction.canDelete = true;
+                event.currentTarget.appendChild(newInstruction);
             }
-        }
+        });
+ 
+        
     }
-
-    var move = function(div, x, y) {
-        div.x = x;
-        div.y = y;
-        div.style.left = div.x + "px";
-        div.style.top = div.y + "px";
-    }
-
-    var setupInstruction = function(instructionName) {
-        let instruction = document.createElement("div");
-        instruction.classList.add("instruction");
-        instruction.name = instructionName;
-        instruction.x = 0;
-        instruction.y = 0;
-
-        let name = document.createElement("span");
-        name.classList.add("unselectable");
-        name.innerHTML = instructionName;
-        instruction.appendChild(name);
-
-        instruction.onmousedown = function(event) {
-            event.currentTarget.moving = true;
-            event.currentTarget.classList.add("instruction-moving");
-            event.currentTarget.clickX = event.clientX;
-            event.currentTarget.clickY = event.clientY;
-            window.moving = true;
-            window.movingInstruction = event.currentTarget;
-        };
-
-        window.onmousemove = function(event) {
-            if (window.moving) {
-                let newX = event.clientX - window.movingInstruction.clickX;
-                let newY = event.clientY - window.movingInstruction.clickY;
-                move(window.movingInstruction, newX, newY);
-            }
-        }
-
-        window.onmouseup = function(event) {
-            window.movingInstruction.moving = false;
-            window.moving = false;
-            move(window.movingInstruction, 0, 0);
-            window.movingInstruction.classList.remove("instruction-moving");
-            delete window.movingInstruction;
-        }
-
-
-
-        return instruction;
-    }
-
 
     // Setup the instruction list where the user will take instructions to put in their script
-    const INSTRUCTION_LIST = document.getElementById("instruction-list");
-    INSTRUCTIONS.forEach((instructionName) => {
-        INSTRUCTION_LIST.appendChild(setupInstruction(instructionName));
-
+    instructions_allowed.forEach((instructionName) => {
+        let instruction = setupInstruction(instructionName);
+        instruction.canDelete = false;
+        INSTRUCTION_LIST.appendChild(instruction);
     });
 
+
+
+    values_allowed.forEach((value) => {
+        GAME_VALUES.appendChild(setupValue(value));
+    });
+
+    //Setup trashcan
+    let trashImg = document.createElement("img");
+    trashImg.base = "/static/assets/trash-light.png";
+    trashImg.alt = "/static/assets/trash-dark.png";
+    trashImg.src = trashImg.base;
+    trashImg.addEventListener("mouseover", function(event) {
+        event.currentTarget.src = event.currentTarget.alt;
+    });
+    trashImg.addEventListener("mouseout", function(event) {
+        event.currentTarget.src = event.currentTarget.base;
+    });
+    TRASH.addEventListener("mouseup", function(event) {
+        if (window.moving && window.movingDiv.isInstruction && window.movingDiv.canDelete) {
+            window.movingDiv.remove();
+        }
+    });
+    TRASH.appendChild(trashImg);
+
+
 }
+
+var compile = function() {
+    let compiled = [];
+    let failed = false;
+    ASSEMBLY_BUILDER.instructions.forEach((instructionEntry) => {
+        if (instructionEntry.children.length != 0) {
+            let instruction = instructionEntry.children[0];
+            let s = instruction.name;
+            instruction.parameters.forEach((parameter) => {
+                if (parameter.childNodes.length == 0) {
+                    $(instruction).css({"border-color": "red", "border-width": "2px"});
+                    setTimeout(() => {
+                        $(instruction).css({"border-color": "black", "border-width": "1px"})
+                    }, 500);
+                    failed = true;
+                } else {  
+                    s += " " + parameter.childNodes[0].value;
+                }
+            });
+            compiled.push(s);
+        }
+    });
+    return failed ? null : compiled.join('\n').toUpperCase();
+}
+
+
+
+
+
 
 init();
