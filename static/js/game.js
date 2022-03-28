@@ -49,6 +49,7 @@ var initGame = function() {
 
     STEP.addEventListener("click", () => {
         let nextStep = response.shift();
+        let pc = nextStep.shift();
         REGISTER_VALUES.innerHTML = nextStep.join(" || ");
 
         if (response.length == 0) {

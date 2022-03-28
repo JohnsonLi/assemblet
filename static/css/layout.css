@@ -66,6 +66,19 @@
     min-height: 50px;
 }
 
+.game-register {
+    width: 30px;
+    height: 30px;
+    border: 1px solid black;
+}
+
+#game-registers {
+    float: left;
+    width: 50px;
+    border: 1px solid black;
+    min-height: 50px;
+}
+
 #question {
     float: left;
     width: 200px;

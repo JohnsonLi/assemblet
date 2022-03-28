@@ -1,7 +1,7 @@
 //Instruction Name: num params
 const INSTRUCTIONS = {
-    'move': 2, 
-    'add': 2
+    'move': [0,1], 
+    'add': [0,1]
 };
 
 var move = function(div, x, y) {
@@ -32,6 +32,7 @@ var setupInstruction = function(instructionName) {
     instruction.classList.add("instruction", "unselectable");
     instruction.name = instructionName;
     instruction.isInstruction = true;
+    instruction.baseInstruction = true;
 
     let name = document.createElement("span");
     name.classList.add("unselectable");
@@ -60,18 +61,27 @@ var setupInstruction = function(instructionName) {
 
 var makeParameters = function(div, name) {
     div.parameters = [];
-    for (let i = 0; i < INSTRUCTIONS[name]; i++) {
+    for (let i = 0; i < INSTRUCTIONS[name].length; i++) {
         let input = document.createElement("div");
         input.classList.add("instruction-parameter");
         div.appendChild(input);
         div.parameters.push(input);
 
-        input.addEventListener("mouseup", function(event) {
-            if (window.moving && event.currentTarget.children.length == 0 && window.movingDiv.isValue) {
-                window.movingDiv.parentElement.removeChild(window.movingDiv);
-                event.currentTarget.appendChild(window.movingDiv);
-            }
-        });
+        if (INSTRUCTIONS[name][i] == 1) {
+            input.addEventListener("mouseup", function(event) {
+                if (window.moving && event.currentTarget.children.length == 0 && (window.movingDiv.isRegister)) {
+                    window.movingDiv.parentElement.removeChild(window.movingDiv);
+                    event.currentTarget.appendChild(window.movingDiv);
+                }
+            });
+        } else {
+            input.addEventListener("mouseup", function(event) {
+                if (window.moving && event.currentTarget.children.length == 0 && (window.movingDiv.isRegister || window.movingDiv.isValue)) {
+                    window.movingDiv.parentElement.removeChild(window.movingDiv);
+                    event.currentTarget.appendChild(window.movingDiv);
+                }
+            });
+        }
     }
 }
 
@@ -94,4 +104,24 @@ var setupValue = function(value) {
     });
 
     return valueDiv;
+}
+
+var setupRegister = function(register) {
+    let registerDiv = document.createElement("div");
+    registerDiv.classList.add("game-register", "unselectable");
+    registerDiv.innerHTML = register;
+    registerDiv.isRegister = true;
+
+    registerDiv.addEventListener("mousedown", function(event) {
+        event.currentTarget.moving = true;
+        event.currentTarget.classList.add("instruction-moving");
+        event.currentTarget.clickX = event.clientX;
+        event.currentTarget.clickY = event.clientY;
+        window.moving = true;
+        window.movingDiv = event.currentTarget;
+
+        event.stopPropagation();
+    });
+
+    return registerDiv;
 }
