@@ -2,6 +2,7 @@
     border: solid 1px black;
     box-sizing: border-box;
     float: left;
+    min-height: 100px;
 }
 
 .instruction-entry {
@@ -11,6 +12,9 @@
     pointer-events: auto;
 }
 
+.ghost-instruction {
+    opacity: 0.5;
+}
 #instruction-list {
     width: 300px;
     float: left;
@@ -88,6 +92,12 @@
     width: 300px;
     height: 300px;
     border: 1px solid black;
+}
+
+#trash {
+    position: absolute;
+    left: 500px;
+    top: 500px;
 }
 
 #trash img {

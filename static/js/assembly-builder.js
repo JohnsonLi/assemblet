@@ -1,56 +1,25 @@
 // build the assembly for the interpreter
 
-
 var init = function() {
-    ASSEMBLY_BUILDER.instructions = [];
-    // Setup the assembly builder where the user will create their script
-    
-    for (let i = 0; i < NUM_INSTRUCTIONS; i++) {
-        let instructionEntry = document.createElement("div");
-        instructionEntry.classList.add("instruction-entry");
-        ASSEMBLY_BUILDER.appendChild(instructionEntry);
-        ASSEMBLY_BUILDER.instructions.push(instructionEntry);
-        instructionEntry.addEventListener("mouseup", function(event) {
-            if (window.moving && event.currentTarget.children.length == 0 && window.movingDiv.isInstruction) {
-                let newInstruction = window.movingDiv;
-                if (window.movingDiv.baseInstruction) {
-                    newInstruction = setupInstruction(window.movingDiv.name);
-                    newInstruction.canDelete = true;
-                    newInstruction.baseInstruction = false;
-                }
-                event.currentTarget.appendChild(newInstruction);
-            }  else if (window.moving && event.currentTarget.children.length == 1 && window.movingDiv.isInstruction && !window.movingDiv.baseInstruction) {
-                let old = event.currentTarget.childNodes[0];
-                let movingDivParent = window.movingDiv.parentNode;
-                event.currentTarget.appendChild(window.movingDiv);
-                movingDivParent.appendChild(old);
-            }
-        });
- 
-        
-    }
-
-    GAME_VALUES.addEventListener("mouseup", function(event) {
-        if (window.moving && window.movingDiv.isValue) {
-            GAME_VALUES.appendChild(window.movingDiv);
-        }
-    });
 
     // Setup the instruction list where the user will take instructions to put in their script
     instructions_allowed.forEach((instructionName) => {
         INSTRUCTION_LIST.appendChild(setupInstruction(instructionName));
     });
 
-
-
-    values_allowed.forEach((value) => {
-        GAME_VALUES.appendChild(setupValue(value));
+    Sortable.create(ASSEMBLY_BUILDER, {
+        group: {
+            name: 'assembly_builder',
+            put: ['instructions']
+        },
+        ghostClass: 'ghost-instruction'
     });
-
-    registers_allowed.forEach((value) => {
-        GAME_REGISTERS.appendChild(setupRegister(value));
+    Sortable.create(INSTRUCTION_LIST, {
+        group: {
+            name: 'instructions',
+            pull: 'clone'
+        }
     });
-
 
     //Setup trashcan
     let trashImg = document.createElement("img");
@@ -63,11 +32,18 @@ var init = function() {
     trashImg.addEventListener("mouseout", function(event) {
         event.currentTarget.src = event.currentTarget.base;
     });
-    TRASH.addEventListener("mouseup", function(event) {
-        deleteDiv(window.movingDiv);
-    });
     TRASH.appendChild(trashImg);
 
+    Sortable.create(TRASH, {
+        group: {
+            put: ['assembly_builder']
+        },
+        onAdd: function (evt) {
+            var el = evt.item;
+            el.parentNode.removeChild(el);
+        },
+        ghostClass: "hidden"
+    });
 
 }
 
