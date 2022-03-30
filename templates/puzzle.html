@@ -12,19 +12,19 @@
     <body>
 
         <div id="assembly-builder"></div>
-        <div id="instruction-list"></div>
-        <div id="game-values"></div>
-        <div id="game-registers"></div>
+        <div id="instruction-list">{{data['instructions_allowed']|join(",")}}</div>
+        <div id="game-values">{{data['values_allowed']|join(",")}}</div>
+        <div id="game-registers">{{data['registers_allowed']|join(",")}}</div>
         <div id="trash-container">
             <div id="trash"></div>
         </div>
-        <div id="question"></div>
+        <div id="questionDiv">Problem: <span id="question">{{data['question']}}</span></div>
         <button id="submit">Submit (Execute)</button>
         <button id="step" class="hidden">Step </button>
         TEMPORARY:
         <div id="register-values" style="display:inline-block"></div>
         <br>
-        <canvas id="game"></canvas>
+        <!--<canvas id="game"></canvas>-->
         <a href="/"><button id="quit">Quit</button></a>
     </body>
 

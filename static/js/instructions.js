@@ -1,7 +1,8 @@
 //Instruction Name: num params
 const INSTRUCTIONS = {
     'move': [0,1], 
-    'add': [0,1]
+    'add': [0,1],
+    'sub': [0,1]
 };
 
 
@@ -36,10 +37,26 @@ var makeParameters = function(div, name, base) {
             group: {
                 name: "input",
                 put: function(to, from, el) {
-                    return (to.el.parentNode.parentNode != INSTRUCTION_LIST) && (el.isRegister || (!input.registerOnly && el.isValue)) && to.el.children.length == 0;
+                    if (to.el.children.length != 0) {
+                        let current = to.el.childNodes[0];
+                        current.classList.add("hidden");
+                        input.hiddenElement = current;
+                    }
+                    return (to.el.parentNode.parentNode != INSTRUCTION_LIST) && (el.isRegister || (!input.registerOnly && el.isValue));
                 },
                 pull: ["values", "input", "trash"],
             },
+            onAdd: function(evt) {
+                if (input.hiddenElement) {
+                    input.hiddenElement.classList.remove("hidden");
+                    if (input.hiddenElement.isValue) {
+                        GAME_VALUES.appendChild(input.hiddenElement);
+                    } else {
+                        input.hiddenElement.remove();
+                    }
+                    input.hiddenElement = undefined;
+                }
+            }
         });     
     }
 }
@@ -60,6 +77,7 @@ var setupRegister = function(register) {
     registerDiv.classList.add("game-register", "unselectable");
     registerDiv.innerHTML = register;
     registerDiv.isRegister = true;
+    registerDiv.value = register;
 
     return registerDiv;
 }

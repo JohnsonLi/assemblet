@@ -1,9 +1,7 @@
-//TODO: get question from backend
-var question = "Get 3 into register 4.";
-var instructions_allowed = ["move", "add"];
-var values_allowed = [3,4];
-var registers_allowed = ["a", "b", "c", "d"];
-var NUM_INSTRUCTIONS = 10;
+var question = document.getElementById("question").innerHTML;
+var values_allowed = GAME_VALUES.innerHTML.split(",");
+var instructions_allowed = INSTRUCTION_LIST.innerHTML.split(",");
+var registers_allowed = GAME_REGISTERS.innerHTML.split(",");
 //=============================
 
 
@@ -44,8 +42,7 @@ var initGame = function() {
                 }
                 response = parseResponse(data);
                 STEP.classList.remove("hidden");
-                let nextStep = response.shift();
-                REGISTER_VALUES.innerHTML = nextStep.join(" || ");
+                STEP.click();
             }
         );
     });
@@ -54,9 +51,11 @@ var initGame = function() {
         let nextStep = response.shift();
         let pc = nextStep.shift();
         REGISTER_VALUES.innerHTML = nextStep.join(" || ");
-
         if (response.length == 0) {
             STEP.classList.add("hidden");
+            highlightInstruction(-1);
+        } else {
+            highlightInstruction(pc);
         }
     });
 }

@@ -83,7 +83,7 @@
     min-height: 50px;
 }
 
-#question {
+#questionDiv {
     float: left;
     width: 200px;
 }
@@ -112,4 +112,8 @@
 
 .hidden {
     display: none;
+}
+
+.highlight {
+    background-color: azure;
 }
