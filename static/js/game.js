@@ -31,6 +31,8 @@ var initGame = function() {
 
         //TODO: post to backend
         let s = compile();
+        if (s == null) return;
+
         $.post("/interpret",
             {
                 code: s
