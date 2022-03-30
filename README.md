@@ -8,8 +8,8 @@ How to install:
 - open browser, go to localhost:5000
 
 
-#basic structure of program (as of now)
+# basic structure of program (as of now)
 
-flask (python) is used to run the server
-html/css/js files have the actual pages
-database will be run in the background separately, but keep in repository for now
+-flask (python) is used to run the server
+-html/css/js files have the actual pages
+-database will be run in the background separately, but keep in repository for now
