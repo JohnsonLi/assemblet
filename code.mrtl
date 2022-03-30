@@ -1,1 +1,3 @@
-MOVE 4 A
+MOVE 4 C
+ADD 7 D
+SUB D C
