@@ -31,7 +31,7 @@ var initGame = function() {
 
         //TODO: post to backend
         let s = compile();
-        if (s == null) return;
+        if (s==null) return;
 
         $.post("/interpret",
             {
@@ -40,6 +40,7 @@ var initGame = function() {
             function(data, status) {
                 if (status != "success") {
                     console.log("bad api call");
+                    return;
                 }
                 response = parseResponse(data);
                 STEP.classList.remove("hidden");
