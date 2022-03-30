@@ -11,8 +11,13 @@ def landing():
 def puzzle(id):
     #TODO: load puzzle from db given ID
     #data = puzzleinfo(id)
-
-    data = None
+    data = {
+        "question": "Get 3 into register 4",
+        "instructions_allowed": ["move", "add", "sub"],
+        "values_allowed":  [3,4,7,2],
+        "registers_allowed": ["a", "b", "c", "d","e"],
+    }
+    
     return render_template("puzzle.html", data=data)
 
 @app.route('/interpret', methods=["POST"])

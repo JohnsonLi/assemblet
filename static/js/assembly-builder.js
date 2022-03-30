@@ -3,14 +3,17 @@
 var init = function() {
 
     // Setup the instruction list where the user will take instructions to put in their script
+    INSTRUCTION_LIST.innerHTML = "";
     instructions_allowed.forEach((instructionName) => {
         INSTRUCTION_LIST.appendChild(setupInstruction(instructionName));
     });
 
+    GAME_REGISTERS.innerHTML = "";
     registers_allowed.forEach((registerName) => {
         GAME_REGISTERS.appendChild(setupRegister(registerName));
     });
 
+    GAME_VALUES.innerHTML = "";
     values_allowed.forEach((value) => {
         GAME_VALUES.appendChild(setupValue(value));
     })
@@ -106,6 +109,7 @@ var highlightInstruction = function(pc) {
     ASSEMBLY_BUILDER.childNodes.forEach((node) => {
         node.classList.remove("highlight");
     });
+    if (pc == -1) return;
     ASSEMBLY_BUILDER.childNodes[pc].classList.add("highlight");
 }
 
