@@ -10,6 +10,8 @@ How to install:
 # how to pull / push into git (faster way of committing changes)
 - open terminal
 - `cd PATH_TO_ASSEMBLET` (maybe this is something like `cd C:\Users\jiayang\assemblet`
+- one time only: `git config --global user.name "jiayang"`, then `git config --global user.email "jc9555@nyu.edu"`
+
 - to pull (get new changes) `git pull`
 - to push (put your new changes onto the internet) `git add .` and then `git commit -m "just a message"`, finally, `git push`
 
