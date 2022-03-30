@@ -21,7 +21,7 @@ How to install:
 - go to mysql -> config 
 - click my.ini
 - go to datadir=
-- put the path of the database in there
+- put the path of the database in there, i have `datadir="C:/Users/jiaya/assemblet/db"`
 
 # basic structure of program (as of now)
 
