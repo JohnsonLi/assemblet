@@ -1,56 +1,64 @@
 // build the assembly for the interpreter
 
-
 var init = function() {
-    ASSEMBLY_BUILDER.instructions = [];
-    // Setup the assembly builder where the user will create their script
-    
-    for (let i = 0; i < NUM_INSTRUCTIONS; i++) {
-        let instructionEntry = document.createElement("div");
-        instructionEntry.classList.add("instruction-entry");
-        ASSEMBLY_BUILDER.appendChild(instructionEntry);
-        ASSEMBLY_BUILDER.instructions.push(instructionEntry);
-        instructionEntry.addEventListener("mouseup", function(event) {
-            if (window.moving && event.currentTarget.children.length == 0 && window.movingDiv.isInstruction) {
-                let newInstruction = window.movingDiv;
-                if (window.movingDiv.baseInstruction) {
-                    newInstruction = setupInstruction(window.movingDiv.name);
-                    newInstruction.canDelete = true;
-                    newInstruction.baseInstruction = false;
-                }
-                event.currentTarget.appendChild(newInstruction);
-            }  else if (window.moving && event.currentTarget.children.length == 1 && window.movingDiv.isInstruction && !window.movingDiv.baseInstruction) {
-                let old = event.currentTarget.childNodes[0];
-                let movingDivParent = window.movingDiv.parentNode;
-                event.currentTarget.appendChild(window.movingDiv);
-                movingDivParent.appendChild(old);
-            }
-        });
- 
-        
-    }
-
-    GAME_VALUES.addEventListener("mouseup", function(event) {
-        if (window.moving && window.movingDiv.isValue) {
-            GAME_VALUES.appendChild(window.movingDiv);
-        }
-    });
 
     // Setup the instruction list where the user will take instructions to put in their script
     instructions_allowed.forEach((instructionName) => {
         INSTRUCTION_LIST.appendChild(setupInstruction(instructionName));
     });
 
-
+    registers_allowed.forEach((registerName) => {
+        GAME_REGISTERS.appendChild(setupRegister(registerName));
+    });
 
     values_allowed.forEach((value) => {
         GAME_VALUES.appendChild(setupValue(value));
+    })
+
+    Sortable.create(ASSEMBLY_BUILDER, {
+        group: {
+            name: 'assembly_builder',
+            put: ['instructions']
+        },
+        ghostClass: '.ghost-instruction',
+        animation: 150
+    });
+    Sortable.create(INSTRUCTION_LIST, {
+        sort: false,
+        group: {
+            name: 'instructions',
+            pull: 'clone'
+        },
+        onClone: function(evt) {
+            evt.clone.name = evt.item.name;
+            evt.clone.isInstruction = true;
+            while (evt.clone.children.length > 1) {
+                evt.clone.removeChild(evt.clone.lastChild);
+            }
+            makeParameters(evt.clone, evt.item.name);
+        },
     });
 
-    registers_allowed.forEach((value) => {
-        GAME_REGISTERS.appendChild(setupRegister(value));
+    Sortable.create(GAME_VALUES, {
+        group: {
+            name: 'values',
+            put: function(to, from, el) {
+                return el.isValue;
+            }
+        },
+        
     });
 
+    Sortable.create(GAME_REGISTERS, {
+        group: {
+            name: 'registers',
+            pull: 'clone'
+        },
+        onClone: function(evt) {
+            evt.clone.innerHTML = evt.item.innerHTML;
+            evt.clone.isRegister = evt.item.isRegister;
+        }
+    });
 
     //Setup trashcan
     let trashImg = document.createElement("img");
@@ -63,34 +71,53 @@ var init = function() {
     trashImg.addEventListener("mouseout", function(event) {
         event.currentTarget.src = event.currentTarget.base;
     });
-    TRASH.addEventListener("mouseup", function(event) {
-        deleteDiv(window.movingDiv);
-    });
     TRASH.appendChild(trashImg);
 
+    Sortable.create(TRASH, {
+        group: {
+            name: "trash",
+            put: true
+        },
+        onAdd: function (evt) {
+            var el = evt.item;
+            if (el.isValue) {
+                GAME_VALUES.appendChild(el);
+            } else if (el.isInstruction) {
+                el.childNodes.forEach((input) => {
+                    if (input.children.length == 1 && input.childNodes[0].isValue) {
+                        GAME_VALUES.appendChild(input.childNodes[0]);
+                    }
+                el.remove();
+                });
+
+            } else {
+                el.remove();
+            }
+        },
+        ghostClass: "hidden"
+    });
+
+    
 
 }
 
 var compile = function() {
     let compiled = [];
     let failed = false;
-    ASSEMBLY_BUILDER.instructions.forEach((instructionEntry) => {
-        if (instructionEntry.children.length != 0) {
-            let instruction = instructionEntry.children[0];
-            let s = instruction.name;
-            instruction.parameters.forEach((parameter) => {
-                if (parameter.childNodes.length == 0) {
-                    $(instruction).css({"border-color": "red", "border-width": "2px"});
-                    setTimeout(() => {
-                        $(instruction).css({"border-color": "black", "border-width": "1px"})
-                    }, 500);
-                    failed = true;
-                } else {  
-                    s += " " + parameter.childNodes[0].value;
-                }
-            });
-            compiled.push(s);
-        }
+    ASSEMBLY_BUILDER.childNodes.forEach((instruction) => {
+        let s = instruction.name;
+        instruction.parameters.forEach((parameter) => {
+            if (parameter.childNodes.length == 0) {
+                $(instruction).css({"border-color": "red", "border-width": "2px"});
+                setTimeout(() => {
+                    $(instruction).css({"border-color": "black", "border-width": "1px"})
+                }, 500);
+                failed = true;
+            } else {  
+                s += " " + parameter.childNodes[0].value;
+            }
+        });
+        compiled.push(s);
     });
     return failed ? null : compiled.join('\n').toUpperCase();
 }

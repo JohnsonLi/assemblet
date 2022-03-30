@@ -6,6 +6,7 @@
         <link rel="stylesheet" href="/static/css/layout.css">
         <link rel="stylesheet" href="/static/css/design.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
         
     </head>
     <body>
@@ -14,7 +15,9 @@
         <div id="instruction-list"></div>
         <div id="game-values"></div>
         <div id="game-registers"></div>
-        <div id="trash"></div>
+        <div id="trash-container">
+            <div id="trash"></div>
+        </div>
         <div id="question"></div>
         <button id="submit">Submit (Execute)</button>
         <button id="step" class="hidden">Step </button>

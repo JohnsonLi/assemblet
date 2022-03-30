@@ -2,6 +2,10 @@
     border: solid 1px black;
     box-sizing: border-box;
     float: left;
+    min-height: 100px;
+    min-width: 300px;
+    list-style: none;
+    padding:0px;
 }
 
 .instruction-entry {
@@ -11,12 +15,17 @@
     pointer-events: auto;
 }
 
+.ghost-instruction {
+    opacity: 0.5;
+}
 #instruction-list {
     width: 300px;
     float: left;
     margin: 50px;
     border: 1px solid black;
     min-height: 75px;
+    list-style: none;
+    padding:0px;
 }
 .instruction {
     width: 300px;
@@ -37,11 +46,6 @@
 
 .instruction input {
     margin: 5px;
-}
-
-.instruction-moving {
-    position: relative;
-    pointer-events: none;
 }
 
 .instruction-parameter {
@@ -88,6 +92,17 @@
     width: 300px;
     height: 300px;
     border: 1px solid black;
+}
+
+#trash-container {
+    position: relative;
+    float: left;
+    width: 50px;
+    height: 50px;
+}
+
+#trash {
+    position: absolute;
 }
 
 #trash img {
