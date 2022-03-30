@@ -60,6 +60,7 @@ var setupRegister = function(register) {
     registerDiv.classList.add("game-register", "unselectable");
     registerDiv.innerHTML = register;
     registerDiv.isRegister = true;
+    registerDiv.value = register;
 
     return registerDiv;
 }

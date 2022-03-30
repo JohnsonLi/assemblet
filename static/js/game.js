@@ -54,7 +54,7 @@ var initGame = function() {
         let nextStep = response.shift();
         let pc = nextStep.shift();
         REGISTER_VALUES.innerHTML = nextStep.join(" || ");
-
+        highlightInstruction(pc);
         if (response.length == 0) {
             STEP.classList.add("hidden");
         }

@@ -57,6 +57,7 @@ var init = function() {
         onClone: function(evt) {
             evt.clone.innerHTML = evt.item.innerHTML;
             evt.clone.isRegister = evt.item.isRegister;
+            evt.clone.value = evt.item.value;
         }
     });
 
@@ -99,6 +100,13 @@ var init = function() {
 
     
 
+}
+
+var highlightInstruction = function(pc) {
+    ASSEMBLY_BUILDER.childNodes.forEach((node) => {
+        node.classList.remove("highlight");
+    });
+    ASSEMBLY_BUILDER.childNodes[pc].classList.add("highlight");
 }
 
 var compile = function() {
