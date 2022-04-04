@@ -9,7 +9,6 @@ var response;
 const STEP = document.getElementById("step");
 const SUBMIT = document.getElementById("submit");
 
-//TEMPORARY
 const REGISTER_VALUES = document.getElementById("register-values");
 
 var parseResponse = function(s) {
@@ -47,10 +46,28 @@ var initGame = function() {
         );
     });
 
+    registers_allowed.forEach((name) => {
+        let registerDiv = document.createElement("div");
+        registerDiv.classList.add("register-value");
+        registerDiv.innerHTML = "0";
+        registerDiv.registerName = name;
+        REGISTER_VALUES.appendChild(registerDiv);
+    });
+
     STEP.addEventListener("click", () => {
         let nextStep = response.shift();
         let pc = nextStep.shift();
-        REGISTER_VALUES.innerHTML = nextStep.join(" || ");
+        
+        values = {};
+        s = ['a','b','c','d','e','f','g','x','y','z'];
+        s.forEach((registerName, i) => {
+            values[registerName] = nextStep[i];
+        });
+        REGISTER_VALUES.childNodes.forEach((register) => {
+            register.innerHTML = values[register.registerName];
+        });
+
+
         if (response.length == 0) {
             STEP.classList.add("hidden");
             highlightInstruction(-1);
