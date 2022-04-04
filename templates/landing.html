@@ -1,20 +1,11 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <!-- TODO: templateify the base-->
-
+{% extends "base.html" %}
+    {% block head %}
         <link rel="stylesheet" href="static/css/layout.css">
         <link rel="stylesheet" href="static/css/design.css">
         
-    </head>
-    <body>
-
+    {% endblock %}
+    {% block content %}
         Homepage
         <a href="puzzle/1"><button>To the game!</button></a>
 
-    </body>
-
-
-    
-
-</html>
+    {% endblock %}
