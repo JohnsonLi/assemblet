@@ -22,7 +22,22 @@ def puzzle(id):
 
 @app.route('/statistics')
 def statistics():
-    return render_template("statistics.html")
+    #id, solved, time taken, attempts, tutorial watched
+    temp = [[1, True, 176, 2, True], [2, True, 211, 4, False], [3, False, 900, 6, True], [4, True, 4, 1, False], [5, False, 0, 0, 0], [6, True, 312, 3, True]]
+    stats = {}
+    stats['puzzles'] = []
+    total = 0
+    solved = 0
+    for a in temp:
+        d = {}
+        [d['id'], d['solved'],d['time_taken'],d['attempts'],d['watched']]  = a 
+        total += 1
+        solved += 1 if d['solved'] else 0
+        stats['puzzles'].append(d)
+
+    stats['total_puzzles'] = total 
+    stats['solved_puzzles'] = solved
+    return render_template("statistics.html", stats=stats)
 
 
 

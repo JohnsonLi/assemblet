@@ -1,16 +1,27 @@
 {% extends "base.html" %} 
 
 {% block content %}
-    Username: ildlanor
-    Completion Status: 40% (4 out of 10 puzzles)
+    Username: ildlanor <br>
+    Completion Status: {{(stats['solved_puzzles'] / stats['total_puzzles'] * 100)|round(1)}}% ({{stats['solved_puzzles']}} out of {{stats['total_puzzles']}} puzzles) <br>
 
-    Puzzles:
-    Puzzle 1: ok, time spent: 176s, attempts: 2, tutorial watched
-    Puzzle 2: ok, time spent: 211s, attempts: 4, tutorial not watched
-    Puzzle 3: not solved, attempts: 6, tutorial watched
-    Puzzle 4: ok, time spent: 4s, attempts 1, tutorial not watched
-    Puzzle 5: not solved, attempts: 0, tutorial not watched
-    Puzzle 6: ok, time spent: 312s, attempts: 3, tutorial watched
+    Puzzles: <br>
+    {% for puzzle in stats['puzzles'] %}
+        <div class="stats-entry">
+            <span class="stats-id"> {{puzzle['id']}}</span> <br>
+            <span class="stats-time-spent"> {{puzzle['time_taken']}} </span>
+            <span class="stats-attempts"> {{puzzle['attempts']}} </span>
+            {% if puzzle['solved'] %} 
+            solved
+            {% else %} 
+            not solved 
+            {% endif %} 
+            {% if puzzle['watched'] %} 
+            watched
+            {% else %} 
+            not watched
+            {% endif %} 
+        </div>
+    {% endfor %}
 
 
 

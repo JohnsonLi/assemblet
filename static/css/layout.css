@@ -117,3 +117,11 @@
 .highlight {
     background-color: azure;
 }
+
+.stats-entry {
+    width: 75px;
+    height: 75px;
+    border: 1px solid black;
+    margin: 5px;
+    display: inline-block;
+}
