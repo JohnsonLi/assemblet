@@ -20,6 +20,12 @@ def puzzle(id):
     
     return render_template("puzzle.html", data=data)
 
+@app.route('/statistics')
+def statistics():
+    return render_template("statistics.html")
+
+
+
 @app.route('/interpret', methods=["POST"])
 def interpret():
     code = open("code.mrtl", "w")
