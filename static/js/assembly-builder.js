@@ -23,7 +23,7 @@ var init = function() {
             name: 'assembly_builder',
             put: ['instructions']
         },
-        ghostClass: '.ghost-instruction',
+        ghostClass: 'ghost-instruction',
         animation: 150
     });
     Sortable.create(INSTRUCTION_LIST, {

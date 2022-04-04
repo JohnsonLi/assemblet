@@ -15,8 +15,13 @@
     pointer-events: auto;
 }
 
+
 .ghost-instruction {
-    opacity: 0.5;
+    opacity: 0;
+}
+
+.sortable-ghost {
+    opacity: 1;
 }
 #instruction-list {
     width: 300px;
