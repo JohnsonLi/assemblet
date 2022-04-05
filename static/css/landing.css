@@ -58,3 +58,13 @@ ul li{
       transform: translateY(0);
     }
 }
+
+#login-modal {
+    width: 35%;
+    transform: translateY(50%) scaleX(1) !important;
+}
+
+#signup-modal {
+    width: 35%;
+    transform: translateY(40%) scaleX(1) !important;
+}

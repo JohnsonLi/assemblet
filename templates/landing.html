@@ -6,17 +6,77 @@
         <link rel="stylesheet" href="/static/css/layout.css">
         <link rel="stylesheet" href="/static/css/design.css">
         <link rel="stylesheet" href="static/css/landing.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <title> Assemble't </title>
     </head>
     <body>
         <div id="landing">
             <h1> Assemble't</h1>
             <ul>
-                <li id="login"><button class="waves-effect waves-light btn"> Login </button></li>
-                <li id="signup"><button class="waves-effect waves-light btn-large"> Sign Up </button></li>
+                <li id="login"><button class="waves-effect waves-light btn modal-trigger" data-target="login-modal"> Login </button></li>
+                <li id="signup"><button class="waves-effect waves-light btn-large modal-trigger" data-target="signup-modal"> Sign Up </button></li>
             </ul>
         </div>
 
+        <div id="signup-modal" class="modal">
+            <div class="modal-content">
+                <div class="row">
+                    <form class="col s12">
+                        <div class="row">
+                            <div class="input-field">
+                                <input id="username" type="text" class="validate">
+                                <label for="username">Username</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="input-field">
+                                <input id="password" type="password" class="validate">
+                                <label for="password">Password</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="input-field">
+                                <input id="confirm-password" type="password" class="validate">
+                                <label for="confirm-password">Confirm Password</label>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                        
+            </div>
+            <div class="modal-footer">
+                <button class="modal-close waves-effect waves-green btn-flat">Sign Up</button>
+                <button class="modal-close waves-effect waves-green btn-flat">Cancel</button>
+            </div>
+          </div>
+
+          <div id="login-modal" class="modal">
+            <div class="modal-content">
+                <div class="row">
+                    <form class="col s12">
+                        <div class="row">
+                            <div class="input-field">
+                                <input id="username" type="text" class="validate">
+                                <label for="username">Username</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="input-field">
+                                <input id="password" type="password" class="validate">
+                                <label for="password">Password</label>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                        
+            </div>
+            <div class="modal-footer">
+                <button class="modal-close waves-effect waves-green btn-flat">Log In</button>
+                <button class="modal-close waves-effect waves-green btn-flat">Cancel</button>
+            </div>
+          </div>
+        
         <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+        <script src="/static/js/css.js"></script>
     </body> 
 </html>
