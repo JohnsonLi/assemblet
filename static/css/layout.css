@@ -124,3 +124,7 @@
 .content {
     padding: 20px 20px;
 }
+
+.disabled {
+    pointer-events: none;
+}
