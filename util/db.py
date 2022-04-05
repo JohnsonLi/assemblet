@@ -1,20 +1,25 @@
-import pymysqp.cursors
+import pymysql.cursors
 from datetime import datetime
 import re
 
-conn = pymysql.connect(host = '120.0.0.1',
+conn = pymysql.connect(host = '127.0.0.1',
                        port = 3306,
                        user = 'root',
-                       password = 'root',
-                       db = 'demo',
+                       password = '',
+                       db = 'assemblet',
                        charset = 'utf8mb4',
                        cursorclass = pymysql.cursors.DictCursor)
 
-def add_user(id, username, password):
+def add_user(username, password):
     cursor = conn.cursor()
-    query = 'INSERT INTO User(id, username, password) values (%s,%s,%s)'
-    cursor.execute(query, id, username, password)
-    conn.commit()
+    try:
+        query = 'INSERT INTO User(username, password) values (%s,%s)'
+        cursor.execute(query, (username, password))
+        conn.commit()
+    except Exception as e:
+        print(e)
+        return False
     cursor.close()
+    return True
     
     

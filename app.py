@@ -1,6 +1,6 @@
-from util import interpreter
+from util import interpreter, db
 
-from flask import Flask,render_template, request
+from flask import Flask,render_template, request, redirect, url_for
 app = Flask(__name__)
 
 @app.route('/')
@@ -38,6 +38,18 @@ def statistics():
     stats['total_puzzles'] = total 
     stats['solved_puzzles'] = solved
     return render_template("statistics.html", stats=stats)
+
+#===============================non page stuff=====================
+
+@app.route('/adduser', methods=["POST"])
+def adduser():
+    #Retrieves username, password
+    username = request.form["username"]
+    password = request.form["password"]
+
+    success = db.add_user(username, password)
+
+    return redirect(url_for("landing"))
 
 
 
