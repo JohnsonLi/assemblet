@@ -2,11 +2,17 @@
     {% block head %}
         <link rel="stylesheet" href="static/css/layout.css">
         <link rel="stylesheet" href="static/css/design.css">
-        
+        <link rel="stylesheet" href="static/css/landing.css">
     {% endblock %}
     {% block content %}
-        Homepage
+        <!-- Homepage
         <a href="puzzle/1"><button>To the game!</button></a>
-        <a href="statistics"><button>To the stats!</button></a>
-
+        <a href="statistics"><button>To the stats!</button></a> -->
+        <div id="landing">
+            <h1> Assemble't</h1>
+            <ul>
+                <li id="login"><button class="waves-effect waves-light btn green accent-3"> Login </button></li>
+                <li id="signup"><button class="waves-effect waves-light btn-large green accent-4"> Sign Up </button></li>
+            </ul>
+        </div>
     {% endblock %}
