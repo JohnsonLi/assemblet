@@ -37,12 +37,14 @@ ul li{
     margin: 20px 0;
 }
 
-#login {
+#login .btn {
     animation: fadeUp 1.5s ease 0s 1 normal forwards;
+    background-color: #69d482;
 }
 
-#signup {
+#signup .btn {
     animation: fadeUp 2s ease 0s 1 normal forwards;
+    background-color: #33aba5;
 }
 
 @keyframes fadeUp {

@@ -15,7 +15,6 @@
     pointer-events: auto;
 }
 
-
 .ghost-instruction {
     opacity: 0;
 }
@@ -129,4 +128,8 @@
     border: 1px solid black;
     margin: 5px;
     display: inline-block;
+}
+
+.content {
+    padding: 20px 20px;
 }

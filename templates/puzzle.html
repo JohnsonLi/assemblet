@@ -6,32 +6,39 @@
 {% endblock %} 
 {% block content %}
 
+
+    <ul id="user-dropdown" class="dropdown-content">
+        <li><a href="#!">Profile</a></li>
+        <li class="divider"></li>
+        <li><a href="#!">Logout</a></li>
+    </ul>
+
     <nav>
         <div class="nav-wrapper">
-        <a href="#" class="brand-logo">Logo</a>
+        <a href="#" class="brand-logo"> Assemble't </a>
         <ul id="nav-mobile" class="right hide-on-med-and-down">
-            <li><a href="sass.html">Sass</a></li>
-            <li><a href="badges.html">Components</a></li>
-            <li><a href="collapsible.html">JavaScript</a></li>
+            <li><a class="dropdown-trigger" href="#!" data-target="user-dropdown"><i class="material-icons right">account_circle</i>ildlanor</a></li>
         </ul>
         </div>
     </nav>
 
-    <div id="assembly-builder"></div>
-    <div id="instruction-list">{{data['instructions_allowed']|join(",")}}</div>
-    <div id="game-values">{{data['values_allowed']|join(",")}}</div>
-    <div id="game-registers">{{data['registers_allowed']|join(",")}}</div>
-    <div id="trash-container">
-        <div id="trash"></div>
+    <div class="content">
+        <div id="assembly-builder"></div>
+        <div id="instruction-list">{{data['instructions_allowed']|join(",")}}</div>
+        <div id="game-values">{{data['values_allowed']|join(",")}}</div>
+        <div id="game-registers">{{data['registers_allowed']|join(",")}}</div>
+        <div id="trash-container">
+            <div id="trash"></div>
+        </div>
+        <div id="questionDiv">Problem: <span id="question">{{data['question']}}</span></div>
+        <button id="submit">Submit (Execute)</button>
+        <button id="step" class="hidden">Step </button>
+    
+        <div id="register-values" style="display:inline-block"></div>
+        <br>
+        <!--<canvas id="game"></canvas>-->
+        <a href="/"><button id="quit">Quit</button></a>
     </div>
-    <div id="questionDiv">Problem: <span id="question">{{data['question']}}</span></div>
-    <button id="submit">Submit (Execute)</button>
-    <button id="step" class="hidden">Step </button>
-
-    <div id="register-values" style="display:inline-block"></div>
-    <br>
-    <!--<canvas id="game"></canvas>-->
-    <a href="/"><button id="quit">Quit</button></a>
     
 
     <script src="/static/js/html-elements.js"></script>
