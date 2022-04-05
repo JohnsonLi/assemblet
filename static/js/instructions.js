@@ -9,7 +9,7 @@ const INSTRUCTIONS = {
 
 var setupInstruction = function(instructionName) {
     let instruction = document.createElement("div");
-    instruction.classList.add("instruction", "unselectable");
+    instruction.classList.add("instruction", "unselectable", "card-panel");
     instruction.name = instructionName;
     instruction.isInstruction = true;
 

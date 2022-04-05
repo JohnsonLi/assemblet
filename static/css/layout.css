@@ -3,9 +3,10 @@
     box-sizing: border-box;
     float: left;
     min-height: 100px;
-    min-width: 300px;
+    width: 300px;
     list-style: none;
-    padding:0px;
+    margin: 0px 20px 0px 20px;
+    display: inline-block;
 }
 
 .instruction-entry {
@@ -25,21 +26,16 @@
 #instruction-list {
     width: 300px;
     float: left;
-    margin: 50px;
     border: 1px solid black;
     min-height: 75px;
     list-style: none;
-    padding:0px;
 }
 .instruction {
-    width: 300px;
-    height: 75px;
-    background-color: bisque;
-    border: solid 1px black;
+    width: 200px;
+    height: 25px;
+    background-color: #c7f9cc;
     box-sizing: border-box;
     text-align: center;
-    line-height: 60px;
-
 }
 .instruction span {
     display: inline-block;
@@ -85,11 +81,6 @@
     width: 50px;
     border: 1px solid black;
     min-height: 50px;
-}
-
-#questionDiv {
-    float: left;
-    width: 200px;
 }
 
 #game {

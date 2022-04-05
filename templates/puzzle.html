@@ -7,18 +7,36 @@
 {% block content %}
 
     <div class="content">
-        <div id="assembly-builder"></div>
-        <div id="instruction-list">{{data['instructions_allowed']|join(",")}}</div>
-        <div id="game-values">{{data['values_allowed']|join(",")}}</div>
-        <div id="game-registers">{{data['registers_allowed']|join(",")}}</div>
-        <div id="trash-container">
-            <div id="trash"></div>
+        <div class="row">
+            <div class="col s3">
+                <ul class="collapsible">
+                    <li class="active">
+                        <div class="collapsible-header" style="color: #38a3a5;"><i class="material-icons">expand_more</i>Problem</div>
+                        <div class="collapsible-body"> Problem: <span id="question">{{data['question']}}</span></div>
+                    </li>
+                </ul>
+            </div>
+            
+            <div class="col s9">
+                <div class="editor">
+                    <div id="instruction-list">{{data['instructions_allowed']|join(",")}}</div>
+                    <div id="assembly-builder"></div>
+                </div>
+                <div id="game-values">{{data['values_allowed']|join(",")}}</div>
+                <div id="game-registers">{{data['registers_allowed']|join(",")}}</div>
+                <div id="register-values" style="display:inline-block"></div>
+                <div id="trash-container">
+                    <div id="trash"></div>
+                </div>
+            </div>
+
         </div>
-        <div id="questionDiv">Problem: <span id="question">{{data['question']}}</span></div>
+
+
         <button id="submit">Submit (Execute)</button>
         <button id="step" class="hidden">Step </button>
     
-        <div id="register-values" style="display:inline-block"></div>
+
         <br>
         <!--<canvas id="game"></canvas>-->
         <a href="/"><button id="quit">Quit</button></a>

@@ -14,7 +14,7 @@ body {
 }
 
 .instruction {
-    cursor: pointer;
+    cursor: grabbing;
 }
 
 .nav-wrapper {
@@ -23,5 +23,5 @@ body {
 
 nav .brand-logo {
     color: white;
-    padding-left: 10px;
+    padding-left: 20px;
 }
