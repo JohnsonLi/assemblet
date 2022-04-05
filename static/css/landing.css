@@ -42,7 +42,7 @@ ul li{
     background-color: #69d482;
 }
 
-#signup .btn {
+#signup .btn-large {
     animation: fadeUp 2s ease 0s 1 normal forwards;
     background-color: #33aba5;
 }
