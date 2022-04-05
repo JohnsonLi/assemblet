@@ -29,7 +29,7 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `Admin` (
-  `id` int(20) PRIMARY KEY,
+  `id` int PRIMARY KEY,
   `name` varchar(40) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -40,9 +40,9 @@ CREATE TABLE `Admin` (
 --
 
 CREATE TABLE `Puzzle` (
-  `id` int(20) PRIMARY KEY,
-  `title` varchar(50) NOT NULL,
-  `description` varchar(50) NOT NULL,
+  `id` int PRIMARY KEY,
+  `title` varchar(200) NOT NULL,
+  `description` varchar(200) NOT NULL,
   `tutorialID` int(20) NOT NULL,
   `solution` int(20) NOT NULL,
   `instructionsAllowed` varchar(50) NOT NULL,
@@ -57,9 +57,9 @@ CREATE TABLE `Puzzle` (
 --
 
 CREATE TABLE `User` (
-  `id` varchar(20) PRIMARY KEY,
+  `id` int PRIMARY KEY AUTO_INCREMENT,
   `username` varchar(20) NOT NULL,
-  `password` varchar(20) NOT NULL
+  `password` varchar(200) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 COMMIT;
 
