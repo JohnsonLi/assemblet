@@ -25,21 +25,21 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `admin information`
+-- Table structure for table `Admin`
 --
 
-CREATE TABLE `admin information` (
-  `adminID` int(20) NOT NULL,
+CREATE TABLE `Admin` (
+  `id` int(20) NOT NULL,
   `name` varchar(40) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `puzzle storage`
+-- Table structure for table `Puzzle`
 --
 
-CREATE TABLE `puzzle storage` (
+CREATE TABLE `Puzzle` (
   `ID` int(20) NOT NULL,
   `title` varchar(50) NOT NULL,
   `description` varchar(50) NOT NULL,
@@ -47,20 +47,19 @@ CREATE TABLE `puzzle storage` (
   `solution` int(20) NOT NULL,
   `instructionsAllowed` varchar(50) NOT NULL,
   `valuesAllowed` varchar(50) NOT NULL,
-  `registersAllows` varchar(50) NOT NULL
+  `registersAllowed` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `user information`
+-- Table structure for table `User`
 --
 
-CREATE TABLE `user information` (
-  `name` varchar(20) NOT NULL,
-  `userID` varchar(20) NOT NULL,
-  `DOB` date NOT NULL,
-  `PlayLength` time NOT NULL
+CREATE TABLE `User` (
+  `id` varchar(20) NOT NULL,
+  `username` varchar(20) NOT NULL,
+  `password` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 COMMIT;
 
