@@ -1,8 +1,8 @@
 //Password confirmation
 
-$('#username, #password, #confirm-password').on('keyup', function () {
+$('#signup-username, #signup-password, #confirm-password').on('keyup', function () {
     let good = true;
-    if ($('#password').val() == $('#confirm-password').val()) {
+    if ($('#signup-password').val() == $('#confirm-password').val()) {
         //Ensure passwords match
         $('#confirm-password-error').addClass("hidden");
     } else {
@@ -10,7 +10,7 @@ $('#username, #password, #confirm-password').on('keyup', function () {
         good = false;
     }
 
-    if ($('#password').val().trim() == '' || $('#username').val().trim() == '') {
+    if ($('#signup-password').val().trim() == '' || $('#signup-username').val().trim() == '') {
         //Ensure username and password not empty
         good = false;
     }

@@ -68,16 +68,16 @@ def adduser():
     session['user'] = username
     return redirect(url_for('home', user = session['user']))
 
-@app.route('/login')
+@app.route('/login', methods=["POST"])
 def login():
     #Retrieves username, password
     username = request.form["username"]
     password = request.form["password"]
 
     hashed_pass = db.get_password(username)
-    if hashed_pass != [] and md5_crypt.verify(password,hashed_pass[0][0]):
-        session['username'] = username
-        return redirect(url_for("home"))
+    if hashed_pass != [] and md5_crypt.verify(password,hashed_pass[0]['password']):
+        session['user'] = username
+        return redirect(url_for("home", user = session['user']))
     else:
         flash("Username or Password is incorrect")
         return redirect(url_for("landing"))
