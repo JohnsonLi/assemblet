@@ -18,35 +18,40 @@
             </ul>
         </div>
 
+        <div>
+            {% for msg in get_flashed_messages() %} 
+                {{msg}}
+            {% endfor %}
+        </div>
+
         <div id="signup-modal" class="modal">
-            <form id="signup-form" class="col s12" action="/adduser" method="POST">
             <div class="modal-content">
                 <div class="row">
-                    
+                    <form id="signup-form" class="col s12" action="/adduser" method="POST"></form>
                         <div class="row">
                             <div class="input-field">
-                                <input id="username" type="text" class="validate" name="username">
+                                <input form="signup-form" id="username" type="text" class="validate" name="username">
                                 <label for="username">Username</label>
                             </div>
                         </div>
                         <div class="row">
                             <div class="input-field">
-                                <input id="password" type="password" class="validate" name="password">
+                                <input form="signup-form" id="password" type="password" class="validate" name="password">
                                 <label for="password">Password</label>
                             </div>
                         </div>
                         <div class="row">
                             <div class="input-field">
-                                <input id="confirm-password" type="password" class="validate" name="confirm_password">
+                                <input form="signup-form" id="confirm-password" type="password" class="validate" name="confirm_password">
                                 <label for="confirm-password">Confirm Password</label>
                                 <span id="confirm-password-error" class="hidden">Passwords do not match</span>
                             </div>
                         </div>
-                </div>
-             </form>            
+                    </form>
+                </div>          
             </div>
             <div class="modal-footer">
-                <button id="submit-signup" class="modal-close waves-effect waves-green btn-flat">Sign Up</button>
+                <input type="submit" form="signup-form" id="submit-signup" class="modal-close waves-effect waves-green btn-flat" value="Sign Up">
                 <button class="modal-close waves-effect waves-green btn-flat">Cancel</button>
             </div>
         </div>
@@ -54,16 +59,16 @@
           <div id="login-modal" class="modal">
             <div class="modal-content">
                 <div class="row">
-                    <form class="col s12">
+                    <form id="login-form" class="col s12" method="POST" action="/login">
                         <div class="row">
                             <div class="input-field">
-                                <input id="username" type="text" class="validate">
+                                <input form="login-form" id="username" type="text" class="validate">
                                 <label for="username">Username</label>
                             </div>
                         </div>
                         <div class="row">
                             <div class="input-field">
-                                <input id="password" type="password" class="validate">
+                                <input form="login-form" id="password" type="password" class="validate">
                                 <label for="password">Password</label>
                             </div>
                         </div>
@@ -72,7 +77,7 @@
                         
             </div>
             <div class="modal-footer">
-                <button class="modal-close waves-effect waves-green btn-flat">Log In</button>
+                <input type="submit" form="login-form" class="modal-close waves-effect waves-green btn-flat" value="Log In">
                 <button class="modal-close waves-effect waves-green btn-flat">Cancel</button>
             </div>
           </div>

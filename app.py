@@ -1,6 +1,10 @@
 from util import interpreter, db
 
-from flask import Flask,render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, flash, session
+from passlib.hash import md5_crypt
+
+
+
 app = Flask(__name__)
 
 @app.route('/')
@@ -18,7 +22,7 @@ def puzzle(id):
         "registers_allowed": ["a", "b", "c", "d","e"],
     }
     
-    return render_template("puzzle.html", data=data)
+    return render_template("puzzle.html", data=data, user = session['user'])
 
 @app.route('/statistics')
 def statistics():
@@ -37,21 +41,53 @@ def statistics():
 
     stats['total_puzzles'] = total 
     stats['solved_puzzles'] = solved
-    return render_template("statistics.html", stats=stats)
+    return render_template("statistics.html", stats=stats, user = session['user'])
+
+@app.route('/home')
+def home():
+    if 'user' not in session:
+        flash("You need to log in.")
+        return redirect(url_for("landing"))
+
+    return render_template("home.html", user = session['user'])
 
 #===============================non page stuff=====================
 
 @app.route('/adduser', methods=["POST"])
 def adduser():
+    print(request.form)
+    #Retrieves username, password
+    username = request.form["username"]
+    password = md5_crypt.hash(request.form["password"])
+
+    success = db.add_user(username, password)
+    if not success:
+        flash('Error: User already exists')
+        return redirect(url_for("landing"))
+
+    session['user'] = username
+    return redirect(url_for('home', user = session['user']))
+
+@app.route('/login')
+def login():
     #Retrieves username, password
     username = request.form["username"]
     password = request.form["password"]
 
-    success = db.add_user(username, password)
+    hashed_pass = db.get_password(username)
+    if hashed_pass != [] and md5_crypt.verify(password,hashed_pass[0][0]):
+        session['username'] = username
+        return redirect(url_for("home"))
+    else:
+        flash("Username or Password is incorrect")
+        return redirect(url_for("landing"))
 
-    return redirect(url_for("landing"))
 
 
+@app.route('/logout')
+def logout():
+    del session['user']
+    return redirect(url_for('landing'))
 
 @app.route('/interpret', methods=["POST"])
 def interpret():
@@ -68,4 +104,5 @@ def interpret():
     return format_result(inter.output)
 
 app.debug = 1
+app.secret_key = "a"
 app.run()

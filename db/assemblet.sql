@@ -58,7 +58,7 @@ CREATE TABLE `Puzzle` (
 
 CREATE TABLE `User` (
   `id` int PRIMARY KEY AUTO_INCREMENT,
-  `username` varchar(20) NOT NULL,
+  `username` varchar(20) PRIMARY KEY,
   `password` varchar(200) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 COMMIT;

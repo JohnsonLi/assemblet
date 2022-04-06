@@ -1,7 +1,7 @@
 {% extends "base.html" %} 
 
 {% block content %}
-    Username: ildlanor <br>
+    Username: {{user}} <br>
     Completion Status: {{(stats['solved_puzzles'] / stats['total_puzzles'] * 100)|round(1)}}% ({{stats['solved_puzzles']}} out of {{stats['total_puzzles']}} puzzles) <br>
 
     Puzzles: <br>

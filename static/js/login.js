@@ -16,18 +16,8 @@ $('#username, #password, #confirm-password').on('keyup', function () {
     }
 
     if (!good) {
-        $('#submit-signup').addClass("disabled");
+        $('#submit-signup').prop('disabled', true);
     } else {
-        $('#submit-signup').removeClass("disabled");
+        $('#submit-signup').prop('disabled', false);
     }
-});
-
-
-//Signup
-$('#submit-signup').on('click', function () {
-    $.post("/adduser",
-    {
-        "username": $('#username').val(),
-        "password": $('#password').val()
-    });
 });

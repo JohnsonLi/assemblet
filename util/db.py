@@ -23,3 +23,15 @@ def add_user(username, password):
     return True
     
     
+def get_password(username):
+    cursor = conn.cursor()
+    try:
+        query = 'SELECT password FROM User WHERE username = %s'
+        cursor.execute(query, (username,))
+    except Exception as e:
+        print(e)
+        return []
+    password = cursor.fetchall()
+    cursor.close()
+    print(password)
+    return password
