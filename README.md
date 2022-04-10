@@ -18,10 +18,7 @@ How to install:
 
 # how to work on database
 - install xampp
-- go to mysql -> config 
-- click my.ini
-- go to datadir=
-- put the path of the database in there, i have `datadir="C:/Users/jiaya/assemblet/db"`
+- go to the web interface and upload the database we have
 
 # basic structure of program (as of now)
 
