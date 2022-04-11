@@ -43,6 +43,12 @@
     justify-content: center;
     height: 65px;
 }
+
+#assembly-builder .instruction {
+    width: 90%;
+    margin-left: 10px;
+}
+
 .instruction span {
     margin-left: 10px !important;
     margin-right: 10px !important;
@@ -74,15 +80,15 @@
 }
 
 #trash-container {
-    position: relative;
-    float: left;
-    width: 50px;
-    height: 50px;
+    height: 10px;
+    width: 80%;
+    margin: auto;
+    display: flex;
+    justify-content: center;
 }
 
 #trash {
     position: absolute;
-    user-drag: none;
     -webkit-user-drag: none;
     user-select: none;
     -moz-user-select: none;
@@ -91,8 +97,9 @@
 }
 
 #trash img {
-    width: 50px;
-    height: 50px;
+    width: 80px;
+    height: 80px;
+
 }
 
 .hidden {
@@ -124,7 +131,7 @@
     min-height: 600px;
     height: 600px;
     width: 100%;
-    overflow-y: scroll;
+    
 }
 
 #instruction-title {
@@ -138,6 +145,7 @@
 }
 
 #editor-tools {
+    position: relative;
     height: 100%;
 }
 
@@ -162,4 +170,11 @@
 #instructions {
     position: relative;
     padding-left: 0px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    height: 600px;
+}
+
+.fade {
+    opacity: .2;
 }
