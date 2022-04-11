@@ -15,7 +15,18 @@ var init = function() {
             put: ['instructions']
         },
         ghostClass: 'ghost-instruction',
-        animation: 150
+        animation: 150,
+        onAdd: function(evt) {
+            makeParameters(evt.item, evt.item.name);
+            if (ASSEMBLY_BUILDER.children.length >= INSTRUCTION_NUMBERS.children.length) {
+                let number = document.createElement("div");
+                number.classList.add("instruction-number", "z-depth-0");
+                let span = document.createElement("span");
+                span.innerHTML = INSTRUCTION_NUMBERS.children.length;
+                number.appendChild(span);
+                INSTRUCTION_NUMBERS.appendChild(number);
+            }
+        }
     });
     Sortable.create(INSTRUCTION_LIST, {
         sort: false,
@@ -29,7 +40,7 @@ var init = function() {
             while (evt.clone.children.length > 1) {
                 evt.clone.removeChild(evt.clone.lastChild);
             }
-            makeParameters(evt.clone, evt.item.name);
+            
         },
     });
 
@@ -51,15 +62,24 @@ var init = function() {
         sort: false,
         group: {
             name: "trash",
-            put: true
+            put: true,
+            pull: false
         },
         onAdd: function (evt) {
             evt.item.remove();
         },
-        ghostClass: "hidden"
+        ghostClass: "hidden",
+        handle: '.handle'
     });
 
-    
+    for (let i = 0; i < 3; i++) {
+        let number = document.createElement("div");
+        number.classList.add("instruction-number", "z-depth-0");
+        let span = document.createElement("span");
+        span.innerHTML = i;
+        number.appendChild(span);
+        INSTRUCTION_NUMBERS.appendChild(number);
+    }
 
 }
 

@@ -1,0 +1,29 @@
+{% extends "base.html" %} 
+
+{% block content %}
+    Username: {{user}} <br>
+
+    Puzzles: <br>
+    {% for puzzle in puzzles['puzzles'] %}
+        <div class="stats-entry">
+            <span class="stats-id"> {{puzzle['id']}}</span> <br>
+            <span class="stats-time-spent"> {{puzzle['time_taken']}} </span>
+            <span class="stats-attempts"> {{puzzle['attempts']}} </span>
+            {% if puzzle['solved'] %} 
+            solved
+            {% else %} 
+            not solved 
+            {% endif %} 
+            {% if puzzle['watched'] %} 
+            watched
+            {% else %} 
+            not watched
+            {% endif %} 
+        </div>
+    {% endfor %}
+
+
+
+
+
+{% endblock %}
