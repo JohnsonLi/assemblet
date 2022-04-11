@@ -20,7 +20,7 @@
                 </ul>
             </div>
             
-            <div class="col s7">
+            <div class="col s9">
                 <div id="editor" class="z-depth-2">
                     <div class="col s2" id="editor-tools">
                         <div class="row" id="instruction-title-div">
@@ -28,6 +28,9 @@
                         </div>
                         <div class="row">
                             <div id="instruction-list">{{data['instructions_allowed']|join(",")}}</div>
+                        </div>
+                        <div id="trash-container">
+                            <div id="trash"></div>
                         </div>
                     </div>
                     <div class="col s7" id="instructions">
@@ -38,9 +41,7 @@
                 
             </div>
             <div id="register-values" style="display:inline-block"></div>
-                <div id="trash-container">
-                    <div id="trash"></div>
-                </div>
+                
         </div>
 
 

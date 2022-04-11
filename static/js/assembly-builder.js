@@ -26,6 +26,16 @@ var init = function() {
                 number.appendChild(span);
                 INSTRUCTION_NUMBERS.appendChild(number);
             }
+        },
+        onStart: function(evt) {
+            INSTRUCTION_LIST.childNodes.forEach((instr) => {
+                instr.classList.add("fade");
+            });
+        },
+        onEnd: function(evt) {
+            INSTRUCTION_LIST.childNodes.forEach((instr) => {
+                instr.classList.remove("fade");
+            });
         }
     });
     Sortable.create(INSTRUCTION_LIST, {
@@ -72,7 +82,7 @@ var init = function() {
         handle: '.handle'
     });
 
-    for (let i = 0; i < 3; i++) {
+    for (let i = 0; i < 10; i++) {
         let number = document.createElement("div");
         number.classList.add("instruction-number", "z-depth-0");
         let span = document.createElement("span");
