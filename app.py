@@ -13,13 +13,15 @@ def landing():
 
 @app.route('/puzzle/<id>')
 def puzzle(id):
-    #TODO: load puzzle from db given ID
-    #data = puzzleinfo(id)
+    puzzle = db.get_puzzle(id)
     data = {
-        "question": "Get 3 into register 4",
-        "instructions_allowed": ["move", "add", "sub"],
-        "values_allowed":  [3,4,7,2],
-        "registers_allowed": ["a", "b", "c", "d","e"],
+        "id": id,
+        "title": puzzle[0]["title"],
+        "question": puzzle[0]["description"],
+        "instructions_allowed": [x.strip() for x in puzzle[0]["instructionsAllowed"].split(",")],
+        "values_allowed":  [x.strip() for x in puzzle[0]["valuesAllowed"].split(",")],
+        "registers_allowed": [x.strip() for x in puzzle[0]["registersAllowed"].split(",")],
+        "tutorial": puzzle[0]["tutorialID"],
     }
     
     return render_template("puzzle.html", data=data, user = session['user'])
@@ -50,6 +52,14 @@ def home():
         return redirect(url_for("landing"))
 
     return render_template("home.html", user = session['user'])
+
+@app.route('/admin'){
+    if 'user' not in session:
+        flash("You need to log in.")
+        return redirect(url_for("landing"))
+
+    return render_template("home.html", user = session['user'])
+}
 
 #===============================non page stuff=====================
 
