@@ -13,15 +13,17 @@ def landing():
 
 @app.route('/puzzle/<id>')
 def puzzle(id):
-    #TODO: load puzzle from db given ID
-    #data = puzzleinfo(id)
+    puzzle = db.get_puzzle(id)
     data = {
-        "question": "Get 3 into register 4",
-        "instructions_allowed": ["move", "add", "sub"],
-        "values_allowed":  [3,4,7,2],
-        "registers_allowed": ["a", "b", "c", "d","e"],
+        "id": id,
+        "title": puzzle[0]["title"],
+        "question": puzzle[0]["description"].replace('\r', "").replace('\n', "<br>"),
+        "instructions_allowed": [x.strip() for x in puzzle[0]["instructionsAllowed"].split(",")],
+        "values_allowed":  [x.strip() for x in puzzle[0]["valuesAllowed"].split(",")],
+        "registers_allowed": [x.strip() for x in puzzle[0]["registersAllowed"].split(",")],
+        "tutorial": puzzle[0]["tutorialID"],
     }
-    
+    print(data['question'])
     return render_template("puzzle.html", data=data, user = session['user'])
 
 @app.route('/statistics')
@@ -50,6 +52,18 @@ def home():
         return redirect(url_for("landing"))
 
     return render_template("home.html", user = session['user'])
+
+@app.route('/admin')
+def admin():
+    if 'user' not in session:
+        flash("You need to log in.")
+        return redirect(url_for("landing"))
+
+    puzzles = db.get_puzzles()
+    # TODO do this but for tutorials also
+
+    return render_template("admin.html", puzzles=puzzles, user = session['user'])
+
 
 #===============================non page stuff=====================
 
@@ -81,8 +95,6 @@ def login():
     else:
         flash("Username or Password is incorrect")
         return redirect(url_for("landing"))
-
-
 
 @app.route('/logout')
 def logout():

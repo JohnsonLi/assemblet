@@ -35,3 +35,25 @@ def get_password(username):
     cursor.close()
     print(password)
     return password
+
+def get_puzzles():
+    cursor = conn.cursor()
+    try:
+        query = 'SELECT * FROM Puzzle'
+        cursor.execute(query)
+    except Exception as e:
+        print(e)
+        return []
+    cursor.close()
+    return cursor.fetchall()
+
+def get_puzzle(id):
+    cursor = conn.cursor()
+    try:
+        query = 'SELECT * FROM Puzzle WHERE id = %s'
+        cursor.execute(query, (id,))
+    except Exception as e:
+        print(e)
+        return []
+    cursor.close()
+    return cursor.fetchall()
