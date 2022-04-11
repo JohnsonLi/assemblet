@@ -9,7 +9,7 @@ const INSTRUCTIONS = {
 
 var setupInstruction = function(instructionName) {
     let instruction = document.createElement("div");
-    instruction.classList.add("instruction", "unselectable", "card-panel");
+    instruction.classList.add("instruction", "unselectable", "card-panel", "valign-wrapper", "center-align", "z-depth-0");
     instruction.name = instructionName;
     instruction.isInstruction = true;
 
@@ -20,7 +20,7 @@ var setupInstruction = function(instructionName) {
 
     
 
-    makeParameters(instruction, instructionName);
+    //makeParameters(instruction, instructionName);
 
     return instruction;
 }
@@ -28,12 +28,10 @@ var setupInstruction = function(instructionName) {
 var makeParameters = function(div, name, base) {
     div.parameters = [];
     for (let i = 0; i < INSTRUCTIONS[name].length; i++) {
-        let inputDiv = document.createElement("div");
         let input = document.createElement("input");
-        inputDiv.appendChild(input);
-        inputDiv.classList.add("instruction-parameter");
+        input.classList.add("instruction-parameter");
         input.type = "text";
-        div.appendChild(inputDiv);
+        div.appendChild(input);
         div.parameters.push(input);
         let k = registers_allowed;
         if (INSTRUCTIONS[name][i] != 1) {
