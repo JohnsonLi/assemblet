@@ -61,6 +61,7 @@ def admin():
 
     puzzles = db.get_puzzles()
     # TODO do this but for tutorials also
+    # TODO make this admin only xd
 
     return render_template("admin.html", puzzles=puzzles, user = session['user'])
 

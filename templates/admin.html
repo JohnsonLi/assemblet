@@ -1,29 +1,23 @@
 {% extends "base.html" %} 
 
 {% block content %}
-    Username: {{user}} <br>
+    Puzzles: <br> 
 
-    Puzzles: <br>
-    {% for puzzle in puzzles['puzzles'] %}
-        <div class="stats-entry">
-            <span class="stats-id"> {{puzzle['id']}}</span> <br>
-            <span class="stats-time-spent"> {{puzzle['time_taken']}} </span>
-            <span class="stats-attempts"> {{puzzle['attempts']}} </span>
-            {% if puzzle['solved'] %} 
-            solved
-            {% else %} 
-            not solved 
-            {% endif %} 
-            {% if puzzle['watched'] %} 
-            watched
-            {% else %} 
-            not watched
-            {% endif %} 
-        </div>
-    {% endfor %}
-
-
-
-
+    <div class="row">
+        {% for puzzle in puzzles %}
+            <div class="col s3">
+                <div class="edit-puzzle card">
+                    <div class="card-content">
+                        <span class="card-title">{{puzzle['id']}} {{puzzle['title']}}</span>
+                        <p>{{puzzle['description']}}</p>
+                    </div>
+                    <div class="card-action">
+                        <a href="#">Edit</a>
+                        <a href="#">Delete</a>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
 
 {% endblock %}
