@@ -57,3 +57,14 @@ def get_puzzle(id):
         return []
     cursor.close()
     return cursor.fetchall()
+
+def delete_puzzle(id):
+    cursor = conn.cursor()
+    try:
+        query = 'DELETE FROM Puzzle WHERE id = %s'
+        cursor.execute(query, (id,))
+    except Exception as e:
+        print(e)
+        return False
+    cursor.close()
+    return True

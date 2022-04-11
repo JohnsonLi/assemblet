@@ -25,3 +25,15 @@ nav .brand-logo {
     color: white;
     padding-left: 20px;
 }
+
+#add-puzzle {
+    position: absolute;
+    right: 20px;
+    bottom: 20px;
+    z-index: 1;
+}
+
+#delete-modal {
+    text-align: center;
+    width: 25%;
+}

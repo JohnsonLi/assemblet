@@ -1,7 +1,7 @@
 {% extends "base.html" %} 
 
 {% block content %}
-    Puzzles: <br> 
+    <h5> Puzzles: </h5> <br> 
 
     <div class="row">
         {% for puzzle in puzzles %}
@@ -13,11 +13,24 @@
                     </div>
                     <div class="card-action">
                         <a href="#">Edit</a>
-                        <a href="#">Delete</a>
+                        <a href="#" class="modal-trigger" data-target="delete-modal">Delete</a>
                     </div>
                 </div>
             </div>
         {% endfor %}
     </div>
+
+    <div id="delete-modal" class="modal">
+        <div class="modal-content">
+            <h4>Are you sure?</h4>
+        </div>
+
+        <div class="modal-footer">
+            <input type="submit" form="login-form" class="modal-close waves-effect waves-red btn-flat red" value="Delete">
+            <button class="modal-close waves-effect waves-green btn-flat">Cancel</button>
+        </div>
+    </div>
+
+    <a id="add-puzzle" class="btn-floating btn-large waves-effect waves-light"><i class="material-icons">add</i></a>
 
 {% endblock %}
