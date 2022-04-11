@@ -8,15 +8,6 @@ var init = function() {
         INSTRUCTION_LIST.appendChild(setupInstruction(instructionName));
     });
 
-    GAME_REGISTERS.innerHTML = "";
-    registers_allowed.forEach((registerName) => {
-        GAME_REGISTERS.appendChild(setupRegister(registerName));
-    });
-
-    GAME_VALUES.innerHTML = "";
-    values_allowed.forEach((value) => {
-        GAME_VALUES.appendChild(setupValue(value));
-    })
 
     Sortable.create(ASSEMBLY_BUILDER, {
         group: {
@@ -42,27 +33,6 @@ var init = function() {
         },
     });
 
-    Sortable.create(GAME_VALUES, {
-        group: {
-            name: 'values',
-            put: function(to, from, el) {
-                return el.isValue;
-            }
-        },
-        
-    });
-
-    Sortable.create(GAME_REGISTERS, {
-        group: {
-            name: 'registers',
-            pull: 'clone'
-        },
-        onClone: function(evt) {
-            evt.clone.innerHTML = evt.item.innerHTML;
-            evt.clone.isRegister = evt.item.isRegister;
-            evt.clone.value = evt.item.value;
-        }
-    });
 
     //Setup trashcan
     let trashImg = document.createElement("img");
@@ -78,25 +48,13 @@ var init = function() {
     TRASH.appendChild(trashImg);
 
     Sortable.create(TRASH, {
+        sort: false,
         group: {
             name: "trash",
             put: true
         },
         onAdd: function (evt) {
-            var el = evt.item;
-            if (el.isValue) {
-                GAME_VALUES.appendChild(el);
-            } else if (el.isInstruction) {
-                el.childNodes.forEach((input) => {
-                    if (input.children.length == 1 && input.childNodes[0].isValue) {
-                        GAME_VALUES.appendChild(input.childNodes[0]);
-                    }
-                el.remove();
-                });
-
-            } else {
-                el.remove();
-            }
+            evt.item.remove();
         },
         ghostClass: "hidden"
     });

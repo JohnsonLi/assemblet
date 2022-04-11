@@ -21,8 +21,8 @@
                     <div id="instruction-list">{{data['instructions_allowed']|join(",")}}</div>
                     <div id="assembly-builder"></div>
                 </div>
-                <div id="game-values">{{data['values_allowed']|join(",")}}</div>
-                <div id="game-registers">{{data['registers_allowed']|join(",")}}</div>
+                <div>The values that you can use are: <div id="game-values">{{data['values_allowed']|join(",")}}</div></div>
+                <div>The registers that you can use are:<div id="game-registers">{{data['registers_allowed']|join(",")}}</div></div>
                 <div id="register-values" style="display:inline-block"></div>
                 <div id="trash-container">
                     <div id="trash"></div>

@@ -28,56 +28,26 @@ var setupInstruction = function(instructionName) {
 var makeParameters = function(div, name, base) {
     div.parameters = [];
     for (let i = 0; i < INSTRUCTIONS[name].length; i++) {
-        let input = document.createElement("div");
-        input.classList.add("instruction-parameter");
-        div.appendChild(input);
+        let inputDiv = document.createElement("div");
+        let input = document.createElement("input");
+        inputDiv.appendChild(input);
+        inputDiv.classList.add("instruction-parameter");
+        input.type = "text";
+        div.appendChild(inputDiv);
         div.parameters.push(input);
-        input.registerOnly = INSTRUCTIONS[name][i] == 1 ? true : false;
-        Sortable.create(input, {
-            group: {
-                name: "input",
-                put: function(to, from, el) {
-                    if (to.el.children.length != 0) {
-                        let current = to.el.childNodes[0];
-                        current.classList.add("hidden");
-                        input.hiddenElement = current;
-                    }
-                    return (to.el.parentNode.parentNode != INSTRUCTION_LIST) && (el.isRegister || (!input.registerOnly && el.isValue));
-                },
-                pull: ["values", "input", "trash"],
-            },
-            onAdd: function(evt) {
-                if (input.hiddenElement) {
-                    input.hiddenElement.classList.remove("hidden");
-                    if (input.hiddenElement.isValue) {
-                        GAME_VALUES.appendChild(input.hiddenElement);
-                    } else {
-                        input.hiddenElement.remove();
-                    }
-                    input.hiddenElement = undefined;
-                }
+        let k = registers_allowed;
+        if (INSTRUCTIONS[name][i] != 1) {
+            k = k.concat(values_allowed);
+        }
+
+        input.a = k.map(x => x.charCodeAt(0));
+
+        input.maxLength = 1;
+        input.addEventListener('keypress', function (e) {
+            let key = e.which || e.keyCode;
+            if (!(e.target.a.includes(key))) {
+                e.preventDefault();
             }
-        });     
+        });
     }
-}
-
-var setupValue = function(value) {
-    let valueDiv = document.createElement("div");
-    valueDiv.classList.add("game-value", "unselectable");
-    valueDiv.innerHTML = value;
-    valueDiv.value = value;
-    valueDiv.isValue = true;
-
-
-    return valueDiv;
-}
-
-var setupRegister = function(register) {
-    let registerDiv = document.createElement("div");
-    registerDiv.classList.add("game-register", "unselectable");
-    registerDiv.innerHTML = register;
-    registerDiv.isRegister = true;
-    registerDiv.value = register;
-
-    return registerDiv;
 }
