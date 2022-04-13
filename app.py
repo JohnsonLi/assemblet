@@ -136,6 +136,22 @@ def add_puzzle():
 
     db.add_puzzle(id, title, description, tutorialID, solution, instructionsAllowed, valuesAllowed, registersAllowed)
     return redirect(url_for('admin'))
+
+@app.route('/editpuzzle', methods=["POST"])
+def edit_puzzle():
+    id = request.form["id"]
+    title = request.form["title"]
+    description = request.form["description"]
+    tutorialID = request.form["tutorial-id"]
+    solution = request.form["solution"]
+    instructionsAllowed = request.form["instructions-allowed"]
+    valuesAllowed = request.form["values-allowed"]
+    registersAllowed = request.form["registers-allowed"]
+
+    print("edited")
+    db.edit_puzzle(id, title, description, tutorialID, solution, instructionsAllowed, valuesAllowed, registersAllowed)
+    return redirect(url_for('admin'))
+
 @app.route('/checksolution', methods=["POST"])
 def checksolution():
     id = request.form["id"]

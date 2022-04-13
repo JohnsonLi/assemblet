@@ -63,6 +63,20 @@ def add_puzzle(id, title, description, tutorialID, solution, instructionsAllowed
     try:
         query = 'INSERT INTO Puzzle(id, title, description, tutorialID, solution, instructionsAllowed, valuesAllowed, registersAllowed) values (%s,%s,%s,%s,%s,%s,%s,%s)'
         cursor.execute(query, (id, title, description, tutorialID, solution, instructionsAllowed, valuesAllowed, registersAllowed))
+        conn.commit()
+    except Exception as e:
+        print(e)
+        return False
+    cursor.close()
+    return True
+
+def edit_puzzle(id, title, description, tutorialID, solution, instructionsAllowed, valuesAllowed, registersAllowed):
+    cursor = conn.cursor()
+    tutorialID = None if tutorialID == "" else tutorialID
+    try:
+        query = 'UPDATE Puzzle SET title = %s, description = %s, tutorialID = %s, solution = %s, instructionsAllowed = %s, valuesAllowed = %s, registersAllowed = %s WHERE id = %s'
+        cursor.execute(query, (title, description, tutorialID, solution, instructionsAllowed, valuesAllowed, registersAllowed, id))
+        conn.commit()
     except Exception as e:
         print(e)
         return False
@@ -74,6 +88,7 @@ def delete_puzzle(id):
     try:
         query = 'DELETE FROM Puzzle WHERE id = %s'
         cursor.execute(query, (id,))
+        conn.commit()
     except Exception as e:
         print(e)
         return False
