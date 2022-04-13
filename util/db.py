@@ -58,6 +58,17 @@ def get_puzzle(id):
     cursor.close()
     return cursor.fetchall()
 
+def add_puzzle(id, title, description, tutorialID, solution, instructionsAllowed, valuesAllowed, registersAllowed):
+    cursor = conn.cursor()
+    try:
+        query = 'INSERT INTO Puzzle(id, title, description, tutorialID, solution, instructionsAllowed, valuesAllowed, registersAllowed) values (%s,%s,%s,%s,%s,%s,%s,%s)'
+        cursor.execute(query, (id, title, description, tutorialID, solution, instructionsAllowed, valuesAllowed, registersAllowed))
+    except Exception as e:
+        print(e)
+        return False
+    cursor.close()
+    return True
+
 def delete_puzzle(id):
     cursor = conn.cursor()
     try:
