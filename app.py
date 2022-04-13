@@ -60,6 +60,8 @@ def admin():
         return redirect(url_for("landing"))
 
     puzzles = db.get_puzzles()
+    for puzzle in puzzles:
+        puzzle["description"] = puzzle["description"].replace('\r', "").replace('\n', "<br>")
     # TODO do this but for tutorials also
     # TODO make this admin only xd
 
@@ -115,6 +117,25 @@ def interpret():
         res = [str(a[0]) + "," + ",".join([str(b) for b in a[1]]) + "," + ",".join([str(c) for c in a[2]]) for a in s]
         return "\n".join(res)
     return format_result(inter.output)
+
+@app.route('/deletepuzzle/<id>')
+def delete_puzzle(id):
+    db.delete_puzzle(id)
+    return redirect(url_for('admin'))
+
+@app.route('/addpuzzle', methods=["POST"])
+def add_puzzle():
+    id = request.form["id"]
+    title = request.form["title"]
+    description = request.form["description"]
+    tutorialID = request.form["tutorial-id"]
+    solution = request.form["solution"]
+    instructionsAllowed = request.form["instructions-allowed"]
+    valuesAllowed = request.form["values-allowed"]
+    registersAllowed = request.form["registers-allowed"]
+
+    db.add_puzzle(id, title, description, tutorialID, solution, instructionsAllowed, valuesAllowed, registersAllowed)
+    return redirect(url_for('admin'))
 
 app.debug = 1
 app.secret_key = "a"
