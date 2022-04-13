@@ -2,7 +2,9 @@
 const INSTRUCTIONS = {
     'move': [0,1], 
     'add': [0,1],
-    'sub': [0,1]
+    'sub': [0,1],
+    'out': [1],
+    'jne': [2,0,1]
 };
 
 
@@ -33,14 +35,21 @@ var makeParameters = function(div, name, base) {
         input.type = "text";
         div.appendChild(input);
         div.parameters.push(input);
-        let k = registers_allowed;
-        if (INSTRUCTIONS[name][i] != 1) {
+        let k;
+        input.maxLength = 1;
+        if (INSTRUCTIONS[name][i] == 0) {
+            k = registers_allowed;
             k = k.concat(values_allowed);
         }
-
+        if (INSTRUCTIONS[name][i] == 1) {
+            k = registers_allowed;
+        }
+        if (INSTRUCTIONS[name][i] == 2) {
+            input.maxLength = 2;
+            k = ["0","1","2","3","4","5","6","7","8","9"];
+        }
         input.a = k.map(x => x.charCodeAt(0));
-
-        input.maxLength = 1;
+        
         input.addEventListener('keypress', function (e) {
             let key = e.which || e.keyCode;
             if (!(e.target.a.includes(key))) {

@@ -1,3 +1,4 @@
 INSERT INTO `puzzle` (`id`, `title`, `description`, `tutorialID`, `solution`, `instructionsAllowed`, `valuesAllowed`, `registersAllowed`) VALUES ('3', 'Fibonacci', 'Create a program to output the first n amount of letters of the Fibonacci sequence.\r\nN can be retrieved from register X.\r\n\r\nExamples:\r\nn = 1, Output = 0\r\nn = 5, Output = 0, 1, 1, 2, 3', NULL, '-1', 'move, add', '-1', 'a, b, c, d, e, f, g');
 
 INSERT INTO `puzzle` (`id`, `title`, `description`, `tutorialID`, `solution`, `instructionsAllowed`, `valuesAllowed`, `registersAllowed`) VALUES ('6', 'For Loop', 'Make a loop that counts from 1 to 50', NULL, '-1', 'add, move', '-1', 'a, b, c, d, e, f, g');
+INSERT INTO `puzzle` (`id`, `title`, `description`, `tutorialID`, `solution`, `instructionsAllowed`, `valuesAllowed`, `registersAllowed`) VALUES ('0', 'Dummy', 'Get 5 ', NULL, '5', 'add, move, out, jne', '1,2,3,4,5,6,7,8,9,0', 'a, b, c, d, e, f, g');

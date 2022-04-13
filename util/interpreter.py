@@ -272,7 +272,7 @@ class Interpreter:
                 self.registers[Register.Z.value] = 0
 
     def execute(self):
-        self.output.append([self.pc, copy.deepcopy(self.registers), self.stdout])
+        self.output.append([self.pc, copy.deepcopy(self.registers), copy.deepcopy(self.stdout)])
         while self.pc < len(self.program):
             self.step()
 
@@ -287,7 +287,7 @@ class Interpreter:
             elif line[0] == "INSTRUCTION":
                 self.handle_instruction(line[1:])
 
-            self.output.append([self.pc, copy.deepcopy(self.registers), self.stdout])
+            self.output.append([self.pc, copy.deepcopy(self.registers), copy.deepcopy(self.stdout)])
 
     def __repr__(self):
         string = "PC: " + str(self.pc) + "\n"
