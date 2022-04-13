@@ -44,7 +44,7 @@ CREATE TABLE `Puzzle` (
   `title` varchar(200) NOT NULL,
   `description` varchar(200) NOT NULL,
   `tutorialID` int(20),
-  `solution` int(20) NOT NULL,
+  `solution` varchar(200) NOT NULL,
   `instructionsAllowed` varchar(50) NOT NULL,
   `valuesAllowed` varchar(50) NOT NULL,
   `registersAllowed` varchar(50) NOT NULL

@@ -23,7 +23,7 @@ def puzzle(id):
         "registers_allowed": [x.strip() for x in puzzle[0]["registersAllowed"].split(",")],
         "tutorial": puzzle[0]["tutorialID"],
     }
-    print(data['question'])
+    print(data['instructions_allowed']) 
     return render_template("puzzle.html", data=data, user = session['user'])
 
 @app.route('/statistics')
@@ -112,7 +112,7 @@ def interpret():
 
     inter = interpreter.Interpreter("code.mrtl")
     inter.execute()
-
+    
     def format_result(s):
         res = [str(a[0]) + "," + ",".join([str(b) for b in a[1]]) + "," + ",".join([str(c) for c in a[2]]) for a in s]
         return "\n".join(res)
@@ -136,6 +136,18 @@ def add_puzzle():
 
     db.add_puzzle(id, title, description, tutorialID, solution, instructionsAllowed, valuesAllowed, registersAllowed)
     return redirect(url_for('admin'))
+@app.route('/checksolution', methods=["POST"])
+def checksolution():
+    id = request.form["id"]
+    sol = request.form["solution"]
+    ans = db.get_puzzle(id)
+
+    if ",".join([str(a) for a in sol]) == ans[0]["solution"]:
+        #HANDLE WINNING
+        
+        return "good"
+    return "bad"
+    
 
 app.debug = 1
 app.secret_key = "a"

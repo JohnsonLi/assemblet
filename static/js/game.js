@@ -1,7 +1,8 @@
 var question = document.getElementById("question").innerHTML;
-var values_allowed = GAME_VALUES.innerHTML.split(",");
+var values_allowed = GAME_VALUES.innerHTML.split(", ");
 var instructions_allowed = INSTRUCTION_LIST.innerHTML.split(",");
-var registers_allowed = GAME_REGISTERS.innerHTML.split(",");
+var registers_allowed = GAME_REGISTERS.innerHTML.split(", ");
+var game_id = document.getElementById("game-id").innerHTML;
 //=============================
 
 
@@ -12,9 +13,16 @@ const SUBMIT = document.getElementById("submit");
 const REGISTER_VALUES = document.getElementById("register-values");
 
 var parseResponse = function(s) {
+    console.log(s);
     ans = [];
     s.trim().split("\n").forEach((stage) => {
-        ans.push(stage.split(",").map(x => parseInt(x)));
+        let b = [];
+        let n = stage.split(",");
+        for (let i = 0; i < 11; i++) {
+            b.push(parseInt(n[i]));
+        }
+        b.push(n.slice(11));
+        ans.push(b);
     });
 
     return ans;
@@ -40,6 +48,20 @@ var initGame = function() {
                     return;
                 }
                 response = parseResponse(data);
+                console.log(response[response.length-1][11])
+                $.post("/checksolution", 
+                {
+                    solution: response[response.length-1][11].join(","),
+                    id: game_id
+                },
+                function(data,status) {
+                    console.log(data);
+                    if (data == "good") {
+
+                    } else {
+
+                    }
+                }),
                 STEP.classList.remove("hidden");
                 STEP.click();
             }

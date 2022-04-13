@@ -107,14 +107,14 @@ var compile = function() {
     ASSEMBLY_BUILDER.childNodes.forEach((instruction) => {
         let s = instruction.name;
         instruction.parameters.forEach((parameter) => {
-            if (parameter.childNodes.length == 0) {
+            if (parameter.value == "") {
                 $(instruction).css({"border-color": "red", "border-width": "2px"});
                 setTimeout(() => {
                     $(instruction).css({"border-color": "black", "border-width": "1px"})
                 }, 500);
                 failed = true;
             } else {  
-                s += " " + parameter.childNodes[0].value;
+                s += " " + parameter.value;   
             }
         });
         compiled.push(s);

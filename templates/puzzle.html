@@ -10,7 +10,7 @@
             <div class="col s3">
                 <ul class="collapsible">
                     <li class="active">
-                        <div class="collapsible-header" style="color: #38a3a5;"><i class="material-icons">expand_more</i>Problem</div>
+                        <div class="collapsible-header" style="color: #38a3a5;"><i class="material-icons">expand_more</i>Problem <span id="game-id">{{data['id']}} </span></div>
                         <div class="collapsible-body"> 
                             Problem: <span id="question">{{data['question']|safe}}</span> <br> <br>
                             Registers Allowed: <span id="game-registers">{{data['registers_allowed']|join(", ")}}</span><br>
