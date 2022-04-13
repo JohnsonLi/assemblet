@@ -13,7 +13,7 @@
                     </div>
                     <div class="card-action">
                         <a href="#" class="modal-trigger" data-target="{{puzzle['id']}}-modal">Edit</a>
-                        <a href="/deletepuzzle/{{puzzle['id']}}">Delete</a>
+                        <a href="#" class="modal-trigger" data-target="{{puzzle['id']}}-delete-modal">Delete</a>
                     </div>
                 </div>
             </div>
@@ -82,18 +82,22 @@
                     <button class="modal-close waves-effect waves-green btn-flat">Cancel</button>
                 </div>
             </div>
+
+            <div id="{{puzzle['id']}}-delete-modal" class="modal">
+                <div class="modal-content">
+                    <div class="row">
+                        <form action="/deletepuzzle" method="POST" id="delete-form" class="col s12">
+                            <h4>Are you sure?</h4>
+                        </form>
+                    </div>
+                </div>
+        
+                <div class="modal-footer">
+                    <input type="submit" form="delete-form" class="modal-close waves-effect waves-red btn-flat red" value="Delete" name="{{puzzle['id']}}">
+                    <button class="modal-close waves-effect waves-green btn-flat">Cancel</button>
+                </div>
+            </div>
         {% endfor %}
-    </div>
-
-    <div id="delete-modal" class="modal">
-        <div class="modal-content">
-            <h4>Are you sure?</h4>
-        </div>
-
-        <div class="modal-footer">
-            <input type="submit" form="login-form" class="modal-close waves-effect waves-red btn-flat red" value="Delete">
-            <button class="modal-close waves-effect waves-green btn-flat">Cancel</button>
-        </div>
     </div>
 
     <a id="add-puzzle" class="btn-floating btn-large waves-effect waves-light modal-trigger" data-target="new-puzzle"><i class="material-icons">add</i></a>

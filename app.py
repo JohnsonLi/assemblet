@@ -1,3 +1,6 @@
+from operator import methodcaller
+import re
+from traceback import print_tb
 from util import interpreter, db
 
 from flask import Flask, render_template, request, redirect, url_for, flash, session
@@ -118,8 +121,10 @@ def interpret():
         return "\n".join(res)
     return format_result(inter.output)
 
-@app.route('/deletepuzzle/<id>')
-def delete_puzzle(id):
+@app.route('/deletepuzzle', methods=["POST"])
+def delete_puzzle():
+    id = list(request.form.keys())[0]
+
     db.delete_puzzle(id)
     return redirect(url_for('admin'))
 
