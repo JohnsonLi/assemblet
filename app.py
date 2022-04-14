@@ -16,7 +16,12 @@ def landing():
 
 @app.route('/puzzle/<id>')
 def puzzle(id):
+    if 'user' not in session:
+        flash("You need to log in.")
+        return redirect(url_for("landing"))
     puzzle = db.get_puzzle(id)
+    if len(puzzle) == 0:
+        return redirect(url_for("home", user = session['user']))
     data = {
         "id": id,
         "title": puzzle[0]["title"],
@@ -31,6 +36,9 @@ def puzzle(id):
 
 @app.route('/statistics')
 def statistics():
+    if 'user' not in session:
+        flash("You need to log in.")
+        return redirect(url_for("landing"))
     #id, solved, time taken, attempts, tutorial watched
     temp = [[1, True, 176, 2, True], [2, True, 211, 4, False], [3, False, 900, 6, True], [4, True, 4, 1, False], [5, False, 0, 0, 0], [6, True, 312, 3, True]]
     stats = {}
