@@ -94,3 +94,41 @@ def delete_puzzle(id):
         return False
     cursor.close()
     return True
+
+def add_attempts(username):
+    cursor = conn.cursor()
+    puzzles = get_puzzles()
+    for puzzle in puzzles:
+        id = puzzle['id']
+        query = 'INSERT INTO Attempt(username, puzzleID, attempts, timeTaken, solved, watchedTutorial) VALUES (%s, %s, 0, 0, 0, 0)'
+        cursor.execute(query, (username, id))
+    conn.commit()
+    cursor.close()
+
+def get_attempt(username, id):
+    cursor = conn.cursor()
+    query = 'SELECT * FROM Attempt WHERE username = %s AND puzzleID = %s'
+    cursor.execute(query, (username, id))
+    cursor.close()
+    return cursor.fetchall()
+
+def update_attempt(username, id, attempts, timeTaken):
+    cursor = conn.cursor()
+    query = 'UPDATE Attempt SET attempts = %s, timeTaken = %s WHERE username = %s AND puzzleID = %s'
+    cursor.execute(query, (attempts, timeTaken, username, id))
+    conn.commit()
+    cursor.close()
+
+def get_user_attempts(username):
+    cursor = conn.cursor()
+    query = 'SELECT * FROM Attempt WHERE username = %s'
+    cursor.execute(query, (username,))
+    cursor.close()
+    return cursor.fetchall()
+
+def succeed_attempt(username, id):
+    cursor = conn.cursor()
+    query = 'UPDATE Attempt SET solved = 1 WHERE username = %s AND puzzleID = %s'
+    cursor.execute(query, (username, id))
+    conn.commit()
+    cursor.close()

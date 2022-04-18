@@ -178,3 +178,20 @@
 .fade {
     opacity: .2;
 }
+
+#winning-modal {
+    z-index: 80;
+    width: 500px;
+    text-align: center;
+}
+
+#winning-modal h3 {
+    margin-top: 10px;
+    font-weight: bold;
+}
+
+#winning-modal hr {
+    background-color: #ddd;
+    height: 1px;
+    border: none;
+}

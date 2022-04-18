@@ -57,12 +57,25 @@ CREATE TABLE `Puzzle` (
 --
 
 CREATE TABLE `User` (
-  `id` int AUTO_INCREMENT,
   `username` varchar(20),
   `password` varchar(200) NOT NULL,
-  PRIMARY KEY (`id`, `username`)
+  PRIMARY KEY (`username`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `Attempt` (
+  `username` varchar(20),
+  `puzzleID` int,
+  `attempts` int,
+  `timeTaken` int,
+  `solved` tinyint,
+  `watchedTutorial` tinyint,
+  PRIMARY KEY (`username`, `puzzleID`) 
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
 COMMIT;
+
+
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

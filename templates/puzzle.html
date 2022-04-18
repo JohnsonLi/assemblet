@@ -4,15 +4,30 @@
         
 {% endblock %} 
 {% block content %}
-
+    <div id="winning-modal" class="modal">
+        <div class="modal-content">
+            <div class="row">
+                <h3>Congratulations</h3>
+            </div>          
+            <hr>
+            You have successfully completed Problem {{data['id']}}. It took <span id="attempts">{{data['attempts']}}</span> attempts
+            totalling <span id="time-taken">{{data['time_taken']}}</span> seconds.
+        </div>
+        <div class="modal-footer">
+            
+        </div>
+    </div>
+    <button id="display-winning-modal" class="modal-trigger hidden" data-target="winning-modal"></button>
     <div class="content">
         <div class="row">
             <div class="col s3">
                 <ul class="collapsible">
                     <li class="active">
-                        <div class="collapsible-header" style="color: #38a3a5;"><i class="material-icons">expand_more</i>Problem <span id="game-id">{{data['id']}} </span></div>
+                        <div class="collapsible-header" style="color: #38a3a5;">
+                            <i class="material-icons">expand_more</i>Problem&nbsp;<span id="game-id">{{data['id']}} </span> <span class={{"" if data['solved'] else "hidden"}} id="solved-span">&nbsp;- SOLVED</span>
+                        </div>
                         <div class="collapsible-body"> 
-                            Problem: <span id="question">{{data['question']|safe}}</span> <br> <br>
+                            Question: <span id="question">{{data['question']|safe}}</span> <br> <br>
                             Registers Allowed: <span id="game-registers">{{data['registers_allowed']|join(", ")}}</span><br>
                             Values Allowed: <span id="game-values">{{data['values_allowed']|join(", ")}}</span>
                         </div>

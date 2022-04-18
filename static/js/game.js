@@ -3,6 +3,8 @@ var values_allowed = GAME_VALUES.innerHTML.split(", ");
 var instructions_allowed = INSTRUCTION_LIST.innerHTML.split(",");
 var registers_allowed = GAME_REGISTERS.innerHTML.split(", ");
 var game_id = document.getElementById("game-id").innerHTML;
+var attempts = parseInt(ATTEMPTS_SPAN.innerHTML);
+var time_taken = parseInt(TIME_TAKEN_SPAN.innerHTML);
 //=============================
 
 
@@ -28,16 +30,39 @@ var parseResponse = function(s) {
     return ans;
 }
 
+var win = function () {
+    DISPLAY_WINNING.click();
+    SOLVED_SPAN.classList.remove("hidden");
+    $.post('/succeedattempt', {
+        user: USER.innerHTML,
+        id: game_id,
+    })
+}
+
+
 var initGame = function() {
     let questionDiv = document.getElementById("question");
     questionDiv.innerHTML = question;
+
+    setInterval(() => {
+        time_taken++;
+    }, 1000);
 
     SUBMIT.addEventListener("click", () => {
 
         //TODO: post to backend
         let s = compile();
+        attempts++;
+        ATTEMPTS_SPAN.innerHTML = attempts;
+        TIME_TAKEN_SPAN.innerHTML = time_taken;
+    
         if (s==null) return;
-
+        $.post("/updateattempt", {
+            user: USER.innerHTML,
+            id: game_id,
+            timeTaken: time_taken,
+            attempts: attempts
+        })
         $.post("/interpret",
             {
                 code: s
@@ -48,16 +73,14 @@ var initGame = function() {
                     return;
                 }
                 response = parseResponse(data);
-                console.log(response[response.length-1][11])
                 $.post("/checksolution", 
                 {
                     solution: response[response.length-1][11].join(","),
                     id: game_id
                 },
                 function(data,status) {
-                    console.log(data);
                     if (data == "good") {
-
+                        win();
                     } else {
 
                     }

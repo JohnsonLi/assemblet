@@ -7,15 +7,15 @@
     Puzzles: <br>
     {% for puzzle in stats['puzzles'] %}
         <div class="stats-entry">
-            <span class="stats-id"> {{puzzle['id']}}</span> <br>
-            <span class="stats-time-spent"> {{puzzle['time_taken']}} </span>
+            <span class="stats-id"> {{puzzle['puzzleID']}}</span> <br>
+            <span class="stats-time-spent"> {{puzzle['timeTaken']}} </span>
             <span class="stats-attempts"> {{puzzle['attempts']}} </span>
             {% if puzzle['solved'] %} 
             solved
             {% else %} 
             not solved 
             {% endif %} 
-            {% if puzzle['watched'] %} 
+            {% if puzzle['watchedTutorial'] %} 
             watched
             {% else %} 
             not watched

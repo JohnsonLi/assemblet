@@ -21,7 +21,8 @@ def puzzle(id):
         return redirect(url_for("landing"))
     puzzle = db.get_puzzle(id)
     if len(puzzle) == 0:
-        return redirect(url_for("home", user = session['user']))
+        return redirect(url_for("home"))
+    user_data = db.get_attempt(session['user'], int(id))[0]
     data = {
         "id": id,
         "title": puzzle[0]["title"],
@@ -30,8 +31,10 @@ def puzzle(id):
         "values_allowed":  [x.strip() for x in puzzle[0]["valuesAllowed"].split(",")],
         "registers_allowed": [x.strip() for x in puzzle[0]["registersAllowed"].split(",")],
         "tutorial": puzzle[0]["tutorialID"],
+        "attempts": user_data["attempts"],
+        "time_taken": user_data["timeTaken"],
+        "solved": user_data["solved"]
     }
-    print(data['instructions_allowed']) 
     return render_template("puzzle.html", data=data, user = session['user'])
 
 @app.route('/statistics')
@@ -40,19 +43,13 @@ def statistics():
         flash("You need to log in.")
         return redirect(url_for("landing"))
     #id, solved, time taken, attempts, tutorial watched
-    temp = [[1, True, 176, 2, True], [2, True, 211, 4, False], [3, False, 900, 6, True], [4, True, 4, 1, False], [5, False, 0, 0, 0], [6, True, 312, 3, True]]
     stats = {}
-    stats['puzzles'] = []
-    total = 0
+    stats['puzzles'] = db.get_user_attempts(session['user'])
     solved = 0
-    for a in temp:
-        d = {}
-        [d['id'], d['solved'],d['time_taken'],d['attempts'],d['watched']]  = a 
-        total += 1
-        solved += 1 if d['solved'] else 0
-        stats['puzzles'].append(d)
+    for a in stats['puzzles']:
+        solved += 1 if a['solved'] else 0
 
-    stats['total_puzzles'] = total 
+    stats['total_puzzles'] = len(stats['puzzles'])
     stats['solved_puzzles'] = solved
     return render_template("statistics.html", stats=stats, user = session['user'])
 
@@ -83,7 +80,6 @@ def admin():
 
 @app.route('/adduser', methods=["POST"])
 def adduser():
-    print(request.form)
     #Retrieves username, password
     username = request.form["username"]
     password = md5_crypt.hash(request.form["password"])
@@ -93,8 +89,9 @@ def adduser():
         flash('Error: User already exists')
         return redirect(url_for("landing"))
 
+    db.add_attempts(username)
     session['user'] = username
-    return redirect(url_for('home', user = session['user']))
+    return redirect(url_for('home'))
 
 @app.route('/login', methods=["POST"])
 def login():
@@ -103,9 +100,10 @@ def login():
     password = request.form["password"]
 
     hashed_pass = db.get_password(username)
-    if hashed_pass != [] and md5_crypt.verify(password,hashed_pass[0]['password']):
+    print(hashed_pass)
+    if hashed_pass != () and md5_crypt.verify(password,hashed_pass[0]['password']):
         session['user'] = username
-        return redirect(url_for("home", user = session['user']))
+        return redirect(url_for("home"))
     else:
         flash("Username or Password is incorrect")
         return redirect(url_for("landing"))
@@ -161,7 +159,6 @@ def edit_puzzle():
     valuesAllowed = request.form["values-allowed"]
     registersAllowed = request.form["registers-allowed"]
 
-    print("edited")
     db.edit_puzzle(id, title, description, tutorialID, solution, instructionsAllowed, valuesAllowed, registersAllowed)
     return redirect(url_for('admin'))
 
@@ -173,10 +170,25 @@ def checksolution():
 
     if ",".join([str(a) for a in sol]) == ans[0]["solution"]:
         #HANDLE WINNING
-        
         return "good"
     return "bad"
     
+
+@app.route('/updateattempt', methods=["POST"])
+def updateattempt():
+    username = request.form["user"]
+    id = request.form["id"]
+    time_taken = request.form["timeTaken"]
+    attempts = request.form["attempts"]
+    db.update_attempt(username,id,attempts, time_taken)
+    return "success"
+
+@app.route('/succeedattempt', methods=["POST"])
+def succeedattempt():
+    username = request.form["user"]
+    id = request.form["id"]
+    db.succeed_attempt(username,id)
+    return "success"
 
 app.debug = 1
 app.secret_key = "a"
