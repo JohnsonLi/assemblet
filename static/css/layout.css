@@ -114,14 +114,6 @@
     background-color: azure;
 }
 
-.stats-entry {
-    width: 75px;
-    height: 75px;
-    border: 1px solid black;
-    margin: 5px;
-    display: inline-block;
-}
-
 .content {
     padding: 20px 20px;
 }
@@ -217,4 +209,73 @@
     background-color: #ddd;
     height: 1px;
     border: none;
+}
+
+.separator {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    margin-left: 2em;
+    color: #ffab40;
+}
+.separator::after {
+    opacity: 0.5;
+    margin-top: 0.25em;
+    content: '';
+    flex: 1;
+    border-bottom: 1px solid #ffab40;
+    margin-right: 4em;
+}
+  
+.separator:not(:empty)::after {
+    margin-left: 2em;
+}
+
+.display-puzzle:hover {
+    background-color: #f5f5f5;
+}
+
+#stats-name {
+    display: flex;
+    margin-top: 1em;
+    align-items: center;
+    text-align: center;
+    color: #ffab40;
+}
+
+#stats-name::before,
+#stats-name::after {
+    opacity: 0.5;
+    margin-top: 0.25em;
+    content: '';
+    flex: 1;
+    border-bottom: 1px solid #ffab40;
+}
+
+#stats-name:not(:empty)::after {
+    margin-left: 1.5em;
+    margin-right: 1.5em;
+}
+#stats-name:not(:empty)::before {
+    margin-right: 1.5em;
+    margin-left: 1.5em;
+}
+
+.stats-header {
+    text-align: center;
+}
+
+.stats-content {
+    margin-left: 3em;
+}
+
+.stats-content .card {
+    padding-top: 24px;
+    padding-left: 24px;
+    padding-right: 24px;
+    padding-bottom: 0.25em;
+}
+
+.stats-content .unfinished {
+    opacity: .25;
 }

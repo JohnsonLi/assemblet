@@ -1,5 +1,22 @@
 {% extends "base.html" %}
 {% block content %}
-    <a href="/puzzle/0"><button>To the game</button></a>
-    <a href="/statistics"><button>To the stats</button></a>
+
+    {% for group in puzzles %}
+    <div class="row">
+    <div class="separator"><h5>{{group['name']}}</h5></div>
+    {% for puzzle in group['puzzles'] %}
+        <div class="col s3">
+            <a href="puzzle/{{puzzle['id']}}">
+            <div class="display-puzzle card">
+                <div class="card-content">
+                    <span class="card-title">{{puzzle['id']}} - {{puzzle['title']}}</span>
+                    <span>{{puzzle['description']|safe}}</span>
+                </div>
+            </div>
+            </a>
+        </div>
+    {% endfor %}
+    </div>
+    {% endfor %}
+
 {% endblock %}

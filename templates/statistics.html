@@ -1,28 +1,40 @@
 {% extends "base.html" %} 
 
 {% block content %}
-    Username: {{user}} <br>
-    Completion Status: {{(stats['solved_puzzles'] / stats['total_puzzles'] * 100)|round(1)}}% ({{stats['solved_puzzles']}} out of {{stats['total_puzzles']}} puzzles) <br>
+    <div class="row stats-header">
+    <h4 id="stats-name">Statistics for {{user}}</h4>
 
-    Puzzles: <br>
+    Completion Status: {{(stats['solved_puzzles'] / stats['total_puzzles'] * 100)|round(1)}}% ({{stats['solved_puzzles']}} out of {{stats['total_puzzles']}} puzzles) <br>
+    </div>
+
+    <div class="row stats-content">
     {% for puzzle in stats['puzzles'] %}
-        <div class="stats-entry">
-            <span class="stats-id"> {{puzzle['puzzleID']}}</span> <br>
-            <span class="stats-time-spent"> {{puzzle['timeTaken']}} </span>
-            <span class="stats-attempts"> {{puzzle['attempts']}} </span>
-            {% if puzzle['solved'] %} 
-            solved
-            {% else %} 
-            not solved 
-            {% endif %} 
-            {% if puzzle['watchedTutorial'] %} 
-            watched
-            {% else %} 
-            not watched
-            {% endif %} 
+        <div class="col s2">
+            <div class="stats-entry card">
+                <div class="activator">
+                <span class="card-title"><span class="stats-id"> {{puzzle['puzzleID']}}</span> - <span class="stats-title"> {{puzzle['title']}}</span></span>
+                <p>
+                    Attempts: <span class="stats-attempts"> {{puzzle['attempts']}} </span> <br>
+                    Time Taken: <span class="stats-time-spent"> {{puzzle['timeTaken']}}</span>s <br>
+                
+                {% if puzzle['solved'] %} 
+                <i class="material-icons right green-text">check</i>
+                {% else %} 
+                <i class="material-icons right unfinished">check</i>
+                {% endif %} 
+                <br>
+                </p>
+                </div>
+                <div class="card-reveal">
+                    <span class="card-title"><span class="stats-id"> {{puzzle['puzzleID']}}</span> - <span class="stats-title"> {{puzzle['title']}}</span> <i class="material-icons right">close</i></span>
+                    <p>
+                        Instructions Practiced: {{puzzle['instructions']}}
+                    </p>
+                </div>
+            </div>
         </div>
     {% endfor %}
-
+    </div>
 
 
 

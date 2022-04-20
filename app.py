@@ -66,6 +66,10 @@ def statistics():
     stats['puzzles'] = db.get_user_attempts(session['user'])
     solved = 0
     for a in stats['puzzles']:
+        puzzle_info = db.get_puzzle(a['puzzleID'])[0]
+        print(puzzle_info)
+        a['title'] = puzzle_info['title']
+        a['instructions'] = puzzle_info['instructionsAllowed']
         solved += 1 if a['solved'] else 0
 
     stats['total_puzzles'] = len(stats['puzzles'])
@@ -77,8 +81,27 @@ def home():
     if 'user' not in session:
         flash("You need to log in.")
         return redirect(url_for("landing"))
+    puzzles = db.get_puzzles()
+    grouped = []
+    introduction = {
+        "name": "Introduction",
+        "puzzles": [puzzles[0]] #later, you can do puzzles[0:3] or smth
+    }
+    puzzles = puzzles[1:]
+    loops = {
+        "name": "Loops",
+        "puzzles": [puzzles[0]]
+    }
+    puzzles = puzzles[1:]
+    other = {
+        "name": "Other",
+        "puzzles": puzzles
+    }
+    grouped.append(introduction)
+    grouped.append(loops)
+    grouped.append(other)
 
-    return render_template("home.html", user = session['user'])
+    return render_template("home.html", puzzles = grouped, user = session['user'])
 
 @app.route('/admin')
 def admin():
