@@ -139,3 +139,10 @@ def get_tutorial(id):
     cursor.execute(query, (id,))
     cursor.close() 
     return cursor.fetchall()
+
+def get_tutorials():
+    cursor = conn.cursor()
+    query = 'SELECT * FROM Tutorial'
+    cursor.execute(query)
+    cursor.close()
+    return cursor.fetchall() 

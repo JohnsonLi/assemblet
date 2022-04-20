@@ -34,7 +34,12 @@ def puzzle(id):
         }
     else:
         user_data = user_data[0]
-    tutorial = db.get_tutorial(id)
+    if 'tutorialID' in puzzle:
+        tutorial = db.get_tutorial(puzzle['tutorialID'])
+        if tutorial == ():
+            tutorial = None
+    else:
+        tutorial = None
     data = {
         "id": id,
         "title": puzzle[0]["title"],
@@ -42,7 +47,7 @@ def puzzle(id):
         "instructions_allowed": [x.strip() for x in puzzle[0]["instructionsAllowed"].split(",")],
         "values_allowed":  [x.strip() for x in puzzle[0]["valuesAllowed"].split(",")],
         "registers_allowed": [x.strip() for x in puzzle[0]["registersAllowed"].split(",")],
-        "tutorial": tutorial[0] if tutorial != () else None,
+        "tutorial": tutorial,
         "attempts": user_data["attempts"],
         "time_taken": user_data["timeTaken"],
         "solved": user_data["solved"]
@@ -86,6 +91,20 @@ def admin():
     # TODO make this admin only xd
 
     return render_template("admin.html", puzzles=puzzles, user = session['user'])
+
+@app.route('/admintutorial')
+def admintutorial():
+    if 'user' not in session:
+        flash("You need to log in.")
+        return redirect(url_for("landing"))
+
+    tutorials = db.get_tutorials()
+    for tutorial in tutorials:
+        tutorial["content"] = tutorial["content"].replace('\r', "").replace('\n', "<br>")
+    # TODO do this but for tutorials also
+    # TODO make this admin only xd
+    print(tutorials)  
+    return render_template("admin_tutorial.html", tutorials=tutorials, user = session['user'])
 
 
 #===============================non page stuff=====================

@@ -51,7 +51,7 @@ CREATE TABLE `Puzzle` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `Tutorial` (
-  `puzzleID` int PRIMARY KEY,
+  `id` int PRIMARY KEY,
   `title` varchar(200) NOT NULL,
   `content` varchar(2000) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
