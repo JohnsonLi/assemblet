@@ -135,7 +135,7 @@ def succeed_attempt(username, id):
 
 def get_tutorial(id):
     cursor = conn.cursor()
-    query = 'SELECT * FROM Tutorial WHERE puzzleID = %s'
+    query = 'SELECT * FROM Tutorial WHERE id = %s'
     cursor.execute(query, (id,))
     cursor.close() 
     return cursor.fetchall()
@@ -146,3 +146,39 @@ def get_tutorials():
     cursor.execute(query)
     cursor.close()
     return cursor.fetchall() 
+
+def add_tutorial(id, title, content):
+    cursor = conn.cursor()
+    try:
+        query = 'INSERT INTO Tutorial(id, title, content) values (%s,%s,%s)'
+        cursor.execute(query, (id, title, content))
+        conn.commit()
+    except Exception as e:
+        print(e)
+        return False
+    cursor.close()
+    return True
+
+def edit_tutorial(id, title, content):
+    cursor = conn.cursor()
+    try:
+        query = 'UPDATE Tutorial SET title = %s, content = %s WHERE id = %s'
+        cursor.execute(query, (title, content, id))
+        conn.commit()
+    except Exception as e:
+        print(e)
+        return False
+    cursor.close()
+    return True
+
+def delete_tutorial(id):
+    cursor = conn.cursor()
+    try:
+        query = 'DELETE FROM Tutorial WHERE id = %s'
+        cursor.execute(query, (id,))
+        conn.commit()
+    except Exception as e:
+        print(e)
+        return False
+    cursor.close()
+    return True

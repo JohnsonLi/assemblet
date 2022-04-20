@@ -8,7 +8,7 @@
             <div class="col s3">
                 <div class="edit-puzzle card">
                     <div class="card-content">
-                        <span class="card-title">{{puzzle['id']}} {{puzzle['title']}}</span>
+                        <span class="card-title">{{puzzle['id']}} - {{puzzle['title']}}</span>
                         <span>{{puzzle['description']|safe}}</span>
                     </div>
                     <div class="card-action">
@@ -21,7 +21,7 @@
             <div id="{{puzzle['id']}}-modal" class="modal">
                 <div class="modal-content">
                     <div class="row">
-                        <form action="/editpuzzle" method="POST" id="edit-puzzle-form" class="col s12">
+                        <form action="/editpuzzle" method="POST" id="edit-puzzle-form{{puzzle['id']}}" class="col s12">
                             <div class="row">
                                 <div class="input-field col s3">
                                     <input readonly placeholder="ID" id="id" type="number" class="validate" name="id" value="{{puzzle['id']}}">
@@ -79,7 +79,7 @@
                 </div>
                 
                 <div class="modal-footer">
-                    <input type="submit" form="edit-puzzle-form" class="modal-close waves-effect waves-green btn-flat" value="Change">
+                    <input type="submit" form="edit-puzzle-form{{puzzle['id']}}" class="modal-close waves-effect waves-green btn-flat" value="Change">
                     <button class="modal-close waves-effect waves-green btn-flat">Cancel</button>
                 </div>
             </div>

@@ -8,7 +8,7 @@
             <div class="col s3">
                 <div class="edit-tutorial card">
                     <div class="card-content">
-                        <span class="card-title">{{tutorial['id']}} {{tutorial['title']}}</span>
+                        <span class="card-title">{{tutorial['id']}} - {{tutorial['title']}}</span>
                         <span>{{tutorial['content']|safe}}</span>
                     </div>
                     <div class="card-action">
@@ -21,7 +21,7 @@
             <div id="{{tutorial['id']}}-modal" class="modal">
                 <div class="modal-content">
                     <div class="row">
-                        <form action="/edittutorial" method="POST" id="edit-tutorial-form" class="col s12">
+                        <form action="/edittutorial" method="POST" id="edit-tutorial-form{{tutorial['id']}}" class="col s12">
                             <div class="row">
                                 <div class="input-field col s3">
                                     <input readonly placeholder="ID" id="id" type="number" class="validate" name="id" value="{{tutorial['id']}}">
@@ -45,7 +45,7 @@
                 </div>
                 
                 <div class="modal-footer">
-                    <input type="submit" form="edit-tutorial-form" class="modal-close waves-effect waves-green btn-flat" value="Change">
+                    <input type="submit" form="edit-tutorial-form{{tutorial['id']}}" class="modal-close waves-effect waves-green btn-flat" value="Change">
                     <button class="modal-close waves-effect waves-green btn-flat">Cancel</button>
                 </div>
             </div>
@@ -75,7 +75,7 @@
                 <form action="/addtutorial" method="POST" id="add-tutorial-form" class="col s12">
                     <div class="row">
                         <div class="input-field col s3">
-                            <input readonly placeholder="ID" id="id" type="number" class="validate" name="id">
+                            <input  placeholder="ID" id="id" type="number" class="validate" name="id">
                                 <label for="id">Tutorial ID</label>
                             </div>
                             <div class="input-field col s6">

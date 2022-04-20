@@ -34,10 +34,12 @@ def puzzle(id):
         }
     else:
         user_data = user_data[0]
-    if 'tutorialID' in puzzle:
-        tutorial = db.get_tutorial(puzzle['tutorialID'])
+    if 'tutorialID' in puzzle[0]:
+        tutorial = db.get_tutorial(puzzle[0]['tutorialID'])
         if tutorial == ():
             tutorial = None
+        else:
+            tutorial = tutorial[0]
     else:
         tutorial = None
     data = {
@@ -103,7 +105,6 @@ def admintutorial():
         tutorial["content"] = tutorial["content"].replace('\r', "").replace('\n', "<br>")
     # TODO do this but for tutorials also
     # TODO make this admin only xd
-    print(tutorials)  
     return render_template("admin_tutorial.html", tutorials=tutorials, user = session['user'])
 
 
@@ -131,7 +132,6 @@ def login():
     password = request.form["password"]
 
     hashed_pass = db.get_password(username)
-    print(hashed_pass)
     if hashed_pass != () and md5_crypt.verify(password,hashed_pass[0]['password']):
         session['user'] = username
         return redirect(url_for("home"))
@@ -192,6 +192,30 @@ def edit_puzzle():
 
     db.edit_puzzle(id, title, description, tutorialID, solution, instructionsAllowed, valuesAllowed, registersAllowed)
     return redirect(url_for('admin'))
+
+@app.route('/deletetutorial', methods=["POST"])
+def delete_tutorial():
+    id = list(request.form.keys())[0]
+
+    db.delete_tutorial(id)
+    return redirect(url_for('admintutorial'))
+
+@app.route('/addtutorial', methods=["POST"])
+def add_tutorial():
+    id = request.form["id"]
+    title = request.form["title"]
+    content = request.form["content"]
+
+    db.add_tutorial(id, title, content)
+    return redirect(url_for('admintutorial'))
+
+@app.route('/edittutorial', methods=["POST"])
+def edit_tutorial():
+    id = request.form["id"]
+    title = request.form["title"]
+    content = request.form["content"]
+    db.edit_tutorial(id, title, content)
+    return redirect(url_for('admintutorial'))
 
 @app.route('/checksolution', methods=["POST"])
 def checksolution():

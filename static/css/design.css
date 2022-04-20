@@ -33,6 +33,13 @@ nav .brand-logo {
     z-index: 1;
 }
 
+#add-tutorial {
+    position: absolute;
+    right: 20px;
+    bottom: 20px;
+    z-index: 1;
+}
+
 #delete-modal {
     text-align: center;
     width: 25%;
