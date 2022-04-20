@@ -18,6 +18,16 @@
         </div>
     </div>
     <button id="display-winning-modal" class="modal-trigger hidden" data-target="winning-modal"></button>
+    {% if data['tutorial'] != None %}
+    <div id="tutorial-modal" class="modal">
+        <div class="modal-content">
+            <h4>{{data['tutorial']['title']}}</h4>
+            <hr>
+            {{data['tutorial']['content']|safe}}
+        </div>
+    </div>
+    <button id="display-tutorial-modal" class="modal-trigger hidden" data-target="tutorial-modal"></button>
+    {% endif %}
     <div class="content">
         <div class="row">
             <div class="col s3">
@@ -45,7 +55,7 @@
                             <div id="instruction-list">{{data['instructions_allowed']|join(",")}}</div>
                         </div>
                         <div id="trash-container">
-                            <div id="trash"></div>
+                            <div id="trash" class="hidden"></div>
                         </div>
                     </div>
                     <div class="col s5" id="instructions">

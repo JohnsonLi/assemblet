@@ -120,6 +120,8 @@ var initGame = function() {
             highlightInstruction(pc);
         }
     });
+
+    setTimeout(()=>{DISPLAY_TUTORIAL.click();}, 500);
 }
 
 

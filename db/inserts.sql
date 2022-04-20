@@ -2,3 +2,5 @@ INSERT INTO `puzzle` (`id`, `title`, `description`, `tutorialID`, `solution`, `i
 
 INSERT INTO `puzzle` (`id`, `title`, `description`, `tutorialID`, `solution`, `instructionsAllowed`, `valuesAllowed`, `registersAllowed`) VALUES ('6', 'For Loop', 'Make a loop that counts from 1 to 50', NULL, '-1', 'add, move', '-1', 'a, b, c, d, e, f, g');
 INSERT INTO `puzzle` (`id`, `title`, `description`, `tutorialID`, `solution`, `instructionsAllowed`, `valuesAllowed`, `registersAllowed`) VALUES ('0', 'Dummy', 'Get 5 ', NULL, '5', 'add, move, out, jne', '1,2,3,4,5,6,7,8,9,0', 'a, b, c, d, e, f, g');
+
+INSERT INTO `tutorial` (`puzzleID`, `title`, `content`) VALUES ('0', 'Welcome to Assemblet!', "First, let's try moving a value into a register. To do this, use the move instruction. <br><br> <span class='code'>move 5 a</span> <br><br> After you have your desired value, submit the value in the out instruction. <br><br> <span class='code'>out a</span>");

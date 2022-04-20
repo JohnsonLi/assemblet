@@ -22,7 +22,19 @@ def puzzle(id):
     puzzle = db.get_puzzle(id)
     if len(puzzle) == 0:
         return redirect(url_for("home"))
-    user_data = db.get_attempt(session['user'], int(id))[0]
+    user_data = db.get_attempt(session['user'], int(id))
+    if (user_data == ()):
+        user_data = {
+            'username': session['user'],
+            'puzzleID': id,
+            'attempts': 0,
+            'timeTaken': 0,
+            'solved': 0,
+            'watchedTutorial': 0
+        }
+    else:
+        user_data = user_data[0]
+    tutorial = db.get_tutorial(id)
     data = {
         "id": id,
         "title": puzzle[0]["title"],
@@ -30,13 +42,13 @@ def puzzle(id):
         "instructions_allowed": [x.strip() for x in puzzle[0]["instructionsAllowed"].split(",")],
         "values_allowed":  [x.strip() for x in puzzle[0]["valuesAllowed"].split(",")],
         "registers_allowed": [x.strip() for x in puzzle[0]["registersAllowed"].split(",")],
-        "tutorial": puzzle[0]["tutorialID"],
+        "tutorial": tutorial[0] if tutorial != () else None,
         "attempts": user_data["attempts"],
         "time_taken": user_data["timeTaken"],
         "solved": user_data["solved"]
     }
     return render_template("puzzle.html", data=data, user = session['user'])
-
+ 
 @app.route('/statistics')
 def statistics():
     if 'user' not in session:

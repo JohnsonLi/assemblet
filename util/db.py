@@ -132,3 +132,10 @@ def succeed_attempt(username, id):
     cursor.execute(query, (username, id))
     conn.commit()
     cursor.close()
+
+def get_tutorial(id):
+    cursor = conn.cursor()
+    query = 'SELECT * FROM Tutorial WHERE puzzleID = %s'
+    cursor.execute(query, (id,))
+    cursor.close() 
+    return cursor.fetchall()

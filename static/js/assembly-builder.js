@@ -31,11 +31,14 @@ var init = function() {
             INSTRUCTION_LIST.childNodes.forEach((instr) => {
                 instr.classList.add("fade");
             });
+            TRASH.classList.remove("hidden");
         },
         onEnd: function(evt) {
             INSTRUCTION_LIST.childNodes.forEach((instr) => {
                 instr.classList.remove("fade");
             });
+            
+            TRASH.classList.add("hidden");
         }
     });
     Sortable.create(INSTRUCTION_LIST, {

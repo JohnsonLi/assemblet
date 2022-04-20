@@ -10,3 +10,4 @@ const TIME_TAKEN_SPAN = document.getElementById("time-taken");
 const USER = document.getElementById("user");
 const DISPLAY_WINNING = document.getElementById("display-winning-modal");
 const SOLVED_SPAN = document.getElementById("solved-span");
+const DISPLAY_TUTORIAL = document.getElementById("display-tutorial-modal");

@@ -80,11 +80,15 @@
 }
 
 #trash-container {
+    position:absolute;
     height: 10px;
     width: 80%;
     margin: auto;
     display: flex;
     justify-content: center;
+    top: 50%;
+    
+
 }
 
 #trash {
@@ -146,6 +150,7 @@
     position: relative;
     width: 25%;
     height: 100%;
+    overflow-y: scroll;
 }
 
 .instruction-number {
@@ -191,6 +196,24 @@
 }
 
 #winning-modal hr {
+    background-color: #ddd;
+    height: 1px;
+    border: none;
+}
+
+#tutorial-modal h4 {
+    text-align: center;
+}
+#tutorial-modal {
+    width: 600px;
+
+}
+
+.code {
+    background-color: #d3d3d3;
+}
+
+#tutorial-modal hr {
     background-color: #ddd;
     height: 1px;
     border: none;
