@@ -1,14 +1,18 @@
-from operator import methodcaller
-import re
-from traceback import print_tb
-from util import interpreter, db
-
 from flask import Flask, render_template, request, redirect, url_for, flash, session
+from flask_sqlalchemy import SQLAlchemy
 from passlib.hash import md5_crypt
-
+ 
+import interpreter
+from models import db
 
 
 app = Flask(__name__)
+app.secret_key = "a"
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:root@localhost/assemblet'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False 
+db.init_app(app)
+
+from models import Users, Puzzle, Attempt, Tutorial
 
 @app.route('/')
 def landing():
@@ -16,43 +20,31 @@ def landing():
 
 @app.route('/puzzle/<id>')
 def puzzle(id):
+    id = int(id)
     if 'user' not in session:
         flash("You need to log in.")
         return redirect(url_for("landing"))
-    puzzle = db.get_puzzle(id)
-    if len(puzzle) == 0:
+    puzzle = Puzzle.query.get(id)
+    if puzzle is None:
         return redirect(url_for("home"))
-    user_data = db.get_attempt(session['user'], int(id))
-    if (user_data == ()):
-        user_data = {
-            'username': session['user'],
-            'puzzleID': id,
-            'attempts': 0,
-            'timeTaken': 0,
-            'solved': 0,
-            'watchedTutorial': 0
-        }
-    else:
-        user_data = user_data[0]
-    if 'tutorialID' in puzzle[0]:
-        tutorial = db.get_tutorial(puzzle[0]['tutorialID'])
-        if tutorial == ():
-            tutorial = None
-        else:
-            tutorial = tutorial[0]
-    else:
-        tutorial = None
+
+    attempt = Attempt.query.get((session['user'], id))
+    if (attempt == None):
+        attempt = Attempt(session['user'], id, 0, 0, 0, 0)
+        db.session.add(attempt)
+        db.session.commit()
+
     data = {
         "id": id,
-        "title": puzzle[0]["title"],
-        "question": puzzle[0]["description"].replace('\r', "").replace('\n', "<br>"),
-        "instructions_allowed": [x.strip() for x in puzzle[0]["instructionsAllowed"].split(",")],
-        "values_allowed":  [x.strip() for x in puzzle[0]["valuesAllowed"].split(",")],
-        "registers_allowed": [x.strip() for x in puzzle[0]["registersAllowed"].split(",")],
-        "tutorial": tutorial,
-        "attempts": user_data["attempts"],
-        "time_taken": user_data["timeTaken"],
-        "solved": user_data["solved"]
+        "title": puzzle.title,
+        "question": puzzle.description.replace('\r', "").replace('\n', "<br>"),
+        "instructions_allowed": [x.strip() for x in puzzle.instructionsallowed.split(",")],
+        "values_allowed":  [x.strip() for x in puzzle.valuesallowed.split(",")],
+        "registers_allowed": [x.strip() for x in puzzle.registersallowed.split(",")],
+        "tutorial": puzzle.tutorialid,
+        "attempts": attempt.attempts,
+        "time_taken": attempt.timetaken,
+        "solved": attempt.solved
     }
     return render_template("puzzle.html", data=data, user = session['user'])
  
@@ -63,14 +55,18 @@ def statistics():
         return redirect(url_for("landing"))
     #id, solved, time taken, attempts, tutorial watched
     stats = {}
-    stats['puzzles'] = db.get_user_attempts(session['user'])
+    stats['puzzles'] = Attempt.query.filter_by(username = session['user']).all()
+    stats['extraInfo'] = {}
     solved = 0
     for a in stats['puzzles']:
-        puzzle_info = db.get_puzzle(a['puzzleID'])[0]
-        print(puzzle_info)
-        a['title'] = puzzle_info['title']
-        a['instructions'] = puzzle_info['instructionsAllowed']
-        solved += 1 if a['solved'] else 0
+        puzzle_info = Puzzle.query.get(a.puzzleid)
+        extraInfo = {
+            'title': puzzle_info.title,
+            'instructions': puzzle_info.instructionsallowed
+        }
+        
+        stats['extraInfo'][a.puzzleid] = extraInfo
+        solved += 1 if a.solved else 0
 
     stats['total_puzzles'] = len(stats['puzzles'])
     stats['solved_puzzles'] = solved
@@ -81,13 +77,13 @@ def home():
     if 'user' not in session:
         flash("You need to log in.")
         return redirect(url_for("landing"))
-    puzzles = db.get_puzzles()
+    puzzles = Puzzle.query.all()
     grouped = []
     introduction = {
         "name": "Introduction",
         "puzzles": [puzzles[0]] #later, you can do puzzles[0:3] or smth
     }
-    puzzles = puzzles[1:]
+    '''puzzles = puzzles[1:]
     loops = {
         "name": "Loops",
         "puzzles": [puzzles[0]]
@@ -96,10 +92,10 @@ def home():
     other = {
         "name": "Other",
         "puzzles": puzzles
-    }
+    }'''
     grouped.append(introduction)
-    grouped.append(loops)
-    grouped.append(other)
+    #grouped.append(loops)
+    #grouped.append(other)
 
     return render_template("home.html", puzzles = grouped, user = session['user'])
 
@@ -109,9 +105,9 @@ def admin():
         flash("You need to log in.")
         return redirect(url_for("landing"))
 
-    puzzles = db.get_puzzles()
+    puzzles = Puzzle.query.all()
     for puzzle in puzzles:
-        puzzle["description"] = puzzle["description"].replace('\r', "").replace('\n', "<br>")
+        puzzle.description = puzzle.description.replace('\r', "").replace('\n', "<br>")
     # TODO do this but for tutorials also
     # TODO make this admin only xd
 
@@ -123,9 +119,9 @@ def admintutorial():
         flash("You need to log in.")
         return redirect(url_for("landing"))
 
-    tutorials = db.get_tutorials()
+    tutorials = Tutorial.query.all()
     for tutorial in tutorials:
-        tutorial["content"] = tutorial["content"].replace('\r', "").replace('\n', "<br>")
+        tutorial.content = tutorial.content.replace('\r', "").replace('\n', "<br>")
     # TODO do this but for tutorials also
     # TODO make this admin only xd
     return render_template("admin_tutorial.html", tutorials=tutorials, user = session['user'])
@@ -139,12 +135,20 @@ def adduser():
     username = request.form["username"]
     password = md5_crypt.hash(request.form["password"])
 
-    success = db.add_user(username, password)
-    if not success:
+    try: 
+        user = Users(username, password)
+        db.session.add(user)
+        db.session.commit()
+    except Exception as e:
+        print(e)
         flash('Error: User already exists')
         return redirect(url_for("landing"))
 
-    db.add_attempts(username)
+    for puzzle in Puzzle.query.all():
+        newAttempt = Attempt(username, puzzle.id, 0, 0, 0, 0)
+        db.session.add(newAttempt)
+    db.session.commit()
+
     session['user'] = username
     return redirect(url_for('home'))
 
@@ -154,8 +158,8 @@ def login():
     username = request.form["username"]
     password = request.form["password"]
 
-    hashed_pass = db.get_password(username)
-    if hashed_pass != () and md5_crypt.verify(password,hashed_pass[0]['password']):
+    user = Users.query.get(username)
+    if user != None and md5_crypt.verify(password,user.password):
         session['user'] = username
         return redirect(url_for("home"))
     else:
@@ -185,7 +189,10 @@ def interpret():
 def delete_puzzle():
     id = list(request.form.keys())[0]
 
-    db.delete_puzzle(id)
+    puzzle = Puzzle.query.get(id)
+    db.session.delete(puzzle)
+    db.session.commit()
+
     return redirect(url_for('admin'))
 
 @app.route('/addpuzzle', methods=["POST"])
@@ -193,13 +200,16 @@ def add_puzzle():
     id = request.form["id"]
     title = request.form["title"]
     description = request.form["description"]
-    tutorialID = request.form["tutorial-id"]
+    tutorialid = int(request.form["tutorial-id"]) if request.form["tutorial-id"] != '' else None
     solution = request.form["solution"]
-    instructionsAllowed = request.form["instructions-allowed"]
-    valuesAllowed = request.form["values-allowed"]
-    registersAllowed = request.form["registers-allowed"]
+    instructionsallowed = request.form["instructions-allowed"]
+    valuesallowed = request.form["values-allowed"]
+    registersallowed = request.form["registers-allowed"]
 
-    db.add_puzzle(id, title, description, tutorialID, solution, instructionsAllowed, valuesAllowed, registersAllowed)
+    puzzle = Puzzle(id, title, description, tutorialid, solution, instructionsallowed, valuesallowed, registersallowed)
+    db.session.add(puzzle)
+    db.session.commit()
+
     return redirect(url_for('admin'))
 
 @app.route('/editpuzzle', methods=["POST"])
@@ -207,20 +217,32 @@ def edit_puzzle():
     id = request.form["id"]
     title = request.form["title"]
     description = request.form["description"]
-    tutorialID = request.form["tutorial-id"]
+    tutorialid = request.form["tutorial-id"]
     solution = request.form["solution"]
-    instructionsAllowed = request.form["instructions-allowed"]
-    valuesAllowed = request.form["values-allowed"]
-    registersAllowed = request.form["registers-allowed"]
+    instructionsallowed = request.form["instructions-allowed"]
+    valuesallowed = request.form["values-allowed"]
+    registersallowed = request.form["registers-allowed"]
 
-    db.edit_puzzle(id, title, description, tutorialID, solution, instructionsAllowed, valuesAllowed, registersAllowed)
+    puzzle = Puzzle.query.get(id)
+    puzzle.title = title 
+    puzzle.description = description
+    puzzle.tutorialid = int(tutorialid) if tutorialid != '' else None
+    puzzle.solution = solution
+    puzzle.instructionsallowed = instructionsallowed
+    puzzle.valuesallowed = valuesallowed
+    puzzle.registersallowed = registersallowed
+
+    db.session.commit()
     return redirect(url_for('admin'))
 
 @app.route('/deletetutorial', methods=["POST"])
 def delete_tutorial():
     id = list(request.form.keys())[0]
 
-    db.delete_tutorial(id)
+    tutorial = Tutorial.query.get(id)
+    db.session.delete(tutorial)
+    db.session.commit()
+
     return redirect(url_for('admintutorial'))
 
 @app.route('/addtutorial', methods=["POST"])
@@ -229,7 +251,10 @@ def add_tutorial():
     title = request.form["title"]
     content = request.form["content"]
 
-    db.add_tutorial(id, title, content)
+    tutorial = Tutorial(id, title, content)
+    db.session.add(tutorial)
+    db.session.commit()
+
     return redirect(url_for('admintutorial'))
 
 @app.route('/edittutorial', methods=["POST"])
@@ -237,16 +262,22 @@ def edit_tutorial():
     id = request.form["id"]
     title = request.form["title"]
     content = request.form["content"]
-    db.edit_tutorial(id, title, content)
+
+    tutorial = Tutorial.query.get(id)
+    tutorial.title = title
+    tutorial.content = content 
+    
+    db.session.commit()
+    
     return redirect(url_for('admintutorial'))
 
 @app.route('/checksolution', methods=["POST"])
 def checksolution():
     id = request.form["id"]
     sol = request.form["solution"]
-    ans = db.get_puzzle(id)
+    ans = Puzzle.query.get(id)
 
-    if ",".join([str(a) for a in sol]) == ans[0]["solution"]:
+    if ",".join([str(a) for a in sol]) == ans.solution:
         #HANDLE WINNING
         return "good"
     return "bad"
@@ -258,16 +289,26 @@ def updateattempt():
     id = request.form["id"]
     time_taken = request.form["timeTaken"]
     attempts = request.form["attempts"]
-    db.update_attempt(username,id,attempts, time_taken)
+
+    attempt = Attempt.query.get((username, id))
+    attempt.timetaken = time_taken
+    attempt.attempts = attempts 
+    
+    db.session.commit()
+
     return "success"
 
 @app.route('/succeedattempt', methods=["POST"])
 def succeedattempt():
     username = request.form["user"]
     id = request.form["id"]
-    db.succeed_attempt(username,id)
+
+    attempt = Attempt.query.get((username, id))
+    attempt.solved = 1
+
+    db.session.commit()
     return "success"
 
-app.debug = 1
-app.secret_key = "a"
-app.run()
+if __name__ == '__main__':
+    app.debug = 1
+    app.run()

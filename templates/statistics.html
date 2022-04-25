@@ -12,23 +12,23 @@
         <div class="col s2">
             <div class="stats-entry card">
                 <div class="activator">
-                <span class="card-title"><span class="stats-id"> {{puzzle['puzzleID']}}</span> - <span class="stats-title"> {{puzzle['title']}}</span></span>
-                <p>
-                    Attempts: <span class="stats-attempts"> {{puzzle['attempts']}} </span> <br>
-                    Time Taken: <span class="stats-time-spent"> {{puzzle['timeTaken']}}</span>s <br>
+                <span class="card-title activator"><span class="stats-id activator"> {{puzzle['puzzleid']}}</span> - <span class="stats-title activator"> {{stats['extraInfo'][puzzle['puzzleid']]['title']}}</span></span>
+                <p class="activator">
+                    Attempts: <span class="stats-attempts activator"> {{puzzle['attempts']}} </span> <br>
+                    Time Taken: <span class="stats-time-spent activator"> {{puzzle['timetaken']}}</span>s <br>
                 
                 {% if puzzle['solved'] %} 
-                <i class="material-icons right green-text">check</i>
+                <i class="material-icons right green-text activator">check</i>
                 {% else %} 
-                <i class="material-icons right unfinished">check</i>
+                <i class="material-icons right unfinished activator">check</i>
                 {% endif %} 
                 <br>
                 </p>
                 </div>
                 <div class="card-reveal">
-                    <span class="card-title"><span class="stats-id"> {{puzzle['puzzleID']}}</span> - <span class="stats-title"> {{puzzle['title']}}</span> <i class="material-icons right">close</i></span>
+                    <span class="card-title"><span class="stats-id"> {{puzzle['puzzleid']}}</span> - <span class="stats-title"> {{stats['extraInfo'][puzzle['puzzleid']]['title']}}</span> <i class="material-icons right">close</i></span>
                     <p>
-                        Instructions Practiced: {{puzzle['instructions']}}
+                        Instructions Practiced: {{stats['extraInfo'][puzzle['puzzleid']]['instructions']}}
                     </p>
                 </div>
             </div>

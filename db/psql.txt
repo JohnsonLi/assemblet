@@ -20,9 +20,9 @@ CREATE TABLE Tutorial (
 	content	VARCHAR
 );
 
-CREATE TABLE User (
+CREATE TABLE Users (
 	username 	VARCHAR PRIMARY KEY,
-	password	VARCHAR,
+	password	VARCHAR
 );
 
 CREATE TABLE Attempt (
