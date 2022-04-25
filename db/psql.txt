@@ -1,0 +1,35 @@
+check existing databse: \l
+port: 5432
+
+code:
+CREATE DATABASE assemblet;
+CREATE TABLE Puzzle (
+	id 	INT PRIMARY KEY,
+	title 	VARCHAR,
+	description 	VARCHAR,
+	tutorialID 	INT,
+	solution 	VARCHAR,
+	instructionsAllowed	VARCHAR,
+	valuesAllowed		VARCHAR,
+	registersAllowed	VARCHAR
+);
+
+CREATE TABLE Tutorial (
+	id	INT PRIMARY KEY,
+	title 	VARCHAR,
+	content	VARCHAR
+);
+
+CREATE TABLE User (
+	username 	VARCHAR PRIMARY KEY,
+	password	VARCHAR,
+);
+
+CREATE TABLE Attempt (
+	username 	VARCHAR PRIMARY KEY,
+	puzzleID	INT PRIMARY KEY,
+	attempts	INT,
+	timeTaken	INT,
+	solved		INT,
+	watchedTutorial	INT,
+);
