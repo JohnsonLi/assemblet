@@ -1,8 +1,0 @@
-MAIN:
-    MOVE 3 A
-    MOVE 2 B
-    MOVE B C
-    OUT A
-    OUT B
-    OUT C
-    JUMP 5
