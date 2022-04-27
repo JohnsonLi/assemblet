@@ -12,6 +12,7 @@ var midpts = [];
 //=============================
 
 var response;
+var totalLength; var current;
 const STEP = document.getElementById("step");
 const SUBMIT = document.getElementById("submit");
 
@@ -23,10 +24,10 @@ var parseResponse = function(s) {
     s.trim().split("\n").forEach((stage) => {
         let b = [];
         let n = stage.split(",");
-        for (let i = 0; i < 11; i++) {
+        for (let i = 0; i < registers_letters.length + 1; i++) {
             b.push(parseInt(n[i]));
         }
-        b.push(n.slice(11));
+        b.push(n.slice(registers_letters.length + 1));
         ans.push(b);
     });
 
@@ -35,6 +36,7 @@ var parseResponse = function(s) {
 
 var win = function () {
     DISPLAY_WINNING.click();
+    DEBUG_MSG.innerHTML = "Congratulations! You solved the puzzle."
     SOLVED_SPAN.classList.remove("hidden");
     $.post('/succeedattempt', {
         user: USER.innerHTML,
@@ -76,10 +78,10 @@ var initGame = function() {
                     return;
                 }
                 response = parseResponse(data);
-                console.log(response[response.length-1][11].join(","));
+                console.log(response[response.length-1][registers_letters.length + 1].join(","));
                 $.post("/checksolution", 
                 {
-                    solution: response[response.length-1][11].join(","),
+                    solution: response[response.length-1][registers_letters.length + 1].join(","),
                     id: game_id
                 },
                 function(data,status) {
@@ -89,7 +91,10 @@ var initGame = function() {
 
                     }
                 }),
-                DEBUG.classList.remove("collapsible-body")
+                DEBUG.classList.remove("collapsible-body");
+                totalLength = response.length - 1;
+                current = -1;
+                STEP.classList.remove("disabled");
                 STEP.click();
             }
         );
@@ -143,12 +148,16 @@ var initGame = function() {
 
         if (response.length == 0) {
             highlightInstruction(-1);
+            STEP.classList.add("disabled");
         } else {
             highlightInstruction(pc);
         }
+
+        current++;
+        PROGRESS_BAR.style.width = current / totalLength * 100 + "%";
     });
 
-    // setTimeout(()=>{DISPLAY_TUTORIAL.click();}, 500);
+    setTimeout(()=>{DISPLAY_TUTORIAL.click();}, 100);
 }
 
 class Box {
@@ -295,7 +304,9 @@ function deleteBlock(register){
 }
 
 // createBlock("Y", 1);
+$(document).ready(function() {
+    drawGrid();
+    drawLetters();
+    initGame();
+});
 
-drawGrid();
-drawLetters();
-initGame();

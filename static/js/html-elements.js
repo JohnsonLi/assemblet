@@ -11,4 +11,6 @@ const USER = document.getElementById("user");
 const DISPLAY_WINNING = document.getElementById("display-winning-modal");
 const SOLVED_SPAN = document.getElementById("solved-span");
 const DISPLAY_TUTORIAL = document.getElementById("display-tutorial-modal");
-const DEBUG = document.getElementById("debug-tools")
+const DEBUG = document.getElementById("debug-tools");
+const PROGRESS_BAR = document.getElementById("progress-bar");
+const DEBUG_MSG = document.getElementById("debug-msg");

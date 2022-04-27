@@ -1,2 +1,2 @@
 MOVE 1 A
-GTE 4 A
+OUT A

@@ -41,11 +41,12 @@ def puzzle(id):
         "instructions_allowed": [x.strip() for x in puzzle.instructionsallowed.split(",")],
         "values_allowed":  [x.strip() for x in puzzle.valuesallowed.split(",")],
         "registers_allowed": [x.strip() for x in puzzle.registersallowed.split(",")],
-        "tutorial": puzzle.tutorialid,
+        "tutorial": Tutorial.query.get(puzzle.tutorialid),
         "attempts": attempt.attempts,
         "time_taken": attempt.timetaken,
         "solved": attempt.solved
     }
+    print(Tutorial.query.get(puzzle.tutorialid).content)
     return render_template("puzzle.html", data=data, user = session['user'])
  
 @app.route('/statistics')
@@ -282,6 +283,9 @@ def checksolution():
     sol = request.form["solution"]
     ans = Puzzle.query.get(id)
     print(ans.solution)
+    print(sol)
+    print([str(a).strip() for a in sol.split(',')])
+    print([b.strip() for b in ans.solution.split(',')])
     if [str(a).strip() for a in sol.split(',')] == [b.strip() for b in ans.solution.split(',')]:
         #HANDLE WINNING
         return "good"
