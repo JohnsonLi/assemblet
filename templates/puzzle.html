@@ -35,7 +35,7 @@
                     <li class="active">
                         <div class="collapsible-header relative" style="color: #38a3a5;">
                             <i class="material-icons">expand_more</i>Problem&nbsp;<span id="game-id">{{data['id']}} </span> <span class={{"" if data['solved'] else "hidden"}} id="solved-span">&nbsp;- SOLVED</span>
-                            <div class="right"><a id="quit" href="/home">Back to home</a></div>
+                            <div class="right-justify"><a id="quit" href="/home">Back to home</a></div>
                         </div>
                         <div class="collapsible-body"> 
                             Question: <span id="question">{{data['question']|safe}}</span> <br> <br>
@@ -53,8 +53,8 @@
                         <div id="debug-tools" class="collapsible-body padding">
                             <span id="debug-msg">The answer you submitted was incorrect. Step through to review your solution.</span> <br> <br>
                             <div class="flex vertical-align">
-                                <button id="autoplay valign-wrapper" class="waves-effect waves-light btn-flat debug-button">Play</button>
-                                <button id="step valign-wrapper" class="waves-effect waves-light btn-flat debug-button">Step</button>
+                                <button id="autoplay" class="waves-effect waves-light btn-flat debug-button  valign-wrapper">Play</button>
+                                <button id="step" class="waves-effect waves-light btn-flat debug-button valign-wrapper">Step</button>
                                 <div class="progress margin">
                                     <div class="determinate" style="width: 70%"></div>
                                 </div>
@@ -96,12 +96,6 @@
                 
         </div>
 
-
-        
-    
-
-        <br>
-        <!--<canvas id="game"></canvas>-->
         
     </div>
     
