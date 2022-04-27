@@ -103,15 +103,39 @@ var initGame = function() {
         REGISTER_VALUES.appendChild(registerDiv);
     });
 
+    var old = {'a': 0, 'b': 0, 'c': 0, 'd': 0, 'e': 0, 'f': 0, 'x': 0, 'y': 0, 'z': 0};
     STEP.addEventListener("click", () => {
         let nextStep = response.shift();
         let pc = nextStep.shift();
 
         values = {};
         s = ['a','b','c','d','e','f','x','y','z'];
+        changed = [];
         s.forEach((registerName, i) => {
+            if(old[registerName] != nextStep[i]){
+                changed.push(true);
+            } else {
+                changed.push(false);
+            }
+
             values[registerName] = nextStep[i];
+            createBlock(registerName.toUpperCase(), nextStep[i]);
         });
+
+        changed.forEach((change, i) => {
+            if(!change){
+                boxes[i].unhighlight();
+            }
+        });
+
+        changed.forEach((change, i) => {
+            if(change){
+                boxes[i].highlight();
+            }
+        });
+
+        old = values;
+
         REGISTER_VALUES.childNodes.forEach((register) => {
             register.innerHTML = values[register.registerName];
         });
@@ -134,21 +158,27 @@ class Box {
         this.y = y;
         this.width = width;
         this.height = height;
+        this.highlighted = false;
     }
 
     highlight() {
         this.context.lineWidth = 2;
         this.context.strokeStyle = "#F00";
         this.context.strokeRect(this.x, this.y, this.width, this.height);
+        this.highlighted = true;
     }
 
     unhighlight() {
         this.context.strokeStyle = "#000";
         this.context.strokeRect(this.x, this.y, this.width, this.height);
+        this.highlighted = false;
+    }
+
+    isHighlighted() {
+        return this.highlighted;
     }
 
     draw() {
-        console.log("drawing box");
         this.context.lineWidth = 2;
         this.context.strokeStyle = "#000";
         this.context.strokeRect(this.x, this.y, this.width, this.height);
@@ -185,14 +215,14 @@ class Block {
 var bw = 270;
 var bh = 180;
 var b2w = bw;
-var b2h = bh + 90 + 30;
+var b2h = bh + 90 + 60;
 var size = 90
 
 var canvas = document.getElementById("canvas");
 var context = canvas.getContext("2d");
 function drawGrid(){
-    for (var x = 0; x < bw; x += size) {
-        for (var y = 0; y < bh; y += size) {
+    for (var y = 0; y < bh; y += size) {
+        for (var x = 0; x < bw; x += size) {
             var box = new Box(context, x + 1, y + 10, size, size);
             boxes.push(box);
             box.draw();
@@ -200,7 +230,7 @@ function drawGrid(){
     }
 
     for (var x = 0; x < b2w; x += size) {
-        for (var y = bh + 30; y < b2h; y += size) {
+        for (var y = bh + 60; y < b2h; y += size) {
             var box = new Box(context, x + 1, y + 10, size, size);
             boxes.push(box);
             box.draw();
@@ -222,7 +252,7 @@ function drawLetters(){
         }
     }
     
-    for(var y = bh + 30; y < b2h; y += size) {
+    for(var y = bh + 60; y < b2h; y += size) {
         for(var x = 0; x < b2w; x += size) {
             context.fillText(registers_letters[count], x + 10, y + 20);
             count++;
@@ -238,7 +268,7 @@ for (var y = 0; y < bh; y += size) {
 }
 
 for (var x = 0; x < b2w; x += size) {
-    for (var y = bh + 30; y < b2h; y += size) {
+    for (var y = bh + 60; y < b2h; y += size) {
         midpts.push([x + (size / 2) + 1, y + (size / 2) + 10]);
     }
 }
@@ -264,7 +294,7 @@ function deleteBlock(register){
     }
 }
 
-createBlock("Y", 1);
+// createBlock("Y", 1);
 
 drawGrid();
 drawLetters();
