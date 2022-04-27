@@ -104,7 +104,7 @@ var initGame = function() {
         let pc = nextStep.shift();
         
         values = {};
-        s = ['a','b','c','d','e','f','g','x','y','z'];
+        s = ['a','b','c','d','e','f','x','y','z'];
         s.forEach((registerName, i) => {
             values[registerName] = nextStep[i];
         });
@@ -121,8 +121,100 @@ var initGame = function() {
         }
     });
 
-    setTimeout(()=>{DISPLAY_TUTORIAL.click();}, 500);
+    // setTimeout(()=>{DISPLAY_TUTORIAL.click();}, 500);
 }
 
 
 initGame();
+
+var registers_letters = ['A','B','C','D','E','F','G','X','Y','Z'];
+var boxes = [];
+
+// class for outline box
+class Box {
+    constructor(context, x, y, width, height, color) {
+        this.context = context;
+        this.x = x;
+        this.y = y;
+        this.width = width;
+        this.height = height;
+        this.color = color;
+    }
+
+    draw() {
+        console.log("drawing box");
+        this.context.lineWidth = 2;
+        this.context.strokeStyle = this.color;
+        this.context.strokeRect(this.x, this.y, this.width, this.height);
+    }
+}
+
+
+// Box width
+var bw = 270;
+// Box height
+var bh = 180;
+// Box size
+var size = 90
+var canvas = document.getElementById("canvas");
+var context = canvas.getContext("2d");
+function drawGrid(){
+    for (var x = 0; x < bw; x += size) {
+        for (var y = 0; y < bh; y += size) {
+            var box = new Box(context, x + 1, y + 10, size, size, "#000");
+            boxes.push(box);
+            box.draw();
+        }
+    }
+}
+
+// draw letter in top left of each box
+var count = 0;
+function drawLetters(){
+    context.font = "16px Nunito";
+    context.textAlign = "center";
+    context.textBaseline = "middle";
+    context.fillStyle = "#000";
+    for (var y = 0; y < bh; y += size) {
+        for (var x = 0; x < bw; x += size) {
+            context.fillText(registers_letters[count], x + 10, y + 20);
+            count++;
+        }
+    }
+}
+
+// middle of each box
+midpts = []
+for (var x = 0; x < bw; x += size) {
+    for (var y = 0; y < bh; y += size) {
+        midpts.push([x + (size / 2) + 1, y + (size / 2) + 10]);
+    }
+}
+
+// make sqaure with value in center in canvas
+var blockSize = size - 2;
+function createBlock(value, x, y){
+    context.fillStyle = "#7df196";
+    context.fillRect(x, y, size, size);
+    context.font = "16px Nunito";
+    context.textAlign = "center";
+    context.textBaseline = "middle";
+    context.fillStyle = "#000";
+    context.fillText(value, x + (size / 2), y + (size / 2) + 10);
+}
+
+createBlock(0, 0, 0);
+
+// // draw a circle in the middle of each box
+// function drawCircles(){
+//     context.lineWidth = 2;
+//     context.strokeStyle = "#000";
+//     for(var i = 0; i < midpts.length; i++){
+//         context.beginPath();
+//         context.arc(midpts[i][0], midpts[i][1], 20, 0, 2 * Math.PI);
+//         context.stroke();
+//     }
+// }
+
+drawGrid();
+drawLetters();
