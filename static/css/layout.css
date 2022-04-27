@@ -282,10 +282,10 @@ hr {
     opacity: .25;
 }
 
-.right {
+/* .right {
     position: absolute;
     right: 20px;
-}
+} */
 
 .relative {
     position: relative;
