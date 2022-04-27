@@ -58,3 +58,9 @@ class Attempt(db.Model):
         self.timetaken = timeTaken
         self.solved = solved
         self.watchedtutorial = watchedTutorial
+
+class Admin(db.Model):
+    username = db.Column(db.String(), primary_key=True)
+
+    def __init__(self, username):
+        self.username = username 
