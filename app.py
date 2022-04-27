@@ -276,8 +276,8 @@ def checksolution():
     id = request.form["id"]
     sol = request.form["solution"]
     ans = Puzzle.query.get(id)
-
-    if ",".join([str(a) for a in sol]) == ans.solution:
+    print(ans.solution)
+    if [str(a).strip() for a in sol.split(',')] == [b.strip() for b in ans.solution.split(',')]:
         #HANDLE WINNING
         return "good"
     return "bad"

@@ -76,6 +76,7 @@ var initGame = function() {
                     return;
                 }
                 response = parseResponse(data);
+                console.log(response[response.length-1][11].join(","));
                 $.post("/checksolution", 
                 {
                     solution: response[response.length-1][11].join(","),
