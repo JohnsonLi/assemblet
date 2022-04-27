@@ -33,13 +33,33 @@
             <div class="col s3">
                 <ul class="collapsible">
                     <li class="active">
-                        <div class="collapsible-header" style="color: #38a3a5;">
+                        <div class="collapsible-header relative" style="color: #38a3a5;">
                             <i class="material-icons">expand_more</i>Problem&nbsp;<span id="game-id">{{data['id']}} </span> <span class={{"" if data['solved'] else "hidden"}} id="solved-span">&nbsp;- SOLVED</span>
+                            <div class="right"><a id="quit" href="/home">Back to home</a></div>
                         </div>
                         <div class="collapsible-body"> 
                             Question: <span id="question">{{data['question']|safe}}</span> <br> <br>
                             Registers Allowed: <span id="game-registers">{{data['registers_allowed']|join(", ")}}</span><br>
                             Values Allowed: <span id="game-values">{{data['values_allowed']|join(", ")}}</span>
+                        </div>
+                    </li>
+                </ul>
+                <ul class="collapsible z-depth-2">
+                    <li>
+                        <div class="flex center-align vertical-align collapsible-header no-padding">
+                            <button id="submit" class="waves-effect waves-light btn-flat">Submit</button>
+                        </div>
+                        <hr>
+                        <div id="debug-tools" class="collapsible-body padding">
+                            <span id="debug-msg">The answer you submitted was incorrect. Step through to review your solution.</span> <br> <br>
+                            <div class="flex vertical-align">
+                                <button id="autoplay valign-wrapper" class="waves-effect waves-light btn-flat debug-button">Play</button>
+                                <button id="step valign-wrapper" class="waves-effect waves-light btn-flat debug-button">Step</button>
+                                <div class="progress margin">
+                                    <div class="determinate" style="width: 70%"></div>
+                                </div>
+                            </div>
+                            
                         </div>
                     </li>
                 </ul>
@@ -77,13 +97,12 @@
         </div>
 
 
-        <button id="submit">Submit (Execute)</button>
-        <button id="step" class="hidden">Step </button>
+        
     
 
         <br>
-
-        <a href="/home"><button id="quit">Quit</button></a>
+        <!--<canvas id="game"></canvas>-->
+        
     </div>
     
 

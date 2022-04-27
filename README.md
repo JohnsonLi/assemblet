@@ -26,3 +26,5 @@ How to install:
 - html/css/js files have the actual pages
 - database will be run in the background separately, but keep in repository for now
 
+# link to softare design description
+https://docs.google.com/document/d/1Lgr2LjtCBOfm8wJsKoURJN13T4ueE46bc9b1HsUNxU0/edit?usp=sharing

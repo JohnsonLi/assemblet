@@ -85,7 +85,7 @@ var initGame = function() {
 
                     }
                 }),
-                STEP.classList.remove("hidden");
+                DEBUG.classList.remove("collapsible-body")
                 STEP.click();
             }
         );
@@ -114,7 +114,6 @@ var initGame = function() {
 
 
         if (response.length == 0) {
-            STEP.classList.add("hidden");
             highlightInstruction(-1);
         } else {
             highlightInstruction(pc);
