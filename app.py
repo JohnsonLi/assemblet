@@ -12,7 +12,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:root@localhost/as
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False 
 db.init_app(app)
 
-from models import Users, Puzzle, Attempt, Tutorial
+from models import Users, Puzzle, Attempt, Tutorial, Admin
 
 @app.route('/')
 def landing():
@@ -104,6 +104,8 @@ def admin():
     if 'user' not in session:
         flash("You need to log in.")
         return redirect(url_for("landing"))
+    if Admin.query.get(session['user']) is None:
+        return redirect(url_for("home"))
 
     puzzles = Puzzle.query.all()
     for puzzle in puzzles:
@@ -118,6 +120,9 @@ def admintutorial():
     if 'user' not in session:
         flash("You need to log in.")
         return redirect(url_for("landing"))
+    
+    if Admin.query.get(session['user']) is None:
+        return redirect(url_for("home"))
 
     tutorials = Tutorial.query.all()
     for tutorial in tutorials:
