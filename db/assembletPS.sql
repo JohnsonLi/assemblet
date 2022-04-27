@@ -125,5 +125,19 @@ ALTER TABLE ONLY public.users
 
 --
 -- PostgreSQL database dump complete
+-- Table: public.admin
+
+-- DROP TABLE IF EXISTS public.admin;
+
+CREATE TABLE IF NOT EXISTS public.admin
+(
+    username character varying COLLATE pg_catalog."default" NOT NULL,
+    CONSTRAINT admin_pkey PRIMARY KEY (username)
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS public.admin
+    OWNER to postgres;
 --
 
