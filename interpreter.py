@@ -6,8 +6,8 @@ tokens = ("LABEL", "INSTRUCTION", "NUMBER", "REGISTER")
 
 # Tokens
 t_LABEL = r"\w+:"
-t_INSTRUCTION = r"\s*(IN|OUT|MOVE|ADD|SUB|MULT|DIV|MOD|JUMP|JE|JNE|GT|GTE|LT|LTE)"
-t_REGISTER = r"\s*(A|B|C|D|E|F|G|X|Y|Z)"
+t_INSTRUCTION = r"\s*(IN|OUT|MOVE|ADD|SUB|MULT|DIV|MOD|JUMP|JE|JNE|GTE|GT|LTE|LT)"
+t_REGISTER = r"\s*(A|B|C|D|E|F|X|Y|Z)"
 t_ignore = " \t"
 
 def t_NUMBER(t):
@@ -38,10 +38,9 @@ class Register(Enum):
     D = 3
     E = 4
     F = 5
-    G = 6
-    X = 7
-    Y = 8
-    Z = 9
+    X = 6
+    Y = 7
+    Z = 8
 
 class Interpreter:
 
@@ -328,3 +327,5 @@ class Interpreter:
 #             break
 
 # ============================================================================= #
+# a = Interpreter("code.mrtl")
+# a.execute()
