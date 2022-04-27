@@ -255,6 +255,14 @@ function createBlock(register, value){
     block.draw();
 }
 
+function deleteBlock(register){
+    var blockIndex = registers_letters.indexOf(register);
+    if(blocks[blockIndex] != null){
+        blocks[blockIndex].erase();
+        blocks[blockIndex] = null;
+    }
+}
+
 createBlock("Y", 1);
 
 drawGrid();
