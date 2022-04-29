@@ -79,26 +79,25 @@ def home():
         flash("You need to log in.")
         return redirect(url_for("landing"))
     puzzles = Puzzle.query.all()
-    grouped = []
-    introduction = {
-        "name": "Introduction",
-        "puzzles": [puzzles[0]] #later, you can do puzzles[0:3] or smth
-    }
-    '''puzzles = puzzles[1:]
-    loops = {
-        "name": "Loops",
-        "puzzles": [puzzles[0]]
-    }
-    puzzles = puzzles[1:]
-    other = {
-        "name": "Other",
-        "puzzles": puzzles
-    }'''
-    grouped.append(introduction)
-    #grouped.append(loops)
-    #grouped.append(other)
+    
+    groups = {}
+    for puzzle in puzzles:
+        if puzzle.category not in groups:
+            groups[puzzle.category] = []
+        groups[puzzle.category].append(puzzle)
 
-    return render_template("home.html", puzzles = grouped, user = session['user'])
+    if "" in groups:
+        groups["Other"] = groups.pop("")
+
+    sortedkeys = sorted(groups.keys())
+    orderedgroups = []
+    for key in sortedkeys:
+        d = {
+            "name": key,
+            "puzzles": groups[key]
+        }
+        orderedgroups.append(d)
+    return render_template("home.html", puzzles = orderedgroups, user = session['user'])
 
 @app.route('/admin')
 def admin():
@@ -147,8 +146,7 @@ def adduser():
         db.session.commit()
     except Exception as e:
         print(e)
-        flash('Error: User already exists')
-        return redirect(url_for("landing"))
+        return 'Error: User already exists'
 
     for puzzle in Puzzle.query.all():
         newAttempt = Attempt(username, puzzle.id, 0, 0, 0, 0)
@@ -156,21 +154,21 @@ def adduser():
     db.session.commit()
 
     session['user'] = username
-    return redirect(url_for('home'))
+    return "success"
 
 @app.route('/login', methods=["POST"])
 def login():
     #Retrieves username, password
     username = request.form["username"]
     password = request.form["password"]
-
+    print(username)
+    print(password)
     user = Users.query.get(username)
     if user != None and md5_crypt.verify(password,user.password):
         session['user'] = username
-        return redirect(url_for("home"))
+        return "success"
     else:
-        flash("Username or Password is incorrect")
-        return redirect(url_for("landing"))
+        return "Username or Password is incorrect"
 
 @app.route('/logout')
 def logout():
@@ -211,8 +209,9 @@ def add_puzzle():
     instructionsallowed = request.form["instructions-allowed"]
     valuesallowed = request.form["values-allowed"]
     registersallowed = request.form["registers-allowed"]
+    category = request.form["category"]
 
-    puzzle = Puzzle(id, title, description, tutorialid, solution, instructionsallowed, valuesallowed, registersallowed)
+    puzzle = Puzzle(id, title, description, tutorialid, solution, instructionsallowed, valuesallowed, registersallowed, category)
     db.session.add(puzzle)
     db.session.commit()
 
@@ -228,6 +227,7 @@ def edit_puzzle():
     instructionsallowed = request.form["instructions-allowed"]
     valuesallowed = request.form["values-allowed"]
     registersallowed = request.form["registers-allowed"]
+    category = request.form["category"]
 
     puzzle = Puzzle.query.get(id)
     puzzle.title = title 
@@ -237,6 +237,7 @@ def edit_puzzle():
     puzzle.instructionsallowed = instructionsallowed
     puzzle.valuesallowed = valuesallowed
     puzzle.registersallowed = registersallowed
+    puzzle.category = category
 
     db.session.commit()
     return redirect(url_for('admin'))

@@ -88,7 +88,7 @@ var initGame = function() {
                     if (data == "good") {
                         win();
                     } else {
-
+                        DEBUG_MSG.innerHTML = "The answer you submitted was incorrect. Step through to review your solution."
                     }
                 }),
                 DEBUG.classList.remove("collapsible-body");
@@ -100,13 +100,6 @@ var initGame = function() {
         );
     });
 
-    registers_allowed.forEach((name) => {
-        let registerDiv = document.createElement("div");
-        registerDiv.classList.add("register-value");
-        registerDiv.innerHTML = "0";
-        registerDiv.registerName = name;
-        REGISTER_VALUES.appendChild(registerDiv);
-    });
 
     var old = {'a': 0, 'b': 0, 'c': 0, 'd': 0, 'e': 0, 'f': 0, 'x': 0, 'y': 0, 'z': 0};
     STEP.addEventListener("click", () => {
@@ -158,6 +151,10 @@ var initGame = function() {
     });
 
     setTimeout(()=>{DISPLAY_TUTORIAL.click();}, 100);
+    STUCK.addEventListener("click", () => {
+        DISPLAY_TUTORIAL.click();
+    });
+
 }
 
 class Box {

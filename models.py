@@ -32,8 +32,9 @@ class Puzzle(db.Model):
     instructionsallowed = db.Column(db.String(), nullable=False)
     valuesallowed = db.Column(db.String(), nullable=False)
     registersallowed = db.Column(db.String(), nullable=False)
+    category = db.Column(db.String())
 
-    def __init__(self, id, title, description, tutorialID, solution, instructionsAllowed, valuesAllowed, registersAllowed):
+    def __init__(self, id, title, description, tutorialID, solution, instructionsAllowed, valuesAllowed, registersAllowed, category):
         self.id = id
         self.title = title
         self.description = description
@@ -42,6 +43,7 @@ class Puzzle(db.Model):
         self.instructionsallowed = instructionsAllowed
         self.valuesallowed = valuesAllowed
         self.registersallowed = registersAllowed
+        self.category = category
 
 class Attempt(db.Model):
     username = db.Column(db.String(), primary_key=True)

@@ -338,3 +338,7 @@ hr {
     display: block;
     width: 300px;
 }
+
+#stuck-button {
+    margin-bottom: 15px;
+}

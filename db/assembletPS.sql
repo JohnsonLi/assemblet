@@ -5,7 +5,7 @@
 -- Dumped from database version 14.2
 -- Dumped by pg_dump version 14.2
 
--- Started on 2022-04-25 10:20:23
+-- Started on 2022-04-29 19:56:35
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -21,6 +21,18 @@ SET row_security = off;
 SET default_tablespace = '';
 
 SET default_table_access_method = heap;
+
+--
+-- TOC entry 213 (class 1259 OID 24576)
+-- Name: admin; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.admin (
+    username character varying NOT NULL
+);
+
+
+ALTER TABLE public.admin OWNER TO postgres;
 
 --
 -- TOC entry 212 (class 1259 OID 16416)
@@ -52,7 +64,8 @@ CREATE TABLE public.puzzle (
     solution character varying,
     instructionsallowed character varying,
     valuesallowed character varying,
-    registersallowed character varying
+    registersallowed character varying,
+    category character varying
 );
 
 
@@ -86,7 +99,16 @@ CREATE TABLE public.users (
 ALTER TABLE public.users OWNER TO postgres;
 
 --
--- TOC entry 3182 (class 2606 OID 16422)
+-- TOC entry 3188 (class 2606 OID 24582)
+-- Name: admin admin_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.admin
+    ADD CONSTRAINT admin_pkey PRIMARY KEY (username);
+
+
+--
+-- TOC entry 3186 (class 2606 OID 16422)
 -- Name: attempt attempt_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -95,7 +117,7 @@ ALTER TABLE ONLY public.attempt
 
 
 --
--- TOC entry 3176 (class 2606 OID 16401)
+-- TOC entry 3180 (class 2606 OID 16401)
 -- Name: puzzle puzzle_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -104,7 +126,7 @@ ALTER TABLE ONLY public.puzzle
 
 
 --
--- TOC entry 3178 (class 2606 OID 16408)
+-- TOC entry 3182 (class 2606 OID 16408)
 -- Name: tutorial tutorial_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -113,7 +135,7 @@ ALTER TABLE ONLY public.tutorial
 
 
 --
--- TOC entry 3180 (class 2606 OID 16415)
+-- TOC entry 3184 (class 2606 OID 16415)
 -- Name: users users_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -121,23 +143,9 @@ ALTER TABLE ONLY public.users
     ADD CONSTRAINT users_pkey PRIMARY KEY (username);
 
 
--- Completed on 2022-04-25 10:20:24
+-- Completed on 2022-04-29 19:56:35
 
 --
 -- PostgreSQL database dump complete
--- Table: public.admin
-
--- DROP TABLE IF EXISTS public.admin;
-
-CREATE TABLE IF NOT EXISTS public.admin
-(
-    username character varying COLLATE pg_catalog."default" NOT NULL,
-    CONSTRAINT admin_pkey PRIMARY KEY (username)
-)
-
-TABLESPACE pg_default;
-
-ALTER TABLE IF EXISTS public.admin
-    OWNER to postgres;
 --
 

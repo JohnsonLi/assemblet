@@ -27,7 +27,7 @@
         <div id="signup-modal" class="modal">
             <div class="modal-content">
                 <div class="row">
-                    <form id="signup-form" class="col s12" action="/adduser" method="POST"></form>
+                    <form id="signup-form" class="col s12"></form>
                         <div class="row">
                             <div class="input-field">
                                 <input form="signup-form" id="signup-username" type="text" class="validate" name="username">
@@ -44,14 +44,15 @@
                             <div class="input-field">
                                 <input form="signup-form" id="confirm-password" type="password" class="validate" name="confirm_password">
                                 <label for="confirm-password">Confirm Password</label>
-                                <span id="confirm-password-error" class="hidden">Passwords do not match</span>
+                                <span id="confirm-password-error"></span>
                             </div>
                         </div>
+                        <span id="signup-error"></span>
                     </form>
                 </div>          
             </div>
             <div class="modal-footer">
-                <input type="submit" form="signup-form" id="submit-signup" class="modal-close waves-effect waves-green btn-flat" value="Sign Up">
+                <button id="submit-signup" class=" waves-effect waves-green btn-flat">SIGN UP</button>
                 <button class="modal-close waves-effect waves-green btn-flat">Cancel</button>
             </div>
         </div>
@@ -59,7 +60,7 @@
           <div id="login-modal" class="modal">
             <div class="modal-content">
                 <div class="row">
-                    <form id="login-form" class="col s12" method="POST" action="/login">
+                    <form id="login-form" class="col s12">
                         <div class="row">
                             <div class="input-field">
                                 <input form="login-form" id="login-username" type="text" class="validate" name="username">
@@ -72,12 +73,13 @@
                                 <label for="login-password">Password</label>
                             </div>
                         </div>
+                        <span id="login-error"></span>
                     </form>
                 </div>
                         
             </div>
             <div class="modal-footer">
-                <input type="submit" form="login-form" class="modal-close waves-effect waves-green btn-flat" value="Log In">
+                <button id="submit-login" class=" waves-effect waves-green btn-flat">LOG IN</button>
                 <button class="modal-close waves-effect waves-green btn-flat">Cancel</button>
             </div>
           </div>

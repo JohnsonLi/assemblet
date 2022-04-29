@@ -44,14 +44,16 @@
                         </div>
                     </li>
                 </ul>
+                <div id="stuck-button" class="padding center-align z-depth-2" style="color: #38a3a5;">
+                    Stuck? Click here to show the tutorial.
+                </div>
                 <ul class="collapsible z-depth-2">
                     <li>
                         <div class="flex center-align vertical-align collapsible-header no-padding">
                             <button id="submit" class="waves-effect waves-light btn-flat">Submit</button>
                         </div>
-                        <hr>
                         <div id="debug-tools" class="collapsible-body padding">
-                            <span id="debug-msg">The answer you submitted was incorrect. Step through to review your solution.</span> <br> <br>
+                            <span id="debug-msg"></span> <br> <br>
                             <div class="flex vertical-align">
                                 <button id="autoplay" class="waves-effect waves-light btn-flat debug-button  valign-wrapper">Play</button>
                                 <button id="step" class="waves-effect waves-light btn-flat debug-button valign-wrapper">Step</button>
@@ -92,7 +94,6 @@
 
             <br>
 
-            <div id="register-values" style="display:inline-block"></div>
                 
         </div>
 
