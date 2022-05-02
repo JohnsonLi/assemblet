@@ -46,7 +46,6 @@ def puzzle(id):
         "time_taken": attempt.timetaken,
         "solved": attempt.solved
     }
-    print(Tutorial.query.get(puzzle.tutorialid).content)
     return render_template("puzzle.html", data=data, user = session['user'])
  
 @app.route('/statistics')

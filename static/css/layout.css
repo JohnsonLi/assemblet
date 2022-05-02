@@ -111,7 +111,7 @@
 }
 
 .highlight {
-    background-color: #B3E0B8;
+    background-color: #7eaaaa;
 }
 
 .content {
@@ -128,12 +128,14 @@
     height: 600px;  
 }
 
+#register-values-title,
 #instruction-title {
     font-weight: bold;
     justify-content: center;
     padding: 15px;
 }
 
+#register-values-title-div,
 #instruction-title-div {
     border-bottom: 1px solid #ddd;
 }
@@ -341,4 +343,9 @@ hr {
 
 #stuck-button {
     margin-bottom: 15px;
+}
+
+#register-values {
+    margin-top: 7.5px;
+    padding-top: 7.5px;
 }

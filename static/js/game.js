@@ -14,6 +14,7 @@ var midpts = [];
 var response;
 var totalLength; var current;
 const STEP = document.getElementById("step");
+const AUTOPLAY = document.getElementById("autoplay");
 const SUBMIT = document.getElementById("submit");
 
 const REGISTER_VALUES = document.getElementById("register-values");
@@ -52,6 +53,19 @@ var initGame = function() {
     setInterval(() => {
         time_taken++;
     }, 1000);
+
+    AUTOPLAY.addEventListener("click", () => {
+        STEP.classList.add("disabled");
+        clearInterval(AUTOPLAY.interval);
+        AUTOPLAY.interval = setInterval(() => {
+            STEP.click();
+            if (response.length == 0) {
+                clearInterval(AUTOPLAY.interval);
+                AUTOPLAY.classList.add("disabled");
+            }
+
+        }, 1000);
+    });
 
     SUBMIT.addEventListener("click", () => {
 
@@ -95,49 +109,33 @@ var initGame = function() {
                 totalLength = response.length - 1;
                 current = -1;
                 STEP.classList.remove("disabled");
+                AUTOPLAY.classList.remove("disabled");
                 STEP.click();
             }
         );
     });
 
 
-    var old = {'a': 0, 'b': 0, 'c': 0, 'd': 0, 'e': 0, 'f': 0, 'x': 0, 'y': 0, 'z': 0};
+    var old = {'A': 0, 'B': 0, 'C': 0, 'D': 0, 'E': 0, 'F': 0, 'X': 0, 'Y': 0, 'Z': 0};
     STEP.addEventListener("click", () => {
         let nextStep = response.shift();
         let pc = nextStep.shift();
 
         values = {};
-        s = ['a','b','c','d','e','f','x','y','z'];
-        changed = [];
-        s.forEach((registerName, i) => {
-            if(old[registerName] != nextStep[i]){
-                changed.push(true);
-            } else {
-                changed.push(false);
-            }
 
+        registers_letters.forEach((registerName, i) => {
             values[registerName] = nextStep[i];
-            createBlock(registerName.toUpperCase(), nextStep[i]);
-        });
-
-        changed.forEach((change, i) => {
-            if(!change){
-                boxes[i].unhighlight();
+            if(old[registerName] != nextStep[i]){
+                createBlock(registerName.toUpperCase(), nextStep[i], true);
+            } else {
+                createBlock(registerName.toUpperCase(), nextStep[i], false);
             }
         });
 
-        changed.forEach((change, i) => {
-            if(change){
-                boxes[i].highlight();
-            }
-        });
+
+        drawLetters();
 
         old = values;
-
-        REGISTER_VALUES.childNodes.forEach((register) => {
-            register.innerHTML = values[register.registerName];
-        });
-
 
         if (response.length == 0) {
             highlightInstruction(-1);
@@ -155,6 +153,8 @@ var initGame = function() {
         DISPLAY_TUTORIAL.click();
     });
 
+    
+
 }
 
 class Box {
@@ -168,15 +168,12 @@ class Box {
     }
 
     highlight() {
-        this.context.lineWidth = 2;
-        this.context.strokeStyle = "#F00";
-        this.context.strokeRect(this.x, this.y, this.width, this.height);
+
         this.highlighted = true;
     }
 
     unhighlight() {
-        this.context.strokeStyle = "#000";
-        this.context.strokeRect(this.x, this.y, this.width, this.height);
+
         this.highlighted = false;
     }
 
@@ -185,9 +182,6 @@ class Box {
     }
 
     draw() {
-        this.context.lineWidth = 2;
-        this.context.strokeStyle = "#000";
-        this.context.strokeRect(this.x, this.y, this.width, this.height);
     }
 }
 
@@ -206,8 +200,12 @@ class Block {
         blocks[blocks.indexOf(this)] = null;
     }
 
-    draw() {
-        context.fillStyle = "#7df196";
+    draw(changed = false) {
+        if (changed) {
+            context.fillStyle = "#7eaaaa";
+        } else {
+            context.fillStyle = "#c7f9cc";
+        }
         context.fillRect(this.x, this.y, this.width, this.height);
         context.font = "20px Nunito";
         context.textAlign = "center";
@@ -218,11 +216,11 @@ class Block {
 
 }
 
-var bw = 270;
+var bw = 300;
 var bh = 180;
 var b2w = bw;
 var b2h = bh + 90 + 60;
-var size = 90
+var size = 100
 
 var canvas = document.getElementById("canvas");
 var context = canvas.getContext("2d");
@@ -242,25 +240,32 @@ function drawGrid(){
             box.draw();
         }
     }
+
+    registers_letters.forEach((registerName, i) => {
+        createBlock(registerName.toUpperCase(), 0);
+    });
+
+
 }
 
 // draw letter in top left of each box
-var count = 0;
+
 function drawLetters(){
+    var count = 0;
     context.font = "16px Nunito";
     context.textAlign = "center";
     context.textBaseline = "middle";
     context.fillStyle = "#000";
     for (var y = 0; y < bh; y += size) {
         for (var x = 0; x < bw; x += size) {
-            context.fillText(registers_letters[count], x + 10, y + 20);
+            context.fillText(registers_letters[count], x + 15, y + 25);
             count++;
         }
     }
     
     for(var y = bh + 60; y < b2h; y += size) {
         for(var x = 0; x < b2w; x += size) {
-            context.fillText(registers_letters[count], x + 10, y + 20);
+            context.fillText(registers_letters[count], x + 15, y + 25);
             count++;
         }
     }
@@ -280,8 +285,8 @@ for (var x = 0; x < b2w; x += size) {
 }
 
 // make sqaure with value in center in canvas
-var blockSize = size - 20;
-function createBlock(register, value){
+var blockSize = size-5;
+function createBlock(register, value, changed = false){
     var blockIndex = registers_letters.indexOf(register);
     var mid = midpts[blockIndex];
     var block = new Block(context, mid[0] - blockSize / 2, mid[1] - blockSize / 2, blockSize, blockSize, value);
@@ -289,8 +294,9 @@ function createBlock(register, value){
         blocks[blockIndex].erase();
     }
     blocks[blockIndex] = block;
-    block.draw();
+    block.draw(changed);
 }
+
 
 function deleteBlock(register){
     var blockIndex = registers_letters.indexOf(register);

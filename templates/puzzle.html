@@ -34,7 +34,7 @@
                 <ul class="collapsible">
                     <li class="active">
                         <div class="collapsible-header relative" style="color: #38a3a5;">
-                            <i class="material-icons">expand_more</i>Problem&nbsp;<span id="game-id">{{data['id']}} </span> <span class={{"" if data['solved'] else "hidden"}} id="solved-span">&nbsp;- SOLVED</span>
+                            <i class="material-icons">expand_more</i>Problem&nbsp;<span id="game-id">{{data['id']}} </span> <span id="solved-span" class={{'' if data['solved'] else "hidden" }} >&nbsp;- SOLVED</span>
                             <div class="right-justify"><a id="quit" href="/home">Back to home</a></div>
                         </div>
                         <div class="collapsible-body"> 
@@ -44,9 +44,11 @@
                         </div>
                     </li>
                 </ul>
+                {% if data['tutorial'] != None %}
                 <div id="stuck-button" class="padding center-align z-depth-2" style="color: #38a3a5;">
                     Stuck? Click here to show the tutorial.
                 </div>
+                {% endif %}
                 <ul class="collapsible z-depth-2">
                     <li>
                         <div class="flex center-align vertical-align collapsible-header no-padding">
@@ -88,8 +90,11 @@
                 
             </div>
 
-            <div class="col s3">
-                    <canvas id="canvas" style="text-align: center;" height="400"></canvas>
+            <div id="register-values" class="z-depth-2 col s3">
+                <div class="row" id="register-values-title-div">
+                    <span id="register-values-title" class="valign-wrapper">Register Values</span>
+                </div>
+                <canvas id="canvas" class="row" style="text-align: center;" height="400"></canvas>
             </div>
 
             <br>
