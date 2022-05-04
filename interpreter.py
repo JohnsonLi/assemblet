@@ -48,6 +48,7 @@ class Interpreter:
         self.program = []
         self.registers = [0] * len(Register)
         self.pc = 0
+        self.max_steps = 350
         self.stdout = []
         self.output = []
 
@@ -274,6 +275,9 @@ class Interpreter:
         self.output.append([self.pc, copy.deepcopy(self.registers), copy.deepcopy(self.stdout)])
         while self.pc < len(self.program):
             self.step()
+            if len(self.output) > self.max_steps:
+                self.output.append("bozo")
+                return self.output
 
         return self.output
 

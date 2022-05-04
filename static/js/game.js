@@ -91,6 +91,10 @@ var initGame = function() {
                     console.log("bad api call");
                     return;
                 }
+                if(data["error"] != null) {
+                    DEBUG_MSG.innerHTML = data["error"];
+                    return;
+                }
                 response = parseResponse(data);
                 console.log(response[response.length-1][registers_letters.length + 1].join(","));
                 $.post("/checksolution", 

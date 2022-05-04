@@ -182,7 +182,11 @@ def interpret():
 
     inter = interpreter.Interpreter("code.mrtl")
     inter.execute()
-    
+
+    if inter.output[-1] == "bozo":
+        result = {"error": "Program ran for too long. Check if you have an infinite loop."}
+        return result, 201
+
     def format_result(s):
         res = [str(a[0]) + "," + ",".join([str(b) for b in a[1]]) + "," + ",".join([str(c) for c in a[2]]) for a in s]
         return "\n".join(res)

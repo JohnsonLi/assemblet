@@ -4,6 +4,7 @@ const INSTRUCTIONS = {
     'add': [0,1],
     'sub': [0,1],
     'out': [1],
+    'jump': [2],
     'jne': [2,0,1],
     'je': [2,0,1],
     'gte': [0,1],
