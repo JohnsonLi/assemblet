@@ -1,0 +1,145 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+body {
+    font-family: nunito;
+    background: linear-gradient(#7df196, #c2f399);
+    background-attachment:fixed;
+    height:100%;
+}
+
+.split {
+    height: 100%;
+    width: 50%;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    overflow-x: hidden;
+    padding-top: 20px;
+}
+
+#wrapper {
+    width: 70%;
+    height: 70%;
+
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+}
+
+.left {
+    left: 0;
+    background-color: #111;
+    background: linear-gradient(#4afd65, #9cff8d);
+}
+
+.left h1 {
+    color: white;
+    font-size: 5.5em;
+    animation: fadeDown 1.5s ease 0s 1 normal forwards;
+
+    /* position: absolute; */
+    top: 30%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    text-shadow: 0px 4px #7b7b7b;
+}
+
+.right {
+    right: 0;
+}
+
+.right form {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 60%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+}
+
+.right h4 {
+    position: absolute;
+    top: 25%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    color: #ffab40;
+}
+
+.txt {
+    font-size: 2em;  
+    animation: fadeUp 2s ease 0s 1 normal forwards;
+    color: #4d4d4d;
+}
+
+.txt1 {
+    font-size: 2em;  
+    animation: fadeUp 2.5s ease 0s 1 normal forwards;
+    color: #4d4d4d;
+}
+
+.txt2 {
+    font-size: 2em;  
+    animation: fadeUp 3s ease 0s 1 normal forwards;
+    color: #4d4d4d;
+}
+
+@keyframes fadeDown {
+    0% {
+      opacity: 0;
+      transform: translateY(-50px);
+    }
+  
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+}
+
+@keyframes fadeUp {
+    0% {
+      opacity: 0;
+      transform: translateY(50px);
+    }
+  
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+}
+
+  /* label color */
+.input-field label {
+    color: #ffab40;
+}
+/* label focus color */
+.input-field input[type=text]:focus + label {
+    color: #ffab40;
+}
+/* label underline focus color */
+.input-field input[type=text]:focus {
+    border-bottom: 1px solid #ffab40;
+    box-shadow: 0 1px 0 0 #ffab40;
+}
+/* valid color */
+.input-field input[type=text].valid {
+    border-bottom: 1px solid #ffab40;
+    box-shadow: 0 1px 0 0 #ffab40;
+}
+/* invalid color */
+.input-field input[type=text].invalid {
+    border-bottom: 1px solid #ffab40;
+    box-shadow: 0 1px 0 0 #ffab40;
+}
+/* icon prefix focus color */
+.input-field .prefix.active {
+    color: #ffab40;
+}
+
+#signup-modal {
+    width: 35%;
+    transform: translateY(40%) scaleX(1) !important;
+}

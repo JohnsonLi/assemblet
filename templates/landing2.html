@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <link rel="stylesheet" href="static/css/landing2.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <title> Assemble't </title>
+    </head>
+    <body>
+        <div>
+            {% for msg in get_flashed_messages() %} 
+                {{msg}}
+            {% endfor %}
+        </div>
+
+        <div id="wrapper" class="card">
+            <div class="split left">
+                <h1>Assemble't</h1>
+                <br><br>
+                <div class="txt">Learn Simple Assembly</div>
+                <br>
+                <div class="txt1">Instruction by Instruction</div>
+                <br>
+                <div class="txt2">Step by Step</div>
+            </div>
+    
+            <div class="split right">
+                <h4>Log In</h4>
+                <form id="login-form" class="col s12">
+                    <div class="row">
+                        <div class="input-field">
+                            <input form="login-form" id="login-username" type="text" class="validate" name="username">
+                            <label for="login-username">Username</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field">
+                            <input form="login-form" id="login-password" type="password" class="validate" name="password">
+                            <label for="login-password">Password</label>
+                        </div>
+                    </div>
+                    <span id="login-error"></span>
+                    <button type="button" class="waves-effect waves-light btn modal-trigger" data-target="signup-modal"> Sign Up </button>
+                    <button type="button" id="submit-login" class="btn waves-effect waves-light green accent-2">Log In
+                        <i class="material-icons right">send</i>
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <div id="signup-modal" class="modal">
+            <div class="modal-content">
+                <div class="row">
+                    <form id="signup-form" class="col s12"></form>
+                        <div class="row">
+                            <div class="input-field">
+                                <input form="signup-form" id="signup-username" type="text" class="validate" name="username">
+                                <label for="signup-username">Username</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="input-field">
+                                <input form="signup-form" id="signup-password" type="password" class="validate" name="password">
+                                <label for="signup-password">Password</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="input-field">
+                                <input form="signup-form" id="confirm-password" type="password" class="validate" name="confirm_password">
+                                <label for="confirm-password">Confirm Password</label>
+                                <span id="confirm-password-error"></span>
+                            </div>
+                        </div>
+                        <span id="signup-error"></span>
+                    </form>
+                </div>          
+            </div>
+            <div class="modal-footer">
+                <button id="submit-signup" class=" waves-effect waves-green btn-flat">SIGN UP</button>
+                <button class="modal-close waves-effect waves-green btn-flat">Cancel</button>
+            </div>
+        </div>
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+        <script src="/static/js/css.js"></script>
+        <script src="/static/js/login.js"></script>
+    </body> 
+</html>
