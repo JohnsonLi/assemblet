@@ -1,30 +1,26 @@
 # assemblet
 
-How to install:
-- download python, download pip
-- in terminal, go into assemblet folder `cd PATH_TO_ASSEMBLET`
-- install requirements `pip install -r requirements.txt`
-- run flask `python app.py`
-- open browser, go to localhost:5000
+Setting up the database:
+- On your preferred operating system, download PostgreSQL and create a databast named assemblet.
+- Make a user named postgres (if they didn't exist already) and set their password to root.
+- Give the postgres user priviliges to the assemblet database.
+- Import the assembletPS.sql file into the assemblet database.
 
-# how to pull / push into git (faster way of committing changes)
-- open terminal
-- `cd PATH_TO_ASSEMBLET` (maybe this is something like `cd C:\Users\jiayang\assemblet`
-- one time only: `git config --global user.name "jiayang"`, then `git config --global user.email "jc9555@nyu.edu"`
+How to run:
+- Download python and pip
+- In terminal, go into assemblet folder `cd PATH_TO_ASSEMBLET`
+- Install requirements `pip install -r requirements.txt`
+- Run flask `python app.py`
+- Open browser, go to localhost:5000
+- To create your own puzzles, sign up and add that username to the admin table in postgres.
 
-- to pull (get new changes) `git pull`
-- to push (put your new changes onto the internet) `git add .` and then `git commit -m "just a message"`, finally, `git push`
-
-
-# how to work on database
-- install xampp
-- go to the web interface and upload the database we have
+## Note: Deploying it with the instructions above will result in a site with no puzzles. 
+## The application is already deployed on https://assemblet.patchouli.dev/ which has puzzles created.
 
 # basic structure of program (as of now)
-
 - flask (python) is used to run the server
 - html/css/js files have the actual pages
 - database will be run in the background separately, but keep in repository for now
 
-# link to softare design description
+# link to software design description
 https://docs.google.com/document/d/1Lgr2LjtCBOfm8wJsKoURJN13T4ueE46bc9b1HsUNxU0/edit?usp=sharing
