@@ -1,4 +1,5 @@
 # assemblet
+https://assemblet.patchouli.dev/
 
 Setting up the database:
 - On your preferred operating system, download PostgreSQL and create a databast named assemblet.
